@@ -33,7 +33,7 @@ export default function Pricing() {
     },
     {
       id: 'pro',
-      name: 'The Pro',
+      name: 'The Expert',
       price: 129,
       period: 'month',
       features: [
@@ -44,7 +44,7 @@ export default function Pricing() {
         'Priority support',
         'Perfect for developers & architects'
       ],
-      cta: 'Go Pro'
+      cta: 'Get Expert'
     }
   ];
 
