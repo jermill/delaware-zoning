@@ -111,3 +111,46 @@ export const trackError = (errorType: string, errorMessage: string) => {
 export const trackContactFormSubmitted = () => {
   trackEvent('Contact', 'Form Submitted', 'Contact Page');
 };
+
+/**
+ * Track page visit to database
+ */
+export const trackPageVisit = async (pagePath: string, pageTitle?: string) => {
+  try {
+    // Get session ID from localStorage or create new one
+    let sessionId = '';
+    if (typeof window !== 'undefined') {
+      sessionId = localStorage.getItem('session_id') || '';
+      if (!sessionId) {
+        sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        localStorage.setItem('session_id', sessionId);
+      }
+    }
+
+    // Get device info
+    const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : '';
+    const deviceType = /Mobile|Android|iPhone/i.test(userAgent) ? 'mobile' : 
+                       /iPad|Tablet/i.test(userAgent) ? 'tablet' : 'desktop';
+
+    const visitData = {
+      page_path: pagePath,
+      page_title: pageTitle || document.title,
+      referrer: typeof document !== 'undefined' ? document.referrer : null,
+      session_id: sessionId,
+      user_agent: userAgent,
+      device_type: deviceType,
+      visited_at: new Date().toISOString(),
+    };
+
+    // Send to API endpoint
+    await fetch('/api/analytics/track-visit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(visitData),
+    });
+  } catch (error) {
+    console.error('Error tracking page visit:', error);
+  }
+};

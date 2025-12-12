@@ -1,4 +1,4 @@
-import { FiUsers, FiDollarSign, FiSearch, FiTrendingUp } from 'react-icons/fi';
+import { FiUsers, FiDollarSign, FiSearch, FiTrendingUp, FiEye, FiActivity } from 'react-icons/fi';
 import StatCard from '@/components/dashboard/StatCard';
 
 interface AdminStatsProps {
@@ -13,6 +13,12 @@ interface AdminStatsProps {
     searchesLast30Days: number;
     totalSavedProperties: number;
     monthlyRecurringRevenue: number;
+    totalPageVisits: number;
+    pageVisitsLast24h: number;
+    pageVisitsLast7Days: number;
+    pageVisitsLast30Days: number;
+    uniqueVisitors24h: number;
+    activeUsers30Days: number;
   } | null;
 }
 

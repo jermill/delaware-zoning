@@ -13,6 +13,12 @@ interface AdminStats {
   searchesLast30Days: number;
   totalSavedProperties: number;
   monthlyRecurringRevenue: number;
+  totalPageVisits: number;
+  pageVisitsLast24h: number;
+  pageVisitsLast7Days: number;
+  pageVisitsLast30Days: number;
+  uniqueVisitors24h: number;
+  activeUsers30Days: number;
 }
 
 interface UserActivity {
@@ -72,6 +78,12 @@ export function useAdmin(): AdminData {
           searchesLast30Days: statsData.searches_last_30_days || 0,
           totalSavedProperties: statsData.total_saved_properties || 0,
           monthlyRecurringRevenue: statsData.monthly_recurring_revenue || 0,
+          totalPageVisits: statsData.total_page_visits || 0,
+          pageVisitsLast24h: statsData.page_visits_last_24h || 0,
+          pageVisitsLast7Days: statsData.page_visits_last_7_days || 0,
+          pageVisitsLast30Days: statsData.page_visits_last_30_days || 0,
+          uniqueVisitors24h: statsData.unique_visitors_24h || 0,
+          activeUsers30Days: statsData.active_users_30_days || 0,
         });
 
         // Fetch recent users with their activity
