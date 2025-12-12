@@ -5,22 +5,26 @@ import { useRouter } from 'next/router'
 import { Toaster } from 'react-hot-toast'
 import CookieConsent from 'react-cookie-consent'
 import { AuthProvider } from '@/contexts/AuthContext'
-import { initGA, trackPageView } from '@/lib/analytics'
+import { initGA, trackPageView, trackPageVisit } from '@/lib/analytics'
 import { logger } from '@/lib/logger'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
-  // Initialize Google Analytics
+  // Initialize Google Analytics and track page visits
   useEffect(() => {
     initGA()
     
-    // Track initial page view
+    // Track initial page view (Google Analytics)
     trackPageView(router.pathname)
+    
+    // Track initial page visit (Database)
+    trackPageVisit(router.pathname, document.title)
 
     // Track page changes
     const handleRouteChange = (url: string) => {
       trackPageView(url)
+      trackPageVisit(url, document.title)
     }
 
     router.events.on('routeChangeComplete', handleRouteChange)

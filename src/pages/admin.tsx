@@ -5,6 +5,7 @@ import AdminStats from '@/components/admin/AdminStats';
 import AdminTierBreakdown from '@/components/admin/AdminTierBreakdown';
 import AdminUserList from '@/components/admin/AdminUserList';
 import AdminAccountCard from '@/components/admin/AdminAccountCard';
+import PopularPages from '@/components/admin/PopularPages';
 import { FiArrowLeft, FiHome } from 'react-icons/fi';
 import Link from 'next/link';
 import { useAdmin } from '@/hooks/useAdmin';
@@ -209,6 +210,9 @@ function AdminContent() {
             <AdminAccountCard />
             <AdminTierBreakdown stats={stats} />
           </div>
+
+          {/* Popular Pages */}
+          <PopularPages />
 
           {/* Quick Actions */}
           <div className="bg-white rounded-2xl shadow-md p-6">

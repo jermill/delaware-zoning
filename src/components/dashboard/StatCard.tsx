@@ -6,7 +6,7 @@ interface StatCardProps {
   value: string | number;
   icon: ReactNode;
   subtitle?: string;
-  color?: 'blue' | 'gold' | 'gray' | 'green';
+  color?: 'blue' | 'gold' | 'gray' | 'green' | 'purple';
 }
 
 export default function StatCard({ title, value, icon, subtitle, color = 'blue' }: StatCardProps) {
