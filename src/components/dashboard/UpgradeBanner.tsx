@@ -38,29 +38,35 @@ export default function UpgradeBanner({ currentTier }: UpgradeBannerProps) {
   const content = getbannerContent();
 
   return (
-    <div className="bg-gradient-to-r from-delaware-gold to-yellow-600 text-white rounded-2xl p-4 relative">
+    <div className="bg-delaware-gold text-white rounded-2xl p-5 relative shadow-lg overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-600/20 rounded-full -mr-16 -mt-16"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-yellow-600/20 rounded-full -ml-12 -mb-12"></div>
+      
       <button
         onClick={() => setIsDismissed(true)}
-        className="absolute top-2 right-2 p-1 hover:bg-white/20 rounded transition-colors"
+        className="absolute top-3 right-3 p-1.5 hover:bg-white/20 rounded-lg transition-colors z-10"
         aria-label="Dismiss banner"
       >
         <FiX className="w-4 h-4" />
       </button>
 
-      <div className="flex items-start gap-3 pr-8">
-        <div className="flex-shrink-0 mt-0.5">
-          {content.icon}
+      <div className="relative z-10">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+            {content.icon}
+          </div>
+          <h3 className="font-bold text-lg">{content.title}</h3>
         </div>
-        <div className="flex-1">
-          <h3 className="font-semibold text-base mb-1">{content.title}</h3>
-          <p className="text-sm text-white/90 mb-3">{content.description}</p>
-          <Link
-            href={content.ctaLink}
-            className="inline-block bg-white text-delaware-gold px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors"
-          >
-            {content.ctaText}
-          </Link>
-        </div>
+        <p className="text-sm text-white/95 mb-4 leading-relaxed">
+          {content.description}
+        </p>
+        <Link
+          href={content.ctaLink}
+          className="inline-flex items-center justify-center w-full bg-white text-delaware-gold px-5 py-3 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all duration-200 shadow-md hover:shadow-lg"
+        >
+          {content.ctaText} →
+        </Link>
       </div>
     </div>
   );

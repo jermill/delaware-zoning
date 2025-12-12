@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --delaware-blue: #002B5C;
-  --delaware-gold: #CB9C30;
-}
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -25,6 +20,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Smooth scrolling */
@@ -32,12 +28,123 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
+/* Touch target minimum size */
+button,
+a,
+[role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 @layer components {
+  /* Base Card Styles */
+  .card-base {
+    @apply bg-white rounded-2xl border border-delaware-sage/20;
+  }
+
+  .card-subtle {
+    @apply card-base shadow-subtle p-6 transition-all duration-300;
+  }
+
+  .card-elevated {
+    @apply card-base shadow-lg p-6 sm:p-8 transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply card-base shadow-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .card-interactive {
+    @apply card-hover cursor-pointer;
+  }
+
+  /* Button Styles - Touch Friendly */
+  .btn-base {
+    @apply inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-300 min-h-touch;
+  }
+
+  .btn-primary {
+    @apply btn-base bg-delaware-gold text-delaware-navy px-6 py-3 sm:px-8 sm:py-4 hover:opacity-90 hover:shadow-lg transform hover:-translate-y-0.5;
+  }
+  
+  .btn-secondary {
+    @apply btn-base bg-delaware-blue text-white px-6 py-3 sm:px-8 sm:py-4 hover:opacity-90 hover:shadow-lg transform hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply btn-base bg-transparent text-delaware-blue border-2 border-delaware-blue px-6 py-3 sm:px-8 sm:py-4 hover:bg-delaware-blue hover:text-white;
+  }
+
+  .btn-ghost {
+    @apply btn-base bg-transparent text-delaware-blue px-4 py-2 hover:bg-delaware-cream;
+  }
+
+  /* Input Styles - Mobile Optimized */
+  .input-base {
+    @apply w-full px-4 py-3 bg-white border-2 border-delaware-sage/30 rounded-xl focus:outline-none focus:border-delaware-blue focus:ring-4 focus:ring-delaware-blue/10 transition-all duration-200 min-h-input text-base;
+  }
+
+  .input-error {
+    @apply input-base border-error focus:border-error focus:ring-error/10;
+  }
+
+  /* Section Wrappers */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24;
+  }
+
+  .section-container-sm {
+    @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20;
+  }
+
+  /* Typography */
+  .text-section-heading {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold;
+  }
+
+  .text-subsection-heading {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold;
+  }
+
+  .text-card-heading {
+    @apply text-xl sm:text-2xl font-bold;
+  }
+
+  .text-overline {
+    @apply text-xs sm:text-sm uppercase tracking-wider font-semibold;
+  }
+
+  /* Icon Containers */
+  .icon-container {
+    @apply inline-flex items-center justify-center w-14 h-14 rounded-xl shadow-md transition-all duration-300;
+  }
+
+  .icon-container-lg {
+    @apply inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shadow-lg transition-all duration-300;
+  }
+
+  /* Stat Card */
+  .stat-card {
+    @apply card-hover text-center;
+  }
+
   /* Blog Post Prose Styles */
   .prose-delaware {
     @apply text-gray-800;
@@ -115,69 +222,6 @@ a {
   .prose-delaware hr {
     @apply my-12 border-gray-300;
   }
-  
-  /* Button Styles */
-  .btn-primary {
-    @apply bg-delaware-blue text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold hover:bg-opacity-90 hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 text-center;
-  }
-  
-  .btn-secondary {
-    @apply bg-white text-delaware-blue border-2 border-delaware-blue px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold hover:bg-delaware-blue hover:text-white transition-all duration-300 transform hover:-translate-y-0.5 text-center;
-  }
-
-  .btn-gold {
-    @apply bg-delaware-gold text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold hover:bg-opacity-90 hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 text-center;
-  }
-
-  /* Layout Containers */
-  .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-24;
-  }
-
-  /* Card Styles */
-  .card-elevated {
-    @apply bg-white rounded-2xl shadow-card p-6 sm:p-8 transition-all duration-300;
-  }
-
-  .card-hover {
-    @apply bg-white rounded-2xl shadow-card p-6 sm:p-8 transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1;
-  }
-
-  .card-glass {
-    @apply bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20 transition-all duration-300 hover:bg-white/20;
-  }
-
-  /* Typography */
-  .text-section-heading {
-    @apply text-3xl sm:text-4xl md:text-5xl font-bold;
-  }
-
-  .text-subsection-heading {
-    @apply text-xl sm:text-2xl md:text-3xl font-semibold;
-  }
-
-  /* Icon Containers */
-  .icon-container {
-    @apply inline-flex items-center justify-center w-16 h-16 rounded-2xl transition-all duration-300;
-  }
-
-  .icon-container-lg {
-    @apply inline-flex items-center justify-center w-20 h-20 rounded-2xl transition-all duration-300;
-  }
-
-  /* Gradient Backgrounds */
-  .bg-gradient-blue {
-    @apply bg-gradient-to-br from-delaware-blue to-blue-900;
-  }
-
-  .bg-gradient-gold {
-    @apply bg-gradient-to-br from-delaware-gold to-yellow-600;
-  }
-
-  /* Hero specific */
-  .hero-overlay {
-    @apply absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60;
-  }
 
   /* Animation utilities */
   .animate-fade-in {
@@ -225,19 +269,8 @@ a {
   }
 }
 
-/* Loading animation for future use */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
 /* Focus styles for accessibility */
 *:focus-visible {
-  outline: 2px solid #CB9C30;
+  outline: 2px solid #D8B368;
   outline-offset: 2px;
 }
-

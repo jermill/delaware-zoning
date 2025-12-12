@@ -1,4 +1,4 @@
-import { FiStar } from 'react-icons/fi';
+import { FiStar, FiTrendingUp, FiMapPin, FiZap, FiDatabase } from 'react-icons/fi';
 import Image from 'next/image';
 
 const TESTIMONIALS = [
@@ -39,18 +39,19 @@ const TRUSTED_BY = [
 
 export default function SocialProof() {
   return (
-    <section className="bg-white py-12 sm:py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative bg-delaware-cream py-16 sm:py-20 lg:py-24 overflow-hidden">
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trusted By Bar */}
-        <div className="text-center mb-10">
-          <p className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-4">
+        <div className="text-center mb-12 sm:mb-16">
+          <p className="text-overline text-delaware-gold mb-6">
             Trusted by Delaware professionals
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             {TRUSTED_BY.map((item, idx) => (
               <span 
                 key={idx}
-                className="inline-flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm text-gray-700 font-medium"
+                className="inline-flex items-center px-4 py-2 bg-white border border-delaware-sage/30 rounded-full text-sm text-delaware-navy font-medium shadow-subtle hover:shadow-md hover:border-delaware-blue transition-all duration-200"
               >
                 {item}
               </span>
@@ -58,29 +59,31 @@ export default function SocialProof() {
           </div>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-6">
+        {/* Testimonials Grid - Mobile Optimized */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16 sm:mb-20">
           {TESTIMONIALS.map((testimonial, idx) => (
             <div 
               key={idx}
-              className="rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-shadow duration-300"
-              style={{ backgroundColor: '#a8bdbe' }}
+              className="card-hover"
             >
+              {/* Accent bar on hover */}
+              <div className="absolute inset-x-0 top-0 h-1 bg-delaware-gold rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
               {/* Stars */}
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <FiStar key={i} className="w-4 h-4 fill-delaware-gold text-delaware-gold" />
+                  <FiStar key={i} className="w-5 h-5 fill-delaware-gold text-delaware-gold" />
                 ))}
               </div>
               
               {/* Quote */}
-              <p className="text-gray-700 mb-4 leading-relaxed">
+              <p className="text-gray-700 mb-6 leading-relaxed text-base">
                 "{testimonial.quote}"
               </p>
               
               {/* Author */}
-              <div className="flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+              <div className="flex items-center gap-3 pt-4 border-t border-delaware-sage/20">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-delaware-sage/20">
                   <Image
                     src={testimonial.image}
                     alt={testimonial.author}
@@ -89,31 +92,88 @@ export default function SocialProof() {
                   />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
-                  <p className="text-xs text-gray-500">{testimonial.role}, {testimonial.company}</p>
+                  <p className="font-bold text-delaware-navy text-sm">{testimonial.author}</p>
+                  <p className="text-xs text-gray-600">{testimonial.role}, {testimonial.company}</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Stats Row */}
-        <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 py-8 border-t border-gray-200">
-          <div className="text-center">
-            <div className="text-3xl sm:text-4xl font-bold text-delaware-blue">100+</div>
-            <div className="text-sm text-gray-600 mt-1">Active Users</div>
+        {/* Stats Row - Mobile First */}
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <h3 className="text-subsection-heading text-delaware-navy mb-2">
+              Trusted By Delaware Professionals
+            </h3>
+            <p className="text-gray-600 text-base">
+              Fast, accurate, and comprehensive zoning data
+            </p>
           </div>
-          <div className="text-center">
-            <div className="text-3xl sm:text-4xl font-bold text-delaware-blue">3</div>
-            <div className="text-sm text-gray-600 mt-1">Counties Covered</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl sm:text-4xl font-bold text-delaware-blue">&lt;2s</div>
-            <div className="text-sm text-gray-600 mt-1">Search Speed</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl sm:text-4xl font-bold text-delaware-blue">24/7</div>
-            <div className="text-sm text-gray-600 mt-1">Availability</div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {[
+              { 
+                icon: FiTrendingUp,
+                value: '100+', 
+                label: 'Active Users',
+                description: 'Professionals using daily',
+                iconBg: 'bg-delaware-blue',
+                textColor: 'text-delaware-blue'
+              },
+              { 
+                icon: FiDatabase,
+                value: '1,062', 
+                label: 'Zoning Districts',
+                description: 'Covering New Castle & Sussex',
+                iconBg: 'bg-delaware-navy',
+                textColor: 'text-delaware-navy'
+              },
+              { 
+                icon: FiZap,
+                value: '<2s', 
+                label: 'Average Search',
+                description: 'Lightning-fast results',
+                iconBg: 'bg-delaware-gold',
+                textColor: 'text-delaware-gold'
+              },
+              { 
+                icon: FiMapPin,
+                value: '24/7', 
+                label: 'Always Available',
+                description: 'Search anytime, anywhere',
+                iconBg: 'bg-delaware-sage',
+                textColor: 'text-delaware-sage'
+              }
+            ].map((stat, idx) => {
+              const Icon = stat.icon;
+              return (
+                <div 
+                  key={idx} 
+                  className="card-hover text-center group"
+                >
+                  {/* Icon */}
+                  <div className={`icon-container ${stat.iconBg} mx-auto mb-4`}>
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                  </div>
+                  
+                  {/* Value */}
+                  <div className={`text-3xl sm:text-4xl font-bold ${stat.textColor} mb-1`}>
+                    {stat.value}
+                  </div>
+                  
+                  {/* Label */}
+                  <div className="text-sm sm:text-base font-bold text-delaware-navy mb-1">
+                    {stat.label}
+                  </div>
+                  
+                  {/* Description */}
+                  <div className="text-xs text-gray-600">
+                    {stat.description}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

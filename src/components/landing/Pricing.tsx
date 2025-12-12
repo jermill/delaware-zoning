@@ -122,30 +122,31 @@ export default function Pricing() {
     <section className="bg-white">
       <div className="section-container">
         <div className="text-center mb-12 sm:mb-16 px-4">
-          <p className="text-delaware-gold font-semibold text-xs sm:text-sm uppercase tracking-wide mb-3">
+          <p className="text-overline text-delaware-gold mb-3">
             Pricing Plans
           </p>
-          <h2 className="text-section-heading text-gray-900 mb-4">
+          <h2 className="text-section-heading text-delaware-navy mb-4">
             Cheaper Than One Hour of Your Time
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Stop calling the county planning office. Get instant answers and look like the expert your clients expect.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto px-4">
+        {/* Mobile: 1 col, Tablet: 2 col, Desktop: 3 col */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto px-4">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 transition-all duration-300 ${
+              className={`relative bg-white rounded-2xl p-6 sm:p-8 transition-all duration-300 border-2 ${
                 plan.popular 
-                  ? 'shadow-card-hover border-2 border-delaware-gold md:scale-105' 
-                  : 'shadow-card hover:shadow-card-hover border-2 border-gray-100 hover:border-delaware-gold/50'
+                  ? 'shadow-elevated border-delaware-gold lg:scale-105' 
+                  : 'shadow-md hover:shadow-lg border-delaware-sage/20 hover:border-delaware-blue/30'
               }`}
             >
               {plan.popular && (
                 <div className="absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-delaware-gold to-yellow-600 text-white text-xs sm:text-sm font-semibold px-4 sm:px-6 py-1.5 sm:py-2 rounded-full inline-flex items-center gap-2 shadow-elevated">
+                  <div className="bg-delaware-gold text-white text-xs sm:text-sm font-semibold px-4 sm:px-6 py-1.5 sm:py-2 rounded-full inline-flex items-center gap-2 shadow-elevated">
                     <FiStar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     Most Popular
                   </div>
@@ -185,10 +186,10 @@ export default function Pricing() {
                     plan.id === 'free' ? 'looker' : plan.id === 'pro' ? 'pro' : 'whale'
                   )}
                   disabled={loadingPlan === plan.id}
-                  className={`block text-center w-full py-3 sm:py-4 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
+                  className={`block text-center w-full py-4 rounded-xl text-base font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 min-h-touch ${
                     plan.popular
-                      ? 'bg-gradient-to-r from-delaware-gold to-yellow-600 text-white hover:shadow-elevated transform hover:-translate-y-0.5'
-                      : 'bg-delaware-blue text-white hover:bg-opacity-90 hover:shadow-elevated transform hover:-translate-y-0.5'
+                      ? 'bg-delaware-gold text-delaware-navy hover:opacity-90'
+                      : 'bg-delaware-blue text-white hover:opacity-90'
                   }`}
                 >
                   {loadingPlan === plan.id ? (
@@ -207,67 +208,60 @@ export default function Pricing() {
 
         {/* Additional Options */}
         <div className="mt-12 sm:mt-16 max-w-4xl mx-auto px-4">
-          <div className="rounded-xl sm:rounded-2xl p-6 sm:p-8" style={{ backgroundColor: '#a8bdbe' }}>
-            <div className="text-center mb-5 sm:mb-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+          <div className="bg-delaware-sage rounded-2xl p-6 sm:p-8 shadow-md">
+            <div className="text-center mb-6">
+              <h3 className="text-card-heading text-delaware-navy mb-2">
                 Other Options
               </h3>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            {/* Mobile: 1 col, Tablet/Desktop: 2 col */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Single Report */}
-              <div className="bg-white rounded-lg sm:rounded-xl p-5 sm:p-6 shadow-card">
-                <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+              <div className="card-elevated">
+                <h4 className="text-lg font-bold text-delaware-navy mb-2">
                   Single Report
                 </h4>
-                <div className="text-2xl sm:text-3xl font-bold text-delaware-blue mb-3">
-                  $39 <span className="text-sm sm:text-base font-normal text-gray-600">one-time</span>
+                <div className="text-3xl font-bold text-delaware-blue mb-3">
+                  $39 <span className="text-base font-normal text-gray-600">one-time</span>
                 </div>
-                <p className="text-sm sm:text-base text-gray-600 mb-4">
+                <p className="text-base text-gray-600 mb-4">
                   Need info for just one property? Buy a professional PDF report without subscribing.
                 </p>
-                <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
-                  <li className="flex items-center">
-                    <svg className="w-4 h-4 text-delaware-gold mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Full zoning report PDF
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-center gap-2">
+                    <FiCheck className="w-4 h-4 text-delaware-gold flex-shrink-0" />
+                    <span>Full zoning report PDF</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="w-4 h-4 text-delaware-gold mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    No subscription required
+                  <li className="flex items-center gap-2">
+                    <FiCheck className="w-4 h-4 text-delaware-gold flex-shrink-0" />
+                    <span>No subscription required</span>
                   </li>
                 </ul>
               </div>
 
               {/* Brokerage/Team */}
-              <div className="bg-white rounded-lg sm:rounded-xl p-5 sm:p-6 shadow-card">
-                <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+              <div className="card-elevated">
+                <h4 className="text-lg font-bold text-delaware-navy mb-2">
                   Brokerage/Team Plan
                 </h4>
-                <div className="text-2xl sm:text-3xl font-bold text-delaware-blue mb-3">
+                <div className="text-3xl font-bold text-delaware-blue mb-3">
                   Custom
                 </div>
-                <p className="text-sm sm:text-base text-gray-600 mb-4">
+                <p className="text-base text-gray-600 mb-4">
                   Unlimited access for your entire office. Centralized billing and team management.
                 </p>
-                <ul className="space-y-2 text-xs sm:text-sm text-gray-700 mb-4">
-                  <li className="flex items-center">
-                    <svg className="w-4 h-4 text-delaware-gold mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    $15-20 per agent
+                <ul className="space-y-2 text-sm text-gray-700 mb-4">
+                  <li className="flex items-center gap-2">
+                    <FiCheck className="w-4 h-4 text-delaware-gold flex-shrink-0" />
+                    <span>$15-20 per agent</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="w-4 h-4 text-delaware-gold mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Recruit & retain talent
+                  <li className="flex items-center gap-2">
+                    <FiCheck className="w-4 h-4 text-delaware-gold flex-shrink-0" />
+                    <span>Recruit & retain talent</span>
                   </li>
                 </ul>
-                <a href="/contact" className="text-sm sm:text-base text-delaware-blue font-semibold hover:text-delaware-gold transition-colors">
+                <a href="/contact" className="text-base text-delaware-blue font-bold hover:text-delaware-gold transition-colors">
                   Contact Sales →
                 </a>
               </div>
@@ -277,7 +271,7 @@ export default function Pricing() {
 
         {/* Cancel Info */}
         <div className="text-center mt-10 sm:mt-12 text-gray-600 px-4">
-          <p className="text-xs sm:text-sm">Cancel anytime from your dashboard.</p>
+          <p className="text-sm">Cancel anytime from your dashboard.</p>
         </div>
       </div>
     </section>

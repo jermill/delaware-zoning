@@ -27,39 +27,39 @@ export default function VerifyEmail() {
 
   return (
     <Layout>
-      <div className="bg-gray-50 min-h-screen flex items-center justify-center py-12 sm:py-16">
-        <div className="max-w-md w-full mx-4">
-          <div className="bg-white rounded-xl sm:rounded-2xl shadow-card-hover p-6 sm:p-8 md:p-10 border border-gray-100">
+      <div className="bg-delaware-cream min-h-screen flex items-center justify-center py-12 sm:py-16 px-4">
+        <div className="max-w-md w-full">
+          <div className="card-elevated border border-delaware-sage/20">
             {/* Success Icon */}
             <div className="flex justify-center mb-6">
               <div className="relative">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
-                  <FiCheckCircle className="w-10 h-10 text-green-600" />
+                <div className="w-24 h-24 bg-delaware-sage/20 rounded-full flex items-center justify-center">
+                  <FiCheckCircle className="w-12 h-12 text-delaware-blue" />
                 </div>
-                <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-delaware-gold rounded-full flex items-center justify-center">
-                  <FiMail className="w-6 h-6 text-white" />
+                <div className="absolute -bottom-2 -right-2 w-14 h-14 bg-delaware-gold rounded-full flex items-center justify-center shadow-lg">
+                  <FiMail className="w-7 h-7 text-white" />
                 </div>
               </div>
             </div>
 
             {/* Title */}
             <div className="text-center mb-6">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+              <h1 className="text-3xl sm:text-4xl font-bold text-delaware-navy mb-3">
                 Check Your Email
               </h1>
-              <p className="text-sm sm:text-base text-gray-600">
+              <p className="text-base text-gray-600">
                 We've sent a verification link to
               </p>
               {email && (
-                <p className="text-sm sm:text-base font-semibold text-delaware-blue mt-2">
+                <p className="text-base font-bold text-delaware-blue mt-2">
                   {email}
                 </p>
               )}
             </div>
 
             {/* Instructions */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+            <div className="bg-delaware-blue/10 border border-delaware-blue/20 rounded-xl p-5 mb-6">
+              <h3 className="font-bold text-delaware-navy mb-3 flex items-center gap-2">
                 <FiAlertCircle className="w-5 h-5 text-delaware-blue" />
                 What to do next:
               </h3>
@@ -71,11 +71,11 @@ export default function VerifyEmail() {
             </div>
 
             {/* Helpful Tips */}
-            <div className="bg-gray-50 rounded-lg p-4 mb-6">
-              <p className="text-sm text-gray-600 mb-2">
-                <strong>Can't find the email?</strong>
+            <div className="bg-delaware-cream rounded-xl p-5 mb-6 border border-delaware-sage/20">
+              <p className="text-sm text-delaware-navy font-bold mb-2">
+                Can't find the email?
               </p>
-              <ul className="space-y-1 text-sm text-gray-600">
+              <ul className="space-y-1.5 text-sm text-gray-600">
                 <li>• Check your spam or junk folder</li>
                 <li>• Make sure you entered the correct email</li>
                 <li>• Wait a few minutes for the email to arrive</li>
@@ -86,7 +86,7 @@ export default function VerifyEmail() {
             <button
               onClick={handleResend}
               disabled={!canResend}
-              className="w-full bg-delaware-blue text-white px-6 py-3 rounded-xl font-semibold hover:bg-opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mb-4"
+              className="btn-secondary w-full mb-4"
             >
               {canResend ? 'Resend Verification Email' : `Resend in ${timeLeft}s`}
             </button>
@@ -95,17 +95,17 @@ export default function VerifyEmail() {
             <div className="text-center">
               <p className="text-sm text-gray-600">
                 Already verified?{' '}
-                <Link href="/login" className="text-delaware-blue font-semibold hover:text-delaware-gold transition-colors">
+                <Link href="/login" className="text-delaware-blue font-bold hover:text-delaware-gold transition-colors">
                   Log In
                 </Link>
               </p>
             </div>
 
             {/* Help Section */}
-            <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+            <div className="mt-6 pt-6 border-t border-delaware-sage/20 text-center">
               <p className="text-sm text-gray-600">
                 Need help? Contact us at{' '}
-                <a href="mailto:support@delawarezoning.com" className="text-delaware-blue font-semibold hover:text-delaware-gold transition-colors">
+                <a href="mailto:support@delawarezoning.com" className="text-delaware-blue font-bold hover:text-delaware-gold transition-colors">
                   support@delawarezoning.com
                 </a>
               </p>

@@ -16,7 +16,7 @@ export default function FAQ() {
     },
     {
       question: 'Which counties are covered?',
-      answer: 'We cover all of Delaware: New Castle, Kent, and Sussex counties, plus major cities like Wilmington, Dover, and Newark.'
+      answer: 'Currently covering New Castle and Sussex counties with 1,062 zoning districts. Kent County integration coming soon!'
     },
     {
       question: 'How accurate is the information?',
@@ -25,37 +25,37 @@ export default function FAQ() {
   ];
 
   return (
-    <section className="bg-delaware-gold">
+    <section className="bg-delaware-cream">
       <div className="section-container">
         <div className="text-center mb-12 sm:mb-16 px-4">
-          <p className="text-delaware-blue font-semibold text-xs sm:text-sm uppercase tracking-wide mb-3">
+          <p className="text-overline text-delaware-gold mb-3">
             Help Center
           </p>
-          <h2 className="text-section-heading text-white mb-4">
+          <h2 className="text-section-heading text-delaware-navy mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Everything you need to know about Delaware Zoning
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 px-4">
+        <div className="max-w-3xl mx-auto space-y-4 px-4">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-card hover:shadow-card-hover transition-all duration-300 group"
+              className="card-hover"
             >
-              <div className="flex gap-3 sm:gap-4">
+              <div className="flex gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-delaware-blue/10 flex items-center justify-center group-hover:bg-delaware-blue/20 transition-colors duration-300">
-                    <FiHelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-delaware-blue" />
+                  <div className="icon-container bg-delaware-blue/10 group-hover:bg-delaware-blue/20 transition-colors duration-300">
+                    <FiHelpCircle className="w-6 h-6 text-delaware-blue" />
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 group-hover:text-delaware-blue transition-colors duration-300">
+                  <h3 className="text-lg sm:text-xl font-bold text-delaware-navy mb-3 group-hover:text-delaware-blue transition-colors duration-300">
                     {faq.question}
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                  <p className="text-base text-gray-600 leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
@@ -65,16 +65,16 @@ export default function FAQ() {
         </div>
 
         {/* Contact CTA */}
-        <div className="text-center mt-10 sm:mt-12 px-4">
-          <p className="text-sm sm:text-base text-white/90 mb-4">
+        <div className="text-center mt-12 px-4">
+          <p className="text-base text-gray-600 mb-4">
             Still have questions? We're here to help.
           </p>
           <a 
             href="/contact" 
-            className="inline-flex items-center gap-2 text-sm sm:text-base text-delaware-blue font-semibold hover:text-white transition-colors duration-300"
+            className="inline-flex items-center gap-2 text-base text-delaware-blue font-bold hover:text-delaware-gold transition-colors duration-300"
           >
             Contact Support
-            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>

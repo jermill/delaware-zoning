@@ -1,4 +1,4 @@
-import { FiHome, FiBookmark, FiClock, FiUser, FiCreditCard, FiHelpCircle } from 'react-icons/fi';
+import { FiHome, FiBookmark, FiClock, FiUser, FiCreditCard, FiHelpCircle, FiLogOut } from 'react-icons/fi';
 import Link from 'next/link';
 import { UserTier } from '@/data/mockDashboardData';
 import TierBadge from './TierBadge';
@@ -29,16 +29,16 @@ export default function DashboardSidebar({
   ];
 
   return (
-    <div className="h-full bg-delaware-blue text-white flex flex-col">
+    <div className="h-full bg-white border-r border-gray-200 flex flex-col">
       {/* User Profile Section */}
-      <div className="p-3 border-b border-white/10">
-        <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-delaware-gold flex items-center justify-center font-bold text-white text-base">
+      <div className="p-6 border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-delaware-blue flex items-center justify-center font-bold text-white text-lg shadow-md">
             {userName.charAt(0)}
           </div>
           {!isCollapsed && (
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-sm truncate">{userName}</p>
+              <p className="font-bold text-gray-900 text-base truncate">{userName}</p>
               <TierBadge tier={userTier} size="sm" />
             </div>
           )}
@@ -46,7 +46,7 @@ export default function DashboardSidebar({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-2 py-3 space-y-0.5" role="navigation" aria-label="Dashboard navigation">
+      <nav className="flex-1 px-3 py-4 space-y-1" role="navigation" aria-label="Dashboard navigation">
         {navItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = currentTab === item.id;
@@ -55,10 +55,10 @@ export default function DashboardSidebar({
             <button
               key={item.id}
               onClick={() => onTabChange(item.id)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
                 isActive
-                  ? 'bg-delaware-gold text-white shadow-lg'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-delaware-blue text-delaware-navy shadow-md'
+                  : 'text-gray-600 hover:bg-delaware-cream hover:text-gray-900'
               }`}
               aria-label={`${item.label} tab`}
               aria-current={isActive ? 'page' : undefined}
@@ -70,9 +70,9 @@ export default function DashboardSidebar({
                 }
               }}
             >
-              <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-white' : ''}`} aria-hidden="true" />
+              <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-delaware-blue'}`} aria-hidden="true" />
               {!isCollapsed && (
-                <span className="text-sm font-medium">{item.label}</span>
+                <span className="text-sm font-semibold">{item.label}</span>
               )}
             </button>
           );
@@ -81,14 +81,14 @@ export default function DashboardSidebar({
 
       {/* Upgrade Banner */}
       {!isCollapsed && userTier !== 'whale' && (
-        <div className="p-3 border-t border-white/10">
+        <div className="px-3 pb-4">
           <UpgradeBanner currentTier={userTier} />
         </div>
       )}
 
-      {/* Quick Links */}
+      {/* Logout Button */}
       {!isCollapsed && (
-        <div className="p-3 border-t border-white/10">
+        <div className="p-3 border-t border-gray-100">
           <button
             onClick={() => {
               // In production, this would call your logout function
@@ -96,9 +96,10 @@ export default function DashboardSidebar({
               alert('Logout functionality will be connected to authentication system');
               window.location.href = '/';
             }}
-            className="block w-full text-center text-sm text-white/70 hover:text-white transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 group"
           >
-            Log Out
+            <FiLogOut className="w-4 h-4 group-hover:text-red-600" />
+            <span className="text-sm font-semibold">Log Out</span>
           </button>
         </div>
       )}

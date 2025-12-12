@@ -12,22 +12,25 @@ export default function TierBadge({ tier, size = 'md' }: TierBadgeProps) {
       case 'looker':
         return {
           name: 'The Looker',
-          bgColor: 'bg-delaware-tan',
-          textColor: 'text-white',
+          bgColor: 'bg-gray-100',
+          textColor: 'text-gray-700',
+          borderColor: 'border-gray-200',
           icon: null,
         };
       case 'pro':
         return {
           name: 'The Pro',
-          bgColor: 'bg-delaware-blue',
-          textColor: 'text-white',
+          bgColor: 'bg-delaware-blue/10',
+          textColor: 'text-delaware-blue',
+          borderColor: 'border-delaware-blue',
           icon: <FiCheck className={getSizeClass()} />,
         };
       case 'whale':
         return {
           name: 'The Whale',
-          bgColor: 'bg-delaware-gray',
-          textColor: 'text-white',
+          bgColor: 'bg-delaware-gold/10',
+          textColor: 'text-delaware-gold',
+          borderColor: 'border-delaware-gold',
           icon: <FiStar className={getSizeClass()} />,
         };
     }
@@ -47,11 +50,11 @@ export default function TierBadge({ tier, size = 'md' }: TierBadgeProps) {
   const getPaddingClass = () => {
     switch (size) {
       case 'sm':
-        return 'px-2 py-1 text-xs';
+        return 'px-2.5 py-0.5 text-xs';
       case 'md':
-        return 'px-3 py-1.5 text-sm';
+        return 'px-3 py-1 text-sm';
       case 'lg':
-        return 'px-4 py-2 text-base';
+        return 'px-4 py-1.5 text-base';
     }
   };
 
@@ -59,7 +62,7 @@ export default function TierBadge({ tier, size = 'md' }: TierBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full font-semibold ${config.bgColor} ${config.textColor} ${getPaddingClass()}`}
+      className={`inline-flex items-center gap-1.5 rounded-full font-semibold border ${config.bgColor} ${config.textColor} ${config.borderColor} ${getPaddingClass()}`}
     >
       {config.icon}
       {config.name}
