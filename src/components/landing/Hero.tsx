@@ -55,10 +55,10 @@ export default function Hero() {
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left Column - Content */}
-          <div className="text-center lg:text-left">
+          <div className="text-center lg:text-left order-2 lg:order-1">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
               <span className="flex h-2 w-2 relative">
@@ -121,15 +121,45 @@ export default function Hero() {
           </div>
 
           {/* Right Column - Search Card */}
-          <div className="relative">
-            <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8">
-              <div className="text-center mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                  Try it now — it's free
-                </h2>
-                <p className="text-gray-600 text-sm">
-                  Enter any Delaware address to see zoning info instantly
-                </p>
+          <div className="relative order-1 lg:order-2">
+            {/* Main Search Card */}
+            <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 border border-gray-100">
+              {/* Header with Stats */}
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
+                    Try it now — it's free
+                  </h2>
+                  <p className="text-gray-600 text-sm">
+                    Enter any Delaware address to see zoning info instantly
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick Stats Inline */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-3 border border-green-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                      <FiZap className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-lg font-bold text-gray-900">&lt;2s</div>
+                      <div className="text-[10px] font-medium text-gray-600">Avg. search time</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3 border border-blue-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-gradient-to-br from-delaware-blue to-blue-700 rounded-lg flex items-center justify-center">
+                      <FiMapPin className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-lg font-bold text-gray-900">3</div>
+                      <div className="text-[10px] font-medium text-gray-600">Counties covered</div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Search Input */}
@@ -204,27 +234,6 @@ export default function Hero() {
               <p className="text-center text-xs text-gray-500 mt-3">
                 Get 3 free searches • No credit card required
               </p>
-            </div>
-
-            {/* Floating Stats - Redesigned */}
-            <div className="hidden lg:flex absolute -bottom-4 -left-4 bg-gradient-to-br from-green-50 to-emerald-50 backdrop-blur-sm rounded-2xl shadow-xl border border-green-100/50 px-5 py-3.5 items-center gap-3 hover:shadow-2xl transition-all duration-300">
-              <div className="w-11 h-11 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30">
-                <FiZap className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <div className="text-xl font-bold text-gray-900 tracking-tight">&lt;2s</div>
-                <div className="text-xs font-medium text-gray-600">Avg. search time</div>
-              </div>
-            </div>
-
-            <div className="hidden lg:flex absolute -top-4 -right-4 bg-gradient-to-br from-blue-50 to-indigo-50 backdrop-blur-sm rounded-2xl shadow-xl border border-blue-100/50 px-5 py-3.5 items-center gap-3 hover:shadow-2xl transition-all duration-300">
-              <div className="w-11 h-11 bg-gradient-to-br from-delaware-blue to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                <FiMapPin className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <div className="text-xl font-bold text-gray-900 tracking-tight">3</div>
-                <div className="text-xs font-medium text-gray-600">Counties covered</div>
-              </div>
             </div>
           </div>
         </div>

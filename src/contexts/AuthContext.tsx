@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode, useRef } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/router';
@@ -97,22 +97,66 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Track if initialization is complete
+  const initCompleteRef = useRef(false);
+
   // Initialize auth state
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        fetchProfile(session.user.id);
-        fetchSubscription(session.user.id);
+    let isMounted = true;
+    
+    // Timeout to prevent infinite loading - uses ref to check status
+    const timeoutId = setTimeout(() => {
+      if (isMounted && !initCompleteRef.current) {
+        console.warn('Auth initialization timed out after 10 seconds');
+        initCompleteRef.current = true;
+        setLoading(false);
       }
-      
-      setLoading(false);
-    });
+    }, 10000);
 
-    // Listen for auth changes
+    // Get initial session with error handling
+    const initAuth = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (!isMounted) return;
+        
+        if (error) {
+          console.error('Error getting session:', error);
+        }
+        
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          await Promise.all([
+            fetchProfile(session.user.id),
+            fetchSubscription(session.user.id),
+          ]);
+        }
+        
+        if (isMounted) {
+          initCompleteRef.current = true;
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Failed to get session:', error);
+        if (isMounted) {
+          initCompleteRef.current = true;
+          setLoading(false); // Ensure loading is set to false even on error
+        }
+      }
+    };
+
+    initAuth();
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
+  }, []); // Empty dependency array - only run once on mount
+
+  // Listen for auth changes (separate effect)
+  useEffect(() => {
     const {
       data: { subscription: authSubscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {

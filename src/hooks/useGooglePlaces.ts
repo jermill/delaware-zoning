@@ -51,7 +51,7 @@ export function useGooglePlaces(
 
     // Load the script
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
     script.async = true;
     script.defer = true;
     script.onload = () => setIsLoaded(true);
@@ -77,6 +77,9 @@ export function useGooglePlaces(
         new google.maps.LatLng(39.84, -75.05)  // Northeast corner
       );
 
+      // NOTE: Using deprecated Autocomplete API (still supported, not scheduled for discontinuation)
+      // TODO: Migrate to google.maps.places.PlaceAutocompleteElement in future
+      // See: https://developers.google.com/maps/documentation/javascript/places-migration-overview
       autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
         bounds: delawareBounds,
         strictBounds: true,

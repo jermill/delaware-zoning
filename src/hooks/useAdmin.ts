@@ -57,35 +57,55 @@ export function useAdmin(): AdminData {
         setLoading(true);
         setError(null);
 
-        // Get auth token
-        const { data: { session } } = await supabase.auth.getSession();
+        // Get auth token with timeout
+        const sessionPromise = supabase.auth.getSession();
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Session fetch timed out')), 10000)
+        );
+        
+        const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]) as any;
+        
         if (!session) {
           setError('No active session');
           setLoading(false);
           return;
         }
 
-        // Call secure API route with auth token
-        const response = await fetch('/api/admin/stats', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch admin data');
-        }
-
-        const result = await response.json();
+        // Call secure API route with auth token and timeout
+        const controller = new AbortController();
+        const fetchTimeout = setTimeout(() => controller.abort(), 15000);
         
-        if (result.success) {
-          setStats(result.data.stats);
-          setRecentUsers(result.data.recentUsers);
-        } else {
-          throw new Error('Invalid response format');
+        try {
+          const response = await fetch('/api/admin/stats', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${session.access_token}`,
+              'Content-Type': 'application/json',
+            },
+            signal: controller.signal,
+          });
+
+          clearTimeout(fetchTimeout);
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to fetch admin data');
+          }
+
+          const result = await response.json();
+          
+          if (result.success) {
+            setStats(result.data.stats);
+            setRecentUsers(result.data.recentUsers);
+          } else {
+            throw new Error('Invalid response format');
+          }
+        } catch (fetchError: any) {
+          clearTimeout(fetchTimeout);
+          if (fetchError.name === 'AbortError') {
+            throw new Error('Request timed out - please try again');
+          }
+          throw fetchError;
         }
       } catch (err: any) {
         console.error('Error fetching admin data:', err);

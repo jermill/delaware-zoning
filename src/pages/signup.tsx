@@ -6,12 +6,16 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { clientEnv } from '@/lib/env.client';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 export default function Signup() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaError, setCaptchaError] = useState(false);
@@ -23,6 +27,11 @@ export default function Signup() {
     
     if (password.length < 6) {
       toast.error('Password must be at least 6 characters');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
       return;
     }
 
@@ -122,18 +131,63 @@ export default function Signup() {
                 <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                   Password
                 </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
-                  placeholder="••••••••"
-                  required
-                  minLength={6}
-                  disabled={loading}
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
+                    placeholder="••••••••"
+                    required
+                    minLength={6}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <FiEyeOff className="w-4 h-4 sm:w-5 sm:h-5" />
+                    ) : (
+                      <FiEye className="w-4 h-4 sm:w-5 sm:h-5" />
+                    )}
+                  </button>
+                </div>
                 <p className="mt-1 text-xs text-gray-500">Must be at least 6 characters</p>
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
+                    placeholder="••••••••"
+                    required
+                    minLength={6}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showConfirmPassword ? (
+                      <FiEyeOff className="w-4 h-4 sm:w-5 sm:h-5" />
+                    ) : (
+                      <FiEye className="w-4 h-4 sm:w-5 sm:h-5" />
+                    )}
+                  </button>
+                </div>
               </div>
 
               {/* hCaptcha Security Verification */}
