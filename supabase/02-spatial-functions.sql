@@ -33,7 +33,7 @@ BEGIN
     zd.state
   FROM zoning_districts zd
   WHERE ST_Contains(
-    zd.geometry, 
+    zd.geom, 
     ST_SetSRID(ST_Point(lon, lat), 4326)
   )
   LIMIT 1;
@@ -42,9 +42,9 @@ $$ LANGUAGE plpgsql STABLE;
 
 COMMENT ON FUNCTION find_zoning_at_point IS 'Find zoning district at specific coordinates using PostGIS spatial query';
 
--- Create spatial index on geometry column if it doesn't exist
-CREATE INDEX IF NOT EXISTS idx_zoning_districts_geometry 
-ON zoning_districts USING GIST(geometry);
+-- Create spatial index on geom column if it doesn't exist
+CREATE INDEX IF NOT EXISTS idx_zoning_districts_geom 
+ON zoning_districts USING GIST(geom);
 
 -- Create additional useful indexes
 CREATE INDEX IF NOT EXISTS idx_zoning_districts_county 
