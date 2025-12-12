@@ -8,11 +8,11 @@ export default function FAQ() {
     },
     {
       question: 'How much does it cost?',
-      answer: 'We offer a free plan with 5 searches per month. Paid plans start at $19/month for unlimited searches.'
+      answer: 'We offer a free plan with 3 searches per month. Paid plans start at $49/month for unlimited searches.'
     },
     {
       question: 'Can I export reports?',
-      answer: 'Yes! Pro plan subscribers ($49/month) can download professional PDF reports for any property.'
+      answer: 'Yes! Expert plan subscribers ($129/month) can download professional PDF reports for any property.'
     },
     {
       question: 'Which counties are covered?',
@@ -25,16 +25,16 @@ export default function FAQ() {
   ];
 
   return (
-    <section className="bg-gray-50">
+    <section className="bg-delaware-gold">
       <div className="section-container">
         <div className="text-center mb-12 sm:mb-16 px-4">
-          <p className="text-delaware-gold font-semibold text-xs sm:text-sm uppercase tracking-wide mb-3">
+          <p className="text-delaware-blue font-semibold text-xs sm:text-sm uppercase tracking-wide mb-3">
             Help Center
           </p>
-          <h2 className="text-section-heading text-gray-900 mb-4">
+          <h2 className="text-section-heading text-white mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
             Everything you need to know about Delaware Zoning
           </p>
         </div>
@@ -43,12 +43,12 @@ export default function FAQ() {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="card-hover group"
+              className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-card hover:shadow-card-hover transition-all duration-300 group"
             >
               <div className="flex gap-3 sm:gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-delaware-gold/10 flex items-center justify-center group-hover:bg-delaware-gold/20 transition-colors duration-300">
-                    <FiHelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-delaware-gold" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-delaware-blue/10 flex items-center justify-center group-hover:bg-delaware-blue/20 transition-colors duration-300">
+                    <FiHelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-delaware-blue" />
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
@@ -66,12 +66,12 @@ export default function FAQ() {
 
         {/* Contact CTA */}
         <div className="text-center mt-10 sm:mt-12 px-4">
-          <p className="text-sm sm:text-base text-gray-600 mb-4">
+          <p className="text-sm sm:text-base text-white/90 mb-4">
             Still have questions? We're here to help.
           </p>
           <a 
             href="/contact" 
-            className="inline-flex items-center gap-2 text-sm sm:text-base text-delaware-blue font-semibold hover:text-delaware-gold transition-colors duration-300"
+            className="inline-flex items-center gap-2 text-sm sm:text-base text-delaware-blue font-semibold hover:text-white transition-colors duration-300"
           >
             Contact Support
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
