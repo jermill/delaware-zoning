@@ -5,6 +5,10 @@
 
 -- Function to find zoning district at a specific point
 -- This is the core function used by the search API
+
+-- Drop existing function if it exists (it may have different return type)
+DROP FUNCTION IF EXISTS find_zoning_at_point(NUMERIC, NUMERIC);
+
 CREATE OR REPLACE FUNCTION find_zoning_at_point(lat NUMERIC, lon NUMERIC)
 RETURNS TABLE (
   id UUID,
