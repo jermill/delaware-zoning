@@ -16,9 +16,8 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
       if (!user) {
         // Not logged in, redirect to login
         router.push('/login');
-      } else if (requireAdmin && profile && !profile.email.includes('admin')) {
+      } else if (requireAdmin && profile && profile.role !== 'admin') {
         // Not an admin, redirect to dashboard
-        // TODO: Add proper admin role check when we implement it
         router.push('/dashboard');
       }
     }

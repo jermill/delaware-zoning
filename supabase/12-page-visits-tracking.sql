@@ -4,6 +4,20 @@
 -- Tracks page visits across the site for analytics
 -- ============================================================================
 
+-- Ensure subscription_tier and subscription_status enums exist with all values
+DO $$ 
+BEGIN
+    -- Create subscription_tier type if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'subscription_tier') THEN
+        CREATE TYPE subscription_tier AS ENUM ('free', 'pro', 'business');
+    END IF;
+    
+    -- Create subscription_status type if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'subscription_status') THEN
+        CREATE TYPE subscription_status AS ENUM ('active', 'cancelled', 'expired', 'trial');
+    END IF;
+END $$;
+
 -- Create page_visits table
 CREATE TABLE IF NOT EXISTS public.page_visits (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -52,9 +66,9 @@ SELECT
   (SELECT COUNT(*) FROM public.profiles WHERE created_at >= NOW() - INTERVAL '7 days') AS users_last_7_days,
   
   -- Subscription breakdown
-  (SELECT COUNT(*) FROM public.subscriptions WHERE tier = 'free' AND status = 'active') AS free_users,
-  (SELECT COUNT(*) FROM public.subscriptions WHERE tier = 'pro' AND status = 'active') AS pro_users,
-  (SELECT COUNT(*) FROM public.subscriptions WHERE tier = 'business' AND status = 'active') AS business_users,
+  (SELECT COUNT(*) FROM public.subscriptions WHERE tier::text = 'free' AND status::text = 'active') AS free_users,
+  (SELECT COUNT(*) FROM public.subscriptions WHERE tier::text = 'pro' AND status::text = 'active') AS pro_users,
+  (SELECT COUNT(*) FROM public.subscriptions WHERE tier::text = 'business' AND status::text = 'active') AS business_users,
   
   -- Usage stats
   (SELECT COUNT(*) FROM public.search_history) AS total_searches,
@@ -73,13 +87,13 @@ SELECT
   (SELECT 
     COALESCE(SUM(
       CASE 
-        WHEN tier = 'pro' THEN 29.99
-        WHEN tier = 'business' THEN 99.99
+        WHEN tier::text = 'pro' THEN 29.99
+        WHEN tier::text = 'business' THEN 99.99
         ELSE 0
       END
     ), 0)
   FROM public.subscriptions 
-  WHERE status = 'active' AND tier != 'free') AS monthly_recurring_revenue;
+  WHERE status::text = 'active' AND tier::text != 'free') AS monthly_recurring_revenue;
 
 -- Create a view for popular pages
 CREATE OR REPLACE VIEW public.popular_pages AS

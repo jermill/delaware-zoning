@@ -10,6 +10,7 @@ interface Profile {
   company_name: string | null;
   phone: string | null;
   avatar_url: string | null;
+  role: string;
   created_at: string;
   updated_at: string;
 }

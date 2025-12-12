@@ -46,15 +46,25 @@ export function useAdmin(): AdminData {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // TODO: Add proper admin role check
-    // For now, we'll check if email contains 'admin'
-    if (!user || !user.email?.includes('admin')) {
+    if (!user) {
       setLoading(false);
-      setError('Unauthorized - Admin access required');
+      setError('Unauthorized - Please log in');
       return;
     }
 
     const fetchAdminData = async () => {
+      // Check if user is admin
+      const { data: profile, error: profileError } = await supabaseAdmin
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError || profile?.role !== 'admin') {
+        setLoading(false);
+        setError('Unauthorized - Admin access required');
+        return;
+      }
       try {
         setLoading(true);
         setError(null);
