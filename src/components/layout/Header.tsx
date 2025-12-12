@@ -13,13 +13,13 @@ export default function Header() {
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center group">
-            <div className="relative w-12 h-12 md:w-14 md:h-14 group-hover:scale-110 transition-transform duration-300">
+            <div className="relative w-12 h-12 md:w-14 md:h-14 group-hover:scale-110 transition-transform duration-300 rounded-lg overflow-hidden">
               <Image 
                 src="/logo.png" 
                 alt="Delaware Zoning Logo" 
                 width={56}
                 height={56}
-                className="object-contain"
+                className="object-contain mix-blend-multiply"
                 priority
                 unoptimized
               />

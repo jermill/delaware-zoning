@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { FiSearch, FiChevronDown } from 'react-icons/fi';
+import { FiSearch, FiChevronDown, FiMapPin, FiZap, FiShield } from 'react-icons/fi';
 import { useGooglePlaces } from '@/hooks/useGooglePlaces';
 
 const EXAMPLE_ADDRESSES = [
@@ -14,23 +14,17 @@ export default function Hero() {
   const router = useRouter();
   const [showExamples, setShowExamples] = useState(false);
 
-  // Google Places Autocomplete
   const { inputRef, isLoaded, selectedPlace } = useGooglePlaces((place) => {
-    // Navigate to search page with geocoded coordinates
     router.push(
       `/search?address=${encodeURIComponent(place.address)}&lat=${place.latitude}&lon=${place.longitude}`
     );
   });
 
   const handleSearch = () => {
-    // If Google Places is loaded and user selected a place, it's already handled
-    // If not, show examples
     if (!selectedPlace && inputRef.current?.value.trim()) {
-      // Manual entry without autocomplete selection
       alert('Please select an address from the autocomplete suggestions');
       return;
     }
-    
     if (!inputRef.current?.value.trim()) {
       setShowExamples(true);
     }
@@ -41,7 +35,6 @@ export default function Hero() {
       inputRef.current.value = example.address;
     }
     setShowExamples(false);
-    // Navigate with coordinates for immediate results
     router.push(`/search?address=${encodeURIComponent(example.address)}&lat=${example.lat}&lon=${example.lon}`);
   };
 
@@ -52,116 +45,190 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-delaware-blue via-blue-900 to-delaware-blue">
-      {/* Background Pattern/Texture */}
-      <div className="absolute inset-0 opacity-10 overflow-hidden">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+    <section className="relative bg-gradient-to-br from-delaware-blue via-blue-900 to-slate-900 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-delaware-gold/10 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-delaware-gold/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
       </div>
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-delaware-blue/50 to-delaware-blue/80 overflow-hidden" />
-
-      <div className="section-container relative z-10 text-center py-8 sm:py-10 md:py-12 lg:py-16">
-        {/* Main Headline */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight animate-fade-in px-4">
-          See What You Can Build on Any Delaware Property
-        </h1>
-
-        {/* Subheadline */}
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-6 sm:mb-7 md:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
-          Instant zoning answers for 
-          <span className="text-delaware-gold font-semibold"> real estate professionals</span>. 
-          Get comprehensive zoning data, permitted uses, and building requirements in seconds.
-        </p>
-
-        {/* Search Bar (Enhanced) */}
-        <div className="max-w-3xl mx-auto mb-8 sm:mb-10 px-4">
-          <div className="relative z-30">
-            <div className="relative flex flex-col sm:flex-row gap-2">
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder={isLoaded ? "Enter a Delaware property address..." : "Loading address search..."}
-                onKeyPress={handleKeyPress}
-                disabled={!isLoaded}
-                className="w-full px-4 sm:px-6 py-4 sm:py-5 text-base sm:text-lg border-2 border-white/20 bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl focus:outline-none focus:border-delaware-gold focus:ring-4 focus:ring-delaware-gold/20 transition-all shadow-elevated disabled:opacity-60"
-              />
-              <button 
-                onClick={handleSearch}
-                className="sm:absolute sm:right-2 sm:top-1/2 sm:-translate-y-1/2 bg-delaware-gold text-white px-6 sm:px-8 py-3 sm:py-3 rounded-xl hover:bg-opacity-90 hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 font-semibold whitespace-nowrap"
-              >
-                <FiSearch className="w-5 h-5" />
-                <span>Search</span>
-              </button>
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Left Column - Content */}
+          <div className="text-center lg:text-left">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              <span className="text-sm text-white/90 font-medium">Now covering all 3 Delaware counties</span>
             </div>
 
-            {/* Example Addresses Dropdown */}
-            {showExamples && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden z-[100] border border-gray-200">
-                <div className="p-3 bg-gray-50 border-b border-gray-200">
-                  <p className="text-sm font-semibold text-gray-700">Try these example addresses:</p>
-                </div>
-                {EXAMPLE_ADDRESSES.map((example, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleExampleSelect(example)}
-                    className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-b-0"
-                  >
-                    <p className="font-medium text-gray-900 text-sm">{example.label}</p>
-                    <p className="text-xs text-gray-600">{example.address}</p>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+            {/* Headline */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+              Get Zoning Answers in
+              <span className="text-delaware-gold"> Seconds</span>,
+              <br className="hidden sm:block" />
+              Not Hours
+            </h1>
 
-          <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4">
-            <p className="text-xs sm:text-sm text-blue-200">
-              Example: "123 Market Street, Wilmington, DE"
+            <p className="text-lg text-blue-100/90 mb-6 max-w-xl mx-auto lg:mx-0">
+              Stop digging through county websites. Enter any Delaware address and instantly see zoning codes, permitted uses, and building requirements.
             </p>
-            <button
-              onClick={() => setShowExamples(!showExamples)}
-              className="text-xs sm:text-sm text-delaware-gold hover:text-yellow-300 font-medium flex items-center gap-1 transition-colors"
-            >
-              <span>See examples</span>
-              <FiChevronDown className={`w-3 h-3 transition-transform ${showExamples ? 'rotate-180' : ''}`} />
-            </button>
-          </div>
-        </div>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8 px-4">
-          <a href="/signup" className="w-full sm:w-auto bg-delaware-gold text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-opacity-90 hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 text-center shadow-elevated">
-            Get Started Free
-          </a>
-          <a href="/pricing" className="w-full sm:w-auto bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-white/20 transition-all duration-300 text-center">
-            View Pricing
-          </a>
-        </div>
+            {/* Value Props - Inline */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-8 text-sm">
+              <div className="flex items-center gap-2 text-white/90">
+                <FiZap className="w-4 h-4 text-delaware-gold" />
+                <span>Instant results</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/90">
+                <FiShield className="w-4 h-4 text-delaware-gold" />
+                <span>No credit card</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/90">
+                <FiMapPin className="w-4 h-4 text-delaware-gold" />
+                <span>3 free searches</span>
+              </div>
+            </div>
 
-        <p className="text-sm sm:text-base text-blue-200 mb-8 sm:mb-10 px-4">
-          3 free searches • No credit card needed
-        </p>
+            {/* Social Proof */}
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
+              <div className="flex -space-x-2">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">J</div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">M</div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">S</div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">R</div>
+              </div>
+              <div className="text-sm text-white/80">
+                <span className="font-semibold text-white">100+</span> Delaware professionals trust us
+              </div>
+            </div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-8 md:pt-10 border-t border-white/10 px-4">
-          <div className="text-center">
-            <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-delaware-gold mb-2">3</div>
-            <div className="text-sm sm:text-base text-blue-100">Counties Covered</div>
+            {/* CTA Button - Mobile */}
+            <div className="lg:hidden mb-6">
+              <a 
+                href="/signup" 
+                className="inline-flex items-center justify-center w-full sm:w-auto bg-delaware-gold hover:bg-yellow-500 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 text-lg"
+              >
+                Start Free — No Card Required
+              </a>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-delaware-gold mb-2">100+</div>
-            <div className="text-sm sm:text-base text-blue-100">Trusted Professionals</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-delaware-gold mb-2">&lt;2s</div>
-            <div className="text-sm sm:text-base text-blue-100">Average Search Time</div>
+
+          {/* Right Column - Search Card */}
+          <div className="relative">
+            <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8">
+              <div className="text-center mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                  Try it now — it's free
+                </h2>
+                <p className="text-gray-600 text-sm">
+                  Enter any Delaware address to see zoning info instantly
+                </p>
+              </div>
+
+              {/* Search Input */}
+              <div className="relative z-30 mb-4">
+                <div className="relative">
+                  <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder={isLoaded ? "Enter address (e.g., 123 Main St, Wilmington)" : "Loading..."}
+                    onKeyPress={handleKeyPress}
+                    disabled={!isLoaded}
+                    className="w-full pl-12 pr-4 py-4 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-delaware-blue focus:ring-2 focus:ring-delaware-blue/20 transition-all disabled:opacity-60"
+                  />
+                </div>
+
+                {/* Example Addresses Dropdown */}
+                {showExamples && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden z-[100] border border-gray-200">
+                    <div className="p-3 bg-gray-50 border-b border-gray-200">
+                      <p className="text-sm font-semibold text-gray-700">Try an example:</p>
+                    </div>
+                    {EXAMPLE_ADDRESSES.map((example, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleExampleSelect(example)}
+                        className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-b-0"
+                      >
+                        <p className="font-medium text-gray-900 text-sm">{example.label}</p>
+                        <p className="text-xs text-gray-500">{example.address}</p>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Search Button */}
+              <button 
+                onClick={handleSearch}
+                className="w-full bg-delaware-blue hover:bg-blue-800 text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200"
+              >
+                <FiSearch className="w-5 h-5" />
+                Search Zoning Info
+              </button>
+
+              {/* Examples Link */}
+              <button
+                onClick={() => setShowExamples(!showExamples)}
+                className="w-full mt-3 text-sm text-gray-500 hover:text-delaware-blue font-medium flex items-center justify-center gap-1 transition-colors"
+              >
+                <span>Or try an example address</span>
+                <FiChevronDown className={`w-4 h-4 transition-transform ${showExamples ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-3 bg-white text-gray-500">or</span>
+                </div>
+              </div>
+
+              {/* Signup CTA */}
+              <a 
+                href="/signup" 
+                className="w-full inline-flex items-center justify-center bg-delaware-gold hover:bg-yellow-500 text-white font-semibold py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+              >
+                Create Free Account
+              </a>
+              <p className="text-center text-xs text-gray-500 mt-3">
+                Get 3 free searches • No credit card required
+              </p>
+            </div>
+
+            {/* Floating Stats */}
+            <div className="hidden lg:flex absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg px-4 py-3 items-center gap-3">
+              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <FiZap className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <div className="text-lg font-bold text-gray-900">&lt;2s</div>
+                <div className="text-xs text-gray-500">Avg. search time</div>
+              </div>
+            </div>
+
+            <div className="hidden lg:flex absolute -top-4 -right-4 bg-white rounded-xl shadow-lg px-4 py-3 items-center gap-3">
+              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <FiMapPin className="w-5 h-5 text-delaware-blue" />
+              </div>
+              <div>
+                <div className="text-lg font-bold text-gray-900">3</div>
+                <div className="text-xs text-gray-500">Counties covered</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 }
-
