@@ -11,9 +11,9 @@ const COLORS = ['#002B5C', '#CB9C30', '#A8BDBE'];
 
 export default function CountyBreakdownChart({ data }: CountyBreakdownChartProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Properties by County</h3>
-      <ResponsiveContainer width="100%" height={250}>
+    <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Properties by County</h3>
+      <ResponsiveContainer width="100%" height={200}>
         <PieChart>
           <Pie
             data={data}

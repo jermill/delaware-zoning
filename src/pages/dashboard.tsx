@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Layout from '@/components/layout/Layout';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import MobileTabBar from '@/components/dashboard/MobileTabBar';
 import OverviewTab from '@/components/dashboard/OverviewTab';
@@ -16,6 +15,9 @@ export default function Dashboard() {
   
   // State for current tab
   const [currentTab, setCurrentTab] = useState('overview');
+  
+  // State for sidebar visibility
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   
   // Handle URL query parameter for tab navigation
   useEffect(() => {
@@ -88,52 +90,74 @@ export default function Dashboard() {
   };
 
   return (
-    <Layout>
-      <div className="min-h-screen bg-gray-50">
-        {/* Tier Switcher (for testing only - remove in production) */}
-        <div className="bg-yellow-100 border-b-2 border-yellow-300 px-4 py-2">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-800">
-              <strong>Testing Mode:</strong> Switch between user tiers to see different features
+    <div className="min-h-screen bg-gray-50">
+      {/* Tier Switcher (for testing only - remove in production) */}
+      <div className="bg-yellow-100 border-b-2 border-yellow-300 px-2 sm:px-4 py-2">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+            {/* Sidebar Toggle Button */}
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="hidden md:flex items-center justify-center w-8 h-8 text-gray-700 hover:bg-yellow-200 rounded transition-colors flex-shrink-0"
+              aria-label="Toggle sidebar"
+            >
+              <svg 
+                className="w-5 h-5" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                {sidebarCollapsed ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                )}
+              </svg>
+            </button>
+            <p className="text-xs sm:text-sm font-medium text-gray-800">
+              <strong className="hidden sm:inline">Testing Mode:</strong>
+              <span className="sm:hidden">Test:</span> Switch tiers
             </p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setCurrentUserTier('looker')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                  currentUserTier === 'looker'
-                    ? 'bg-delaware-tan text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                The Looker
-              </button>
-              <button
-                onClick={() => setCurrentUserTier('pro')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                  currentUserTier === 'pro'
-                    ? 'bg-delaware-blue text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                The Pro
-              </button>
-              <button
-                onClick={() => setCurrentUserTier('whale')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                  currentUserTier === 'whale'
-                    ? 'bg-delaware-gold text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                The Whale
-              </button>
-            </div>
+          </div>
+          <div className="flex gap-1 sm:gap-2 w-full sm:w-auto justify-end">
+            <button
+              onClick={() => setCurrentUserTier('looker')}
+              className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors ${
+                currentUserTier === 'looker'
+                  ? 'bg-delaware-tan text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              Looker
+            </button>
+            <button
+              onClick={() => setCurrentUserTier('pro')}
+              className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors ${
+                currentUserTier === 'pro'
+                  ? 'bg-delaware-blue text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              Pro
+            </button>
+            <button
+              onClick={() => setCurrentUserTier('whale')}
+              className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors ${
+                currentUserTier === 'whale'
+                  ? 'bg-delaware-gold text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              Whale
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Dashboard Layout */}
-        <div className="flex h-[calc(100vh-140px)]">
-          {/* Sidebar - Hidden on mobile */}
+      {/* Dashboard Layout */}
+      <div className="flex h-[calc(100vh-80px)] sm:h-[calc(100vh-60px)]">
+        {/* Sidebar - Hidden on mobile and when collapsed */}
+        {!sidebarCollapsed && (
           <aside className="hidden md:block w-64 lg:w-72 flex-shrink-0 overflow-y-auto border-r border-gray-200">
             <DashboardSidebar
               currentTab={currentTab}
@@ -142,18 +166,18 @@ export default function Dashboard() {
               userTier={currentUserTier}
             />
           </aside>
+        )}
 
-          {/* Main Content Area */}
-          <main className="flex-1 overflow-y-auto">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-20 md:pb-8">
-              {renderTabContent()}
-            </div>
-          </main>
-        </div>
-
-        {/* Mobile Tab Bar */}
-        <MobileTabBar currentTab={currentTab} onTabChange={setCurrentTab} />
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 pb-24 md:pb-8">
+            {renderTabContent()}
+          </div>
+        </main>
       </div>
-    </Layout>
+
+      {/* Mobile Tab Bar */}
+      <MobileTabBar currentTab={currentTab} onTabChange={setCurrentTab} />
+    </div>
   );
 }

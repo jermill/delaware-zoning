@@ -1,102 +1,121 @@
 import Layout from '@/components/layout/Layout';
-import { FiMail, FiMapPin } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
 export default function Contact() {
   return (
     <Layout>
-      <div className="bg-white min-h-screen">
-        <div className="section-container">
-          <div className="max-w-4xl mx-auto px-4">
-            {/* Header */}
-            <div className="text-center mb-12 sm:mb-16">
-              <p className="text-delaware-gold font-semibold text-xs sm:text-sm uppercase tracking-wide mb-3">
-                Get in Touch
-              </p>
-              <h1 className="text-section-heading text-gray-900 mb-4">
-                Contact Us
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-                Have questions? We'd love to hear from you.
-              </p>
-            </div>
+      <div className="bg-gray-50 py-12 sm:py-16">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h1 className="text-3xl sm:text-4xl font-bold text-delaware-blue mb-4">
+              Contact Us
+            </h1>
+            <p className="text-lg text-gray-600">
+              Have questions? We're here to help.
+            </p>
+          </div>
 
-            {/* Contact Info Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-10 sm:mb-12">
-              <div className="card-hover text-center group">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl bg-delaware-blue text-white inline-flex items-center justify-center mx-auto mb-5 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <FiMail className="w-7 h-7 sm:w-8 sm:h-8" />
+          <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+            <div className="space-y-6">
+              {/* Email */}
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <FiMail className="w-6 h-6 text-delaware-blue" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 group-hover:text-delaware-blue transition-colors duration-300">
-                  Email
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600">support@delawarezoning.com</p>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
+                  <a 
+                    href="mailto:support@delawarezoning.com" 
+                    className="text-delaware-blue hover:underline"
+                  >
+                    support@delawarezoning.com
+                  </a>
+                </div>
               </div>
 
-              <div className="card-hover text-center group">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl bg-delaware-gold text-white inline-flex items-center justify-center mx-auto mb-5 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <FiMapPin className="w-7 h-7 sm:w-8 sm:h-8" />
+              {/* Phone */}
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <FiPhone className="w-6 h-6 text-delaware-blue" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 group-hover:text-delaware-blue transition-colors duration-300">
-                  Location
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600">Delaware, USA</p>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">Phone</h3>
+                  <a 
+                    href="tel:+13025550100" 
+                    className="text-delaware-blue hover:underline"
+                  >
+                    (302) 555-0100
+                  </a>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Monday - Friday, 9am - 5pm EST
+                  </p>
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <FiMapPin className="w-6 h-6 text-delaware-blue" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">Address</h3>
+                  <p className="text-gray-600">
+                    123 Market Street<br />
+                    Wilmington, DE 19801
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-card-hover p-6 sm:p-8 md:p-10 border border-gray-100">
-              <form className="space-y-5 sm:space-y-6">
-                <div>
-                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
-                    placeholder="Your name"
-                    disabled
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
-                    placeholder="you@example.com"
-                    disabled
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    rows={5}
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all resize-none"
-                    placeholder="How can we help?"
-                    disabled
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-delaware-blue text-white px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base rounded-lg sm:rounded-xl font-semibold opacity-50 cursor-not-allowed transition-all duration-300"
+            <form className="mt-8 space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
                   disabled
-                >
-                  Send Message (Coming Soon)
-                </button>
-              </form>
-
-              <div className="mt-5 sm:mt-6 p-3 sm:p-4 bg-blue-50 rounded-lg sm:rounded-xl border border-blue-100">
-                <p className="text-xs sm:text-sm text-gray-600 text-center">
-                  <strong>Note:</strong> Contact form functionality will be added soon.
-                </p>
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                  placeholder="Your name"
+                />
               </div>
-            </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  disabled
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                  placeholder="your@email.com"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  disabled
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                  placeholder="How can we help?"
+                />
+              </div>
+
+              <button
+                type="button"
+                disabled
+                className="w-full px-6 py-3 bg-gray-300 text-gray-500 rounded-lg font-semibold cursor-not-allowed"
+              >
+                Form Coming Soon
+              </button>
+            </form>
           </div>
         </div>
       </div>

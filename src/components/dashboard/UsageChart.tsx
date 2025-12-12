@@ -9,9 +9,9 @@ interface UsageChartProps {
 
 export default function UsageChart({ data }: UsageChartProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Search Activity (Last 30 Days)</h3>
-      <ResponsiveContainer width="100%" height={250}>
+    <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Search Activity (Last 30 Days)</h3>
+      <ResponsiveContainer width="100%" height={200}>
         <AreaChart data={data}>
           <defs>
             <linearGradient id="colorSearches" x1="0" y1="0" x2="0" y2="1">

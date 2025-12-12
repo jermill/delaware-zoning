@@ -148,8 +148,8 @@ export default function OverviewTab({
       </motion.div>
 
       {/* Progress Bar for tier limits */}
-      <motion.div variants={item} className="bg-blue-50 rounded-2xl shadow-md p-6">
-        <h3 className="text-lg font-semibold text-delaware-blue mb-4">Usage Limits</h3>
+      <motion.div variants={item} className="bg-blue-50 rounded-2xl shadow-md p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-delaware-blue mb-3 sm:mb-4">Usage Limits</h3>
         <div className="space-y-4">
           <ProgressBar
             current={usage.searchesThisMonth}
@@ -171,7 +171,7 @@ export default function OverviewTab({
       {/* Charts Row */}
       {(usageChartData.length > 0 || countyBreakdown.length > 0) && (
         <motion.div 
-          className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6"
           variants={container}
         >
           {usageChartData.length > 0 && (
@@ -188,18 +188,18 @@ export default function OverviewTab({
       )}
 
       {/* Quick Actions */}
-      <motion.div variants={item} className="bg-white rounded-2xl shadow-md p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
+      <motion.div variants={item} className="bg-white rounded-2xl shadow-md p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Quick Actions</h2>
           <button
             onClick={handleExportSummary}
-            className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-delaware-blue bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-1.5 text-xs sm:text-sm font-medium text-delaware-blue bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors w-full sm:w-auto justify-center"
           >
             <FiDownload className="w-4 h-4" />
             Export Summary
           </button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 sm:gap-4">
           <button
             onClick={() => alert('Search feature will be available once backend integration is complete. For now, use the main search on the homepage.')}
             className="flex items-center justify-between p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all group text-left"
