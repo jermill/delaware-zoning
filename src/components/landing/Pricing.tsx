@@ -1,7 +1,77 @@
-import { FiCheck, FiStar } from 'react-icons/fi';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { FiCheck, FiStar, FiLoader } from 'react-icons/fi';
 import { PricingPlan } from '@/types';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Pricing() {
+  const router = useRouter();
+  const { user } = useAuth();
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  // Stripe Price IDs (these should match your .env.local)
+  const stripePrices = {
+    looker: process.env.NEXT_PUBLIC_STRIPE_PRICE_LOOKER || '',
+    pro: process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO || '',
+    whale: process.env.NEXT_PUBLIC_STRIPE_PRICE_WHALE || '',
+  };
+
+  const handleSubscribe = async (planId: string, tier: 'looker' | 'pro' | 'whale') => {
+    // Check if user is logged in
+    if (!user) {
+      // Redirect to signup with plan in query
+      router.push(`/signup?plan=${planId}`);
+      return;
+    }
+
+    // Free tier - just redirect to dashboard
+    if (tier === 'looker') {
+      router.push('/dashboard');
+      return;
+    }
+
+    // Paid tiers - create Stripe checkout session
+    setLoadingPlan(planId);
+
+    try {
+      const priceId = tier === 'pro' ? stripePrices.pro : stripePrices.whale;
+
+      if (!priceId) {
+        alert('Stripe configuration error. Please contact support.');
+        return;
+      }
+
+      const response = await fetch('/api/stripe/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          priceId,
+          userId: user.id,
+          userEmail: user.email,
+          tier,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      // Redirect to Stripe Checkout
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error: any) {
+      console.error('Subscription error:', error);
+      alert(error.message || 'Failed to start checkout. Please try again.');
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
   const plans: PricingPlan[] = [
     {
       id: 'free',
@@ -109,16 +179,27 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <a
-                  href={plan.id === 'free' ? '/signup' : '/signup'}
-                  className={`block text-center w-full py-3 sm:py-4 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 ${
+                <button
+                  onClick={() => handleSubscribe(
+                    plan.id, 
+                    plan.id === 'free' ? 'looker' : plan.id === 'pro' ? 'pro' : 'whale'
+                  )}
+                  disabled={loadingPlan === plan.id}
+                  className={`block text-center w-full py-3 sm:py-4 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
                     plan.popular
                       ? 'bg-gradient-to-r from-delaware-gold to-yellow-600 text-white hover:shadow-elevated transform hover:-translate-y-0.5'
                       : 'bg-delaware-blue text-white hover:bg-opacity-90 hover:shadow-elevated transform hover:-translate-y-0.5'
                   }`}
                 >
-                  {plan.cta}
-                </a>
+                  {loadingPlan === plan.id ? (
+                    <>
+                      <FiLoader className="w-5 h-5 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    plan.cta
+                  )}
+                </button>
               </div>
             </div>
           ))}

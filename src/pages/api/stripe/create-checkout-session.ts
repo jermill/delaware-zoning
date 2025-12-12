@@ -1,86 +1,65 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { stripe } from '@/lib/stripe';
-import { supabase } from '@/lib/supabase';
+import { NextApiRequest, NextApiResponse } from 'next';
+import Stripe from 'stripe';
+import { createClient } from '@supabase/supabase-js';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-11-17.clover',
+});
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Get auth token from header
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      return res.status(401).json({ error: 'Missing authorization header' });
-    }
+    const { priceId, userId, userEmail, tier } = req.body;
 
-    const token = authHeader.replace('Bearer ', '');
-
-    // Verify user
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser(token);
-
-    if (authError || !user) {
-      return res.status(401).json({ error: 'Invalid token' });
-    }
-
-    // Get request body
-    const { tier } = req.body;
-
-    if (!tier || !['pro', 'business'].includes(tier)) {
-      return res.status(400).json({ error: 'Invalid tier. Must be "pro" or "business"' });
-    }
-
-    // Get user profile for email
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('email, full_name')
-      .eq('id', user.id)
-      .single();
-
-    if (!profile) {
-      return res.status(404).json({ error: 'User profile not found' });
-    }
-
-    // Get the appropriate price ID
-    const priceId =
-      tier === 'pro'
-        ? process.env.STRIPE_PRICE_PRO
-        : process.env.STRIPE_PRICE_BUSINESS;
-
-    if (!priceId) {
-      return res.status(500).json({
-        error: 'Stripe price ID not configured. Please contact support.',
+    if (!priceId || !userId || !userEmail || !tier) {
+      return res.status(400).json({ 
+        error: 'Missing required fields: priceId, userId, userEmail, tier' 
       });
     }
 
+    // Validate tier
+    if (!['looker', 'pro', 'whale'].includes(tier)) {
+      return res.status(400).json({ error: 'Invalid tier' });
+    }
+
+    // Get or create Stripe customer
+    let customerId: string;
+
     // Check if user already has a Stripe customer ID
-    const { data: existingSubscription } = await supabase
+    const { data: subscription } = await supabaseAdmin
       .from('subscriptions')
       .select('stripe_customer_id')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .single();
 
-    let customerId = existingSubscription?.stripe_customer_id;
-
-    // Create or retrieve Stripe customer
-    if (!customerId) {
+    if (subscription?.stripe_customer_id) {
+      customerId = subscription.stripe_customer_id;
+    } else {
+      // Create new Stripe customer
       const customer = await stripe.customers.create({
-        email: profile.email,
-        name: profile.full_name || undefined,
+        email: userEmail,
         metadata: {
-          supabase_user_id: user.id,
+          supabase_user_id: userId,
         },
       });
       customerId = customer.id;
+
+      // Update subscription record with customer ID
+      await supabaseAdmin
+        .from('subscriptions')
+        .update({ stripe_customer_id: customerId })
+        .eq('user_id', userId);
     }
 
-    // Create Checkout Session
+    // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: [
@@ -90,25 +69,31 @@ export default async function handler(
         },
       ],
       mode: 'subscription',
-      success_url: `${req.headers.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin}/checkout/cancel`,
+      success_url: `${req.headers.origin}/dashboard?checkout=success`,
+      cancel_url: `${req.headers.origin}/pricing?checkout=cancelled`,
       metadata: {
-        supabase_user_id: user.id,
+        user_id: userId,
         tier: tier,
       },
       subscription_data: {
         metadata: {
-          supabase_user_id: user.id,
+          user_id: userId,
           tier: tier,
         },
       },
+      allow_promotion_codes: true,
+      billing_address_collection: 'auto',
     });
 
-    return res.status(200).json({ sessionId: session.id, url: session.url });
+    return res.status(200).json({ 
+      sessionId: session.id,
+      url: session.url,
+    });
   } catch (error: any) {
     console.error('Error creating checkout session:', error);
-    return res.status(500).json({
-      error: error.message || 'Failed to create checkout session',
+    return res.status(500).json({ 
+      error: 'Failed to create checkout session',
+      details: error.message,
     });
   }
 }

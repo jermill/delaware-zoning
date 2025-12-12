@@ -1,58 +1,53 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { stripe } from '@/lib/stripe';
-import { supabase } from '@/lib/supabase';
+import { NextApiRequest, NextApiResponse } from 'next';
+import Stripe from 'stripe';
+import { createClient } from '@supabase/supabase-js';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-11-17.clover',
+});
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Get auth token from header
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      return res.status(401).json({ error: 'Missing authorization header' });
-    }
+    const { userId } = req.body;
 
-    const token = authHeader.replace('Bearer ', '');
-
-    // Verify user
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser(token);
-
-    if (authError || !user) {
-      return res.status(401).json({ error: 'Invalid token' });
+    if (!userId) {
+      return res.status(400).json({ error: 'Missing userId' });
     }
 
     // Get user's Stripe customer ID
-    const { data: subscription } = await supabase
+    const { data: subscription, error } = await supabaseAdmin
       .from('subscriptions')
       .select('stripe_customer_id')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .single();
 
-    if (!subscription?.stripe_customer_id) {
-      return res.status(400).json({
-        error: 'No active subscription found. Please subscribe first.',
+    if (error || !subscription?.stripe_customer_id) {
+      return res.status(404).json({ 
+        error: 'No active subscription found. Please subscribe to a plan first.' 
       });
     }
 
     // Create portal session
-    const portalSession = await stripe.billingPortal.sessions.create({
+    const session = await stripe.billingPortal.sessions.create({
       customer: subscription.stripe_customer_id,
       return_url: `${req.headers.origin}/dashboard?tab=billing`,
     });
 
-    return res.status(200).json({ url: portalSession.url });
+    return res.status(200).json({ url: session.url });
   } catch (error: any) {
     console.error('Error creating portal session:', error);
-    return res.status(500).json({
-      error: error.message || 'Failed to create portal session',
+    return res.status(500).json({ 
+      error: 'Failed to create portal session',
+      details: error.message,
     });
   }
 }

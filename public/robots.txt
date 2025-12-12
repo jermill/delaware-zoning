@@ -1,0 +1,16 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /dashboard
+Disallow: /checkout/*
+Disallow: /login
+Disallow: /signup
+
+# Host
+Host: https://delawarezoning.com
+
+# Sitemaps
+Sitemap: https://delawarezoning.com/sitemap.xml

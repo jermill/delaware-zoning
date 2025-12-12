@@ -1,12 +1,69 @@
 import '@/styles/globals.css'
+import { useEffect } from 'react'
 import type { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
 import { Toaster } from 'react-hot-toast'
+import CookieConsent from 'react-cookie-consent'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { initGA, trackPageView } from '@/lib/analytics'
+import { logger } from '@/lib/logger'
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter()
+
+  // Initialize Google Analytics
+  useEffect(() => {
+    initGA()
+    
+    // Track initial page view
+    trackPageView(router.pathname)
+
+    // Track page changes
+    const handleRouteChange = (url: string) => {
+      trackPageView(url)
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+    
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events, router.pathname])
+
+  // Global error boundary
+  useEffect(() => {
+    const handleError = (event: ErrorEvent) => {
+      logger.error({
+        type: 'unhandled_error',
+        error: event.error?.message || event.message,
+        stack: event.error?.stack,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+      })
+    }
+
+    const handleRejection = (event: PromiseRejectionEvent) => {
+      logger.error({
+        type: 'unhandled_rejection',
+        reason: event.reason,
+      })
+    }
+
+    window.addEventListener('error', handleError)
+    window.addEventListener('unhandledrejection', handleRejection)
+
+    return () => {
+      window.removeEventListener('error', handleError)
+      window.removeEventListener('unhandledrejection', handleRejection)
+    }
+  }, [])
+
   return (
     <AuthProvider>
       <Component {...pageProps} />
+      
+      {/* Toast notifications */}
       <Toaster 
         position="top-right"
         toastOptions={{
@@ -31,6 +88,54 @@ export default function App({ Component, pageProps }: AppProps) {
           },
         }}
       />
+
+      {/* Cookie Consent Banner */}
+      <CookieConsent
+        location="bottom"
+        buttonText="Accept All"
+        declineButtonText="Decline"
+        enableDeclineButton
+        cookieName="delawareZoningConsent"
+        expires={365}
+        overlay={false}
+        buttonStyle={{
+          background: '#F2AF29',
+          color: '#002B5C',
+          fontSize: '14px',
+          fontWeight: '600',
+          borderRadius: '8px',
+          padding: '10px 24px',
+        }}
+        declineButtonStyle={{
+          background: 'transparent',
+          border: '2px solid #E5E7EB',
+          color: '#6B7280',
+          fontSize: '14px',
+          fontWeight: '600',
+          borderRadius: '8px',
+          padding: '8px 22px',
+        }}
+        style={{
+          background: '#1F2937',
+          padding: '20px',
+          alignItems: 'center',
+        }}
+        contentStyle={{
+          flex: '1 0 auto',
+          margin: '0 20px',
+        }}
+      >
+        <span style={{ fontSize: '14px', color: '#F3F4F6' }}>
+          We use cookies to enhance your experience, analyze site traffic, and provide personalized content. 
+          By clicking &quot;Accept All,&quot; you consent to our use of cookies.{' '}
+          <a 
+            href="/privacy" 
+            style={{ color: '#F2AF29', textDecoration: 'underline' }}
+          >
+            Learn more
+          </a>
+        </span>
+      </CookieConsent>
     </AuthProvider>
   )
 }

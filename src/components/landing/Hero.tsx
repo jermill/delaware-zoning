@@ -1,6 +1,56 @@
-import { FiSearch } from 'react-icons/fi';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { FiSearch, FiChevronDown } from 'react-icons/fi';
+import { useGooglePlaces } from '@/hooks/useGooglePlaces';
+
+const EXAMPLE_ADDRESSES = [
+  { label: 'Wilmington Public Library', address: '10 E 10th St, Wilmington, DE 19801', lat: 39.7459, lon: -75.5466 },
+  { label: 'Christiana Mall', address: '132 Christiana Mall, Newark, DE 19702', lat: 39.6776, lon: -75.6514 },
+  { label: 'Dover State Capitol', address: '411 Legislative Ave, Dover, DE 19901', lat: 39.1582, lon: -75.5244 },
+  { label: 'Rehoboth Beach Town Hall', address: '229 Rehoboth Ave, Rehoboth Beach, DE 19971', lat: 38.7209, lon: -75.0760 },
+];
 
 export default function Hero() {
+  const router = useRouter();
+  const [showExamples, setShowExamples] = useState(false);
+
+  // Google Places Autocomplete
+  const { inputRef, isLoaded, selectedPlace } = useGooglePlaces((place) => {
+    // Navigate to search page with geocoded coordinates
+    router.push(
+      `/search?address=${encodeURIComponent(place.address)}&lat=${place.latitude}&lon=${place.longitude}`
+    );
+  });
+
+  const handleSearch = () => {
+    // If Google Places is loaded and user selected a place, it's already handled
+    // If not, show examples
+    if (!selectedPlace && inputRef.current?.value.trim()) {
+      // Manual entry without autocomplete selection
+      alert('Please select an address from the autocomplete suggestions');
+      return;
+    }
+    
+    if (!inputRef.current?.value.trim()) {
+      setShowExamples(true);
+    }
+  };
+
+  const handleExampleSelect = (example: typeof EXAMPLE_ADDRESSES[0]) => {
+    if (inputRef.current) {
+      inputRef.current.value = example.address;
+    }
+    setShowExamples(false);
+    // Navigate with coordinates for immediate results
+    router.push(`/search?address=${encodeURIComponent(example.address)}&lat=${example.lat}&lon=${example.lon}`);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <section className="relative bg-gradient-to-br from-delaware-blue via-blue-900 to-delaware-blue overflow-hidden">
       {/* Background Pattern/Texture */}
@@ -28,21 +78,57 @@ export default function Hero() {
 
         {/* Search Bar (Enhanced) */}
         <div className="max-w-3xl mx-auto mb-8 sm:mb-10 px-4">
-          <div className="relative flex flex-col sm:flex-row gap-2">
-            <input
-              type="text"
-              placeholder="Enter a Delaware property address..."
-              className="w-full px-4 sm:px-6 py-4 sm:py-5 text-base sm:text-lg border-2 border-white/20 bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl focus:outline-none focus:border-delaware-gold focus:ring-4 focus:ring-delaware-gold/20 transition-all shadow-elevated"
-              disabled
-            />
-            <button className="sm:absolute sm:right-2 sm:top-1/2 sm:-translate-y-1/2 bg-delaware-gold text-white px-6 sm:px-8 py-3 sm:py-3 rounded-xl hover:bg-opacity-90 hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 font-semibold whitespace-nowrap">
-              <FiSearch className="w-5 h-5" />
-              <span>Search</span>
+          <div className="relative">
+            <div className="relative flex flex-col sm:flex-row gap-2">
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder={isLoaded ? "Enter a Delaware property address..." : "Loading address search..."}
+                onKeyPress={handleKeyPress}
+                disabled={!isLoaded}
+                className="w-full px-4 sm:px-6 py-4 sm:py-5 text-base sm:text-lg border-2 border-white/20 bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl focus:outline-none focus:border-delaware-gold focus:ring-4 focus:ring-delaware-gold/20 transition-all shadow-elevated disabled:opacity-60"
+              />
+              <button 
+                onClick={handleSearch}
+                className="sm:absolute sm:right-2 sm:top-1/2 sm:-translate-y-1/2 bg-delaware-gold text-white px-6 sm:px-8 py-3 sm:py-3 rounded-xl hover:bg-opacity-90 hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 font-semibold whitespace-nowrap"
+              >
+                <FiSearch className="w-5 h-5" />
+                <span>Search</span>
+              </button>
+            </div>
+
+            {/* Example Addresses Dropdown */}
+            {showExamples && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden z-50 border border-gray-200">
+                <div className="p-3 bg-gray-50 border-b border-gray-200">
+                  <p className="text-sm font-semibold text-gray-700">Try these example addresses:</p>
+                </div>
+                {EXAMPLE_ADDRESSES.map((example, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleExampleSelect(example)}
+                    className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-b-0"
+                  >
+                    <p className="font-medium text-gray-900 text-sm">{example.label}</p>
+                    <p className="text-xs text-gray-600">{example.address}</p>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4">
+            <p className="text-xs sm:text-sm text-blue-200">
+              Example: "123 Market Street, Wilmington, DE"
+            </p>
+            <button
+              onClick={() => setShowExamples(!showExamples)}
+              className="text-xs sm:text-sm text-delaware-gold hover:text-yellow-300 font-medium flex items-center gap-1 transition-colors"
+            >
+              <span>See examples</span>
+              <FiChevronDown className={`w-3 h-3 transition-transform ${showExamples ? 'rotate-180' : ''}`} />
             </button>
           </div>
-          <p className="text-xs sm:text-sm text-blue-200 mt-3 sm:mt-4">
-            Example: "123 Market Street, Wilmington, DE"
-          </p>
         </div>
 
         {/* CTA Buttons */}

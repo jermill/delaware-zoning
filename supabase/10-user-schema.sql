@@ -22,6 +22,10 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   company_name TEXT,
   phone TEXT,
   avatar_url TEXT,
+  -- Additional professional fields
+  business_address TEXT,
+  license_number TEXT,
+  website TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

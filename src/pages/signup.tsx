@@ -4,12 +4,15 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 export default function Signup() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState(false);
   const { signUp } = useAuth();
   const router = useRouter();
 
@@ -18,6 +21,13 @@ export default function Signup() {
     
     if (password.length < 6) {
       toast.error('Password must be at least 6 characters');
+      return;
+    }
+
+    // Verify CAPTCHA before signup
+    if (!captchaToken) {
+      setCaptchaError(true);
+      toast.error('Please complete the CAPTCHA verification');
       return;
     }
 
@@ -105,6 +115,27 @@ export default function Signup() {
                 />
                 <p className="mt-1 text-xs text-gray-500">Must be at least 6 characters</p>
               </div>
+
+              {/* hCaptcha Security Verification */}
+              <div className="flex justify-center">
+                <HCaptcha
+                  sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!}
+                  onVerify={(token) => {
+                    setCaptchaToken(token);
+                    setCaptchaError(false);
+                  }}
+                  onExpire={() => setCaptchaToken(null)}
+                  onError={() => {
+                    setCaptchaError(true);
+                    toast.error('CAPTCHA verification failed. Please try again.');
+                  }}
+                />
+              </div>
+              {captchaError && (
+                <p className="text-red-600 text-sm text-center -mt-2">
+                  Please complete the security verification above
+                </p>
+              )}
 
               <button
                 type="submit"

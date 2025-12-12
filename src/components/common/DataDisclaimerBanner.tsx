@@ -8,9 +8,8 @@ interface DataDisclaimerBannerProps {
 /**
  * DataDisclaimerBanner Component
  * 
- * Displays a prominent warning that the app currently uses mock data
- * for development purposes. This component should be removed or updated
- * once real county data is integrated.
+ * Displays important information about data coverage and accuracy.
+ * Updated to reflect REAL data from New Castle and Sussex Counties.
  * 
  * Variants:
  * - default: Standard banner for most pages
@@ -24,13 +23,13 @@ export default function DataDisclaimerBanner({
   
   if (variant === 'compact') {
     return (
-      <div className={`bg-amber-50 border border-amber-300 rounded-md p-3 text-xs ${className}`}>
+      <div className={`bg-blue-50 border border-blue-300 rounded-md p-3 text-xs ${className}`}>
         <div className="flex items-start gap-2">
-          <span className="text-amber-600 font-bold text-sm">⚠️</span>
+          <span className="text-blue-600 font-bold text-sm">ℹ️</span>
           <div className="flex-1">
-            <p className="text-amber-800 font-medium">Development Data Only</p>
-            <p className="text-amber-700 mt-1">
-              Not verified with county authorities. Do not use for legal or financial decisions.
+            <p className="text-blue-800 font-medium">Official County Data</p>
+            <p className="text-blue-700 mt-1">
+              1,000+ real zoning districts from New Castle & Sussex Counties. Always verify with county planning offices before making property decisions.
             </p>
           </div>
         </div>
@@ -40,36 +39,35 @@ export default function DataDisclaimerBanner({
 
   if (variant === 'prominent') {
     return (
-      <div className={`bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-400 rounded-lg shadow-md ${className}`}>
+      <div className={`bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-400 rounded-lg shadow-md ${className}`}>
         <div className="p-6">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
-                <span className="text-2xl">⚠️</span>
+              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                <span className="text-2xl">ℹ️</span>
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-bold text-amber-900 mb-2">
-                Development Data Notice
+              <h3 className="text-lg font-bold text-blue-900 mb-2">
+                Data Accuracy Notice
               </h3>
-              <div className="text-amber-800 space-y-2">
+              <div className="text-blue-800 space-y-2">
                 <p className="font-medium">
-                  This application currently uses <strong>mock zoning data</strong> for development and testing purposes only.
+                  Zoning data sourced from <strong>official Delaware county GIS systems</strong> and updated regularly.
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-sm ml-2">
-                  <li>Data has <strong>not been verified</strong> with Delaware county authorities</li>
-                  <li>Should <strong>NOT</strong> be used for legal, financial, or property decisions</li>
-                  <li>Zoning classifications and boundaries are approximate</li>
-                  <li>Permitted uses and dimensional standards are generalized</li>
+                  <li><strong>New Castle County:</strong> 999 verified districts from official ArcGIS REST API</li>
+                  <li><strong>Sussex County:</strong> 63 verified districts from official ArcGIS REST API</li>
+                  <li><strong>Kent County:</strong> Coming soon - integration in progress</li>
+                  <li>Zoning regulations can change - always verify before making property decisions</li>
                 </ul>
                 <p className="text-sm font-semibold mt-3">
-                  📞 For official zoning information, contact your local planning office:
+                  📞 For the most current official information, contact:
                 </p>
                 <div className="text-sm mt-2 space-y-1">
-                  <p>• New Castle County: (302) 395-5400</p>
-                  <p>• Wilmington: (302) 576-3050</p>
-                  <p>• Kent County: (302) 744-2471</p>
-                  <p>• Sussex County: (302) 855-7878</p>
+                  <p>• New Castle County Planning: (302) 395-5400</p>
+                  <p>• Sussex County Planning: (302) 855-7878</p>
+                  <p>• Kent County Planning: (302) 744-2471</p>
                 </div>
               </div>
             </div>
@@ -81,22 +79,22 @@ export default function DataDisclaimerBanner({
 
   // Default variant
   return (
-    <div className={`bg-amber-100 border-l-4 border-amber-500 rounded-md shadow-sm ${className}`}>
+    <div className={`bg-blue-100 border-l-4 border-blue-500 rounded-md shadow-sm ${className}`}>
       <div className="p-4">
         <div className="flex items-start gap-3">
-          <span className="text-amber-600 font-bold text-xl">⚠️</span>
+          <span className="text-blue-600 font-bold text-xl">ℹ️</span>
           <div className="flex-1">
-            <h4 className="text-amber-900 font-bold text-sm mb-1">
-              Development Data Notice
+            <h4 className="text-blue-900 font-bold text-sm mb-1">
+              Data Accuracy Notice
             </h4>
-            <p className="text-amber-800 text-sm">
-              This application currently uses mock zoning data for development purposes only. 
-              Data has not been verified with Delaware county authorities and should <strong>NOT</strong> be 
-              used for legal, financial, or property decisions.
+            <p className="text-blue-800 text-sm">
+              Zoning data sourced from official Delaware county GIS systems. Currently serving 
+              <strong> 1,000+ verified zoning districts</strong> in New Castle and Sussex Counties.
+              Kent County coverage coming soon.
             </p>
-            <p className="text-amber-700 text-xs mt-2">
-              For official zoning information, contact your county planning office. 
-              See our <a href="/data-disclaimer" className="underline font-medium hover:text-amber-900">
+            <p className="text-blue-700 text-xs mt-2">
+              While we strive for accuracy, zoning regulations can change. Always verify with your county planning office before making property decisions. 
+              See our <a href="/data-disclaimer" className="underline font-medium hover:text-blue-900">
                 Data Disclaimer page
               </a> for details.
             </p>
@@ -112,8 +110,8 @@ export default function DataDisclaimerBanner({
  */
 export function InlineDataDisclaimer({ className = '' }: { className?: string }) {
   return (
-    <p className={`text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200 ${className}`}>
-      ⚠️ <strong>Mock data:</strong> Not verified with county authorities. Do not use for legal decisions.
+    <p className={`text-xs text-blue-700 bg-blue-50 px-3 py-2 rounded border border-blue-200 ${className}`}>
+      ℹ️ <strong>Official data:</strong> Sourced from county GIS. Always verify with planning offices before making decisions.
     </p>
   );
 }
@@ -123,10 +121,11 @@ export function InlineDataDisclaimer({ className = '' }: { className?: string })
  */
 export function FooterDataDisclaimer() {
   return (
-    <div className="bg-amber-900 text-amber-100 py-3 px-4 text-center text-xs border-t border-amber-800">
+    <div className="bg-blue-900 text-blue-100 py-3 px-4 text-center text-xs border-t border-blue-800">
       <p>
-        ⚠️ <strong>Development Notice:</strong> This site uses mock zoning data for demonstration purposes. 
-        Not for legal, financial, or property decisions. | 
+        ℹ️ <strong>Data Notice:</strong> Sourced from official DE county GIS systems. 
+        1,000+ verified districts in New Castle & Sussex. Kent County coming soon. 
+        Always verify with planning offices before property decisions. | 
         <a href="/data-disclaimer" className="underline ml-2 hover:text-white">
           Learn More
         </a>

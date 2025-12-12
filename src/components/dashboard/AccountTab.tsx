@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiUser, FiMail, FiPhone, FiBriefcase, FiBell, FiLock, FiMonitor, FiCamera } from 'react-icons/fi';
+import { FiUser, FiMail, FiPhone, FiBriefcase, FiBell, FiLock, FiMonitor, FiCamera, FiMapPin, FiAward, FiGlobe } from 'react-icons/fi';
 import { UserProfile } from '@/data/mockDashboardData';
 
 interface AccountTabProps {
@@ -146,6 +146,56 @@ export default function AccountTab({ user }: AccountTabProps) {
                   <input
                     type="text"
                     defaultValue={user.company}
+                    disabled
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className="flex items-center gap-2">
+                      <FiMapPin className="w-4 h-4" />
+                      Business Address
+                    </div>
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue={user.businessAddress || ''}
+                    placeholder="123 Market St, Wilmington, DE 19801"
+                    disabled
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                  />
+                </div>
+
+                {user.userType === 'realtor' || user.userType === 'architect' ? (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <div className="flex items-center gap-2">
+                        <FiAward className="w-4 h-4" />
+                        License Number
+                      </div>
+                    </label>
+                    <input
+                      type="text"
+                      defaultValue={user.licenseNumber || ''}
+                      placeholder={user.userType === 'realtor' ? 'RS-2024-XXXXX' : 'AIA-DE-XXXXX'}
+                      disabled
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                    />
+                  </div>
+                ) : null}
+
+                <div className={user.userType === 'realtor' || user.userType === 'architect' ? '' : 'md:col-span-2'}>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className="flex items-center gap-2">
+                      <FiGlobe className="w-4 h-4" />
+                      Website
+                    </div>
+                  </label>
+                  <input
+                    type="url"
+                    defaultValue={user.website || ''}
+                    placeholder="https://yourcompany.com"
                     disabled
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
                   />

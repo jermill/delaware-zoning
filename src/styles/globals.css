@@ -38,6 +38,84 @@ a {
 }
 
 @layer components {
+  /* Blog Post Prose Styles */
+  .prose-delaware {
+    @apply text-gray-800;
+  }
+  
+  .prose-delaware h2 {
+    @apply text-3xl font-bold text-gray-900 mt-12 mb-6;
+  }
+  
+  .prose-delaware h3 {
+    @apply text-2xl font-bold text-gray-900 mt-8 mb-4;
+  }
+  
+  .prose-delaware h4 {
+    @apply text-xl font-bold text-gray-900 mt-6 mb-3;
+  }
+  
+  .prose-delaware p {
+    @apply mb-6 leading-relaxed;
+  }
+  
+  .prose-delaware a {
+    @apply text-delaware-blue font-medium hover:underline;
+  }
+  
+  .prose-delaware ul,
+  .prose-delaware ol {
+    @apply my-6 pl-6 space-y-2;
+  }
+  
+  .prose-delaware ul {
+    @apply list-disc;
+  }
+  
+  .prose-delaware ol {
+    @apply list-decimal;
+  }
+  
+  .prose-delaware li {
+    @apply leading-relaxed;
+  }
+  
+  .prose-delaware blockquote {
+    @apply border-l-4 border-delaware-blue pl-6 py-2 my-6 italic text-gray-700 bg-blue-50;
+  }
+  
+  .prose-delaware code {
+    @apply bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  .prose-delaware pre {
+    @apply bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto my-6;
+  }
+  
+  .prose-delaware pre code {
+    @apply bg-transparent text-gray-100 px-0 py-0;
+  }
+  
+  .prose-delaware table {
+    @apply w-full border-collapse my-6;
+  }
+  
+  .prose-delaware th {
+    @apply bg-delaware-blue text-white px-4 py-3 text-left font-semibold;
+  }
+  
+  .prose-delaware td {
+    @apply border border-gray-300 px-4 py-3;
+  }
+  
+  .prose-delaware img {
+    @apply rounded-lg my-8 shadow-md;
+  }
+  
+  .prose-delaware hr {
+    @apply my-12 border-gray-300;
+  }
+  
   /* Button Styles */
   .btn-primary {
     @apply bg-delaware-blue text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold hover:bg-opacity-90 hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 text-center;

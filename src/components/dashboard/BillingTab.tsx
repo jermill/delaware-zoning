@@ -24,7 +24,7 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
   };
 
   const handleManageBilling = async () => {
-    if (!session) {
+    if (!session?.user?.id) {
       toast.error('Please log in to manage billing');
       return;
     }
@@ -34,8 +34,11 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
       const response = await fetch('/api/stripe/create-portal-session', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          userId: session.user.id,
+        }),
       });
 
       const data = await response.json();

@@ -22,6 +22,10 @@ export interface UserProfile {
   avatar?: string;
   tier: UserTier;
   createdAt: string;
+  // Additional professional fields
+  businessAddress?: string;
+  licenseNumber?: string;
+  website?: string;
 }
 
 export interface SavedProperty {
@@ -94,6 +98,9 @@ export const mockUsers: Record<UserTier, UserProfile> = {
     userType: 'realtor',
     tier: 'looker',
     createdAt: '2024-11-15T10:30:00Z',
+    businessAddress: '123 Market St, Wilmington, DE 19801',
+    licenseNumber: 'RS-2024-00789',
+    website: 'https://sarahjohnsonrealty.com',
   },
   pro: {
     id: 'user-pro-1',
@@ -104,6 +111,8 @@ export const mockUsers: Record<UserTier, UserProfile> = {
     userType: 'developer',
     tier: 'pro',
     createdAt: '2024-10-05T14:20:00Z',
+    businessAddress: '450 N Orange St, Suite 200, Wilmington, DE 19801',
+    website: 'https://riveradevcorp.com',
   },
   whale: {
     id: 'user-whale-1',
@@ -114,6 +123,9 @@ export const mockUsers: Record<UserTier, UserProfile> = {
     userType: 'architect',
     tier: 'whale',
     createdAt: '2024-09-12T09:15:00Z',
+    businessAddress: '1201 N Market St, Suite 1500, Wilmington, DE 19801',
+    licenseNumber: 'AIA-DE-10234',
+    website: 'https://chenarchitects.com',
   },
 };
 
