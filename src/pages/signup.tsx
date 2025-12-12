@@ -7,7 +7,8 @@ import { useRouter } from 'next/router';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 export default function Signup() {
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,7 @@ export default function Signup() {
     setLoading(true);
 
     try {
+      const fullName = `${firstName.trim()} ${lastName.trim()}`.trim();
       const { error } = await signUp(email, password, fullName);
 
       if (error) {
@@ -66,20 +68,37 @@ export default function Signup() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
-                  placeholder="John Doe"
-                  required
-                  disabled={loading}
-                />
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                  <label htmlFor="firstName" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
+                    placeholder="John"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="lastName" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
+                    placeholder="Doe"
+                    required
+                    disabled={loading}
+                  />
+                </div>
               </div>
 
               <div>

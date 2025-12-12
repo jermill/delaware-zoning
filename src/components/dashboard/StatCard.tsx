@@ -20,6 +20,8 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
         return 'text-gray-400 bg-gray-50';
       case 'green':
         return 'text-success bg-green-50';
+      case 'purple':
+        return 'text-purple-600 bg-purple-50';
     }
   };
 
