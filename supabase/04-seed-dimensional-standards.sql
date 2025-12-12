@@ -167,3 +167,4 @@ COMMENT ON COLUMN dimensional_standards.min_lot_area_sqft IS 'Minimum lot size r
 COMMENT ON COLUMN dimensional_standards.min_lot_width_ft IS 'Minimum lot width/frontage (feet)';
 COMMENT ON COLUMN dimensional_standards.far IS 'Floor Area Ratio - ratio of building floor area to lot area';
 COMMENT ON COLUMN dimensional_standards.parking_ratio IS 'Parking spaces required (varies by use - see notes)';
+

@@ -1,28 +1,42 @@
-import { adminStats } from '@/data/mockAdminData';
+interface AdminTierBreakdownProps {
+  stats: {
+    totalUsers: number;
+    freeUsers: number;
+    proUsers: number;
+    businessUsers: number;
+  } | null;
+}
 
-export default function AdminTierBreakdown() {
+export default function AdminTierBreakdown({ stats }: AdminTierBreakdownProps) {
+  if (!stats) {
+    return <div>Loading tier breakdown...</div>;
+  }
+
   const tiers = [
     {
-      name: 'The Looker',
-      count: adminStats.lookerUsers,
+      name: 'The Looker (Free)',
+      count: stats.freeUsers,
       color: 'bg-delaware-tan',
       textColor: 'text-white',
+      price: 0,
     },
     {
       name: 'The Pro',
-      count: adminStats.proUsers,
+      count: stats.proUsers,
       color: 'bg-delaware-blue',
       textColor: 'text-white',
+      price: 29.99,
     },
     {
-      name: 'The Whale',
-      count: adminStats.whaleUsers,
+      name: 'The Whale (Business)',
+      count: stats.businessUsers,
       color: 'bg-delaware-gold',
       textColor: 'text-white',
+      price: 99.99,
     },
   ];
 
-  const total = adminStats.totalUsers;
+  const total = stats.totalUsers;
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
@@ -61,19 +75,20 @@ export default function AdminTierBreakdown() {
         <h4 className="text-sm font-semibold text-gray-900 mb-3">Revenue by Tier</h4>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-700">The Pro ($49/mo × {adminStats.proUsers})</span>
-            <span className="font-medium text-gray-900">${adminStats.proUsers * 49}/mo</span>
+            <span className="text-gray-700">The Pro ($29.99/mo × {stats.proUsers})</span>
+            <span className="font-medium text-gray-900">${(stats.proUsers * 29.99).toFixed(2)}/mo</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-700">The Whale ($129/mo × {adminStats.whaleUsers})</span>
-            <span className="font-medium text-gray-900">${adminStats.whaleUsers * 129}/mo</span>
+            <span className="text-gray-700">The Whale ($99.99/mo × {stats.businessUsers})</span>
+            <span className="font-medium text-gray-900">${(stats.businessUsers * 99.99).toFixed(2)}/mo</span>
           </div>
           <div className="flex items-center justify-between text-sm pt-2 border-t border-gray-200">
             <span className="font-semibold text-gray-900">Total MRR</span>
-            <span className="font-bold text-delaware-gold">${adminStats.totalMRR}/mo</span>
+            <span className="font-bold text-delaware-gold">${((stats.proUsers * 29.99) + (stats.businessUsers * 99.99)).toFixed(2)}/mo</span>
           </div>
         </div>
       </div>
     </div>
   );
 }
+

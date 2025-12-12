@@ -1,7 +1,38 @@
+import { useState, FormEvent } from 'react';
 import Layout from '@/components/layout/Layout';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await signIn(email, password);
+
+      if (error) {
+        toast.error(error.message || 'Failed to log in');
+        return;
+      }
+
+      toast.success('Welcome back!');
+      router.push('/dashboard');
+    } catch (error) {
+      toast.error('An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout>
       <div className="bg-gray-50 min-h-screen flex items-center justify-center py-12 sm:py-16">
@@ -16,7 +47,7 @@ export default function Login() {
               </p>
             </div>
 
-            <form className="space-y-5 sm:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
               <div>
                 <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                   Email
@@ -24,9 +55,12 @@ export default function Login() {
                 <input
                   type="email"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
                   placeholder="you@example.com"
-                  disabled
+                  required
+                  disabled={loading}
                 />
               </div>
 
@@ -37,18 +71,21 @@ export default function Login() {
                 <input
                   type="password"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
                   placeholder="••••••••"
-                  disabled
+                  required
+                  disabled={loading}
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-delaware-blue text-white px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base rounded-lg sm:rounded-xl font-semibold opacity-50 cursor-not-allowed transition-all duration-300"
-                disabled
+                className="w-full bg-delaware-blue text-white px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base rounded-lg sm:rounded-xl font-semibold hover:bg-opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loading}
               >
-                Log In (Coming Soon)
+                {loading ? 'Logging in...' : 'Log In'}
               </button>
             </form>
 
@@ -60,15 +97,10 @@ export default function Login() {
                 </Link>
               </p>
             </div>
-
-            <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-blue-50 rounded-lg sm:rounded-xl border border-blue-100">
-              <p className="text-xs sm:text-sm text-gray-600 text-center">
-                <strong>Note:</strong> Authentication features are coming soon. This is a frontend-only preview.
-              </p>
-            </div>
           </div>
         </div>
       </div>
     </Layout>
   );
 }
+

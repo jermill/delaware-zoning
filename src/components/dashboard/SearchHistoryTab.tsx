@@ -285,3 +285,4 @@ export default function SearchHistoryTab({ userTier, searches }: SearchHistoryTa
     </div>
   );
 }
+

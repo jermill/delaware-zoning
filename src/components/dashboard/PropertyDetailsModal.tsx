@@ -236,3 +236,4 @@ export default function PropertyDetailsModal({
     </AnimatePresence>
   );
 }
+

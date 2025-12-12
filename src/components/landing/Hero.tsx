@@ -13,14 +13,14 @@ export default function Hero() {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-delaware-blue/50 to-delaware-blue/80" />
 
-      <div className="section-container relative z-10 text-center py-12 sm:py-16 md:py-20 lg:py-30">
+      <div className="section-container relative z-10 text-center py-8 sm:py-10 md:py-12 lg:py-16">
         {/* Main Headline */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight animate-fade-in px-4">
           See What You Can Build on Any Delaware Property
         </h1>
 
         {/* Subheadline */}
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto leading-relaxed px-4">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-6 sm:mb-7 md:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
           Instant zoning answers for 
           <span className="text-delaware-gold font-semibold"> real estate professionals</span>. 
           Get comprehensive zoning data, permitted uses, and building requirements in seconds.
@@ -46,7 +46,7 @@ export default function Hero() {
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8 px-4">
           <a href="/signup" className="w-full sm:w-auto bg-delaware-gold text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-opacity-90 hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 text-center shadow-elevated">
             Get Started Free
           </a>
@@ -55,12 +55,12 @@ export default function Hero() {
           </a>
         </div>
 
-        <p className="text-sm sm:text-base text-blue-200 mb-12 sm:mb-16 px-4">
+        <p className="text-sm sm:text-base text-blue-200 mb-8 sm:mb-10 px-4">
           3 free searches • No credit card needed
         </p>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-20 pt-8 sm:pt-12 md:pt-16 border-t border-white/10 px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-8 md:pt-10 border-t border-white/10 px-4">
           <div className="text-center">
             <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-delaware-gold mb-2">3</div>
             <div className="text-sm sm:text-base text-blue-100">Counties Covered</div>
@@ -78,3 +78,4 @@ export default function Hero() {
     </section>
   );
 }
+

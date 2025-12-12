@@ -233,3 +233,4 @@ FROM zoning_districts WHERE district_code = 'AR' AND county = 'Kent';
 -- Create index for performance
 CREATE INDEX IF NOT EXISTS idx_permitted_uses_mock ON permitted_uses(is_mock);
 CREATE INDEX IF NOT EXISTS idx_permitted_uses_status_mock ON permitted_uses(status, is_mock);
+

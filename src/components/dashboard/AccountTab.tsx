@@ -359,3 +359,4 @@ export default function AccountTab({ user }: AccountTabProps) {
     </div>
   );
 }
+

@@ -1,29 +1,38 @@
 import { useState } from 'react';
-import { FiSearch, FiEye, FiFilter } from 'react-icons/fi';
-import { AdminUser, allUsers } from '@/data/mockAdminData';
+import { FiSearch, FiEye } from 'react-icons/fi';
 import TierBadge from '@/components/dashboard/TierBadge';
+
+interface User {
+  id: string;
+  email: string;
+  full_name: string | null;
+  created_at: string;
+  tier: string;
+  searches_used: number;
+  saves_used: number;
+}
 
 interface AdminUserListProps {
   onViewUser: (userId: string) => void;
+  users: User[];
 }
 
-export default function AdminUserList({ onViewUser }: AdminUserListProps) {
+export default function AdminUserList({ onViewUser, users }: AdminUserListProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTier, setFilterTier] = useState<string>('all');
-  const [filterStatus, setFilterStatus] = useState<string>('all');
 
   // Calculate special user tags
-  const newestUserId = allUsers.reduce((newest, user) => {
-    return new Date(user.createdAt) > new Date(newest.createdAt) ? user : newest;
-  }).id;
+  const newestUserId = users.length > 0 ? users.reduce((newest, user) => {
+    return new Date(user.created_at) > new Date(newest.created_at) ? user : newest;
+  }).id : null;
 
-  const mostActiveUserId = allUsers.reduce((mostActive, user) => {
-    return user.searchesTotal > mostActive.searchesTotal ? user : mostActive;
-  }).id;
+  const mostActiveUserId = users.length > 0 ? users.reduce((mostActive, user) => {
+    return user.searches_used > mostActive.searches_used ? user : mostActive;
+  }).id : null;
 
-  const oldestUserId = allUsers.reduce((oldest, user) => {
-    return new Date(user.createdAt) < new Date(oldest.createdAt) ? user : oldest;
-  }).id;
+  const oldestUserId = users.length > 0 ? users.reduce((oldest, user) => {
+    return new Date(user.created_at) < new Date(oldest.created_at) ? user : oldest;
+  }).id : null;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -49,15 +58,22 @@ export default function AdminUserList({ onViewUser }: AdminUserListProps) {
     }
   };
 
-  const filteredUsers = allUsers
+  // Map tier names for display
+  const mapTier = (tier: string): 'looker' | 'pro' | 'whale' => {
+    if (tier === 'free') return 'looker';
+    if (tier === 'pro') return 'pro';
+    if (tier === 'business') return 'whale';
+    return 'looker';
+  };
+
+  const filteredUsers = users
     .filter((user) => {
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         return (
-          user.name.toLowerCase().includes(query) ||
-          user.email.toLowerCase().includes(query) ||
-          user.company.toLowerCase().includes(query)
+          (user.full_name?.toLowerCase() || '').includes(query) ||
+          user.email.toLowerCase().includes(query)
         );
       }
       return true;
@@ -65,14 +81,8 @@ export default function AdminUserList({ onViewUser }: AdminUserListProps) {
     .filter((user) => {
       // Tier filter
       if (filterTier !== 'all') {
-        return user.tier === filterTier;
-      }
-      return true;
-    })
-    .filter((user) => {
-      // Status filter
-      if (filterStatus !== 'all') {
-        return user.status === filterStatus;
+        const mappedTier = mapTier(user.tier);
+        return mappedTier === filterTier;
       }
       return true;
     });
@@ -106,17 +116,6 @@ export default function AdminUserList({ onViewUser }: AdminUserListProps) {
             <option value="whale">The Whale</option>
           </select>
 
-          {/* Status Filter */}
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-delaware-blue focus:border-delaware-blue bg-white text-gray-900"
-          >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="suspended">Suspended</option>
-          </select>
         </div>
       </div>
 
@@ -133,16 +132,13 @@ export default function AdminUserList({ onViewUser }: AdminUserListProps) {
                   Tier
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Searches
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  MRR
+                  Saved
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Last Login
+                  Joined
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -155,7 +151,7 @@ export default function AdminUserList({ onViewUser }: AdminUserListProps) {
                   <td className="px-6 py-4">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                        <p className="text-sm font-medium text-gray-900">{user.full_name || 'Unnamed User'}</p>
                         {user.id === newestUserId && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
                             New
@@ -173,31 +169,15 @@ export default function AdminUserList({ onViewUser }: AdminUserListProps) {
                         )}
                       </div>
                       <p className="text-xs text-gray-600">{user.email}</p>
-                      <p className="text-xs text-gray-500">{user.company}</p>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <TierBadge tier={user.tier} size="sm" />
+                    <TierBadge tier={mapTier(user.tier)} size="sm" />
                   </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                        user.status === 'active'
-                          ? 'bg-green-100 text-green-700'
-                          : user.status === 'inactive'
-                          ? 'bg-red-100 text-red-700'
-                          : 'bg-orange-100 text-orange-700'
-                      }`}
-                    >
-                      {user.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">{user.searchesTotal}</td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                    {user.mrr > 0 ? `$${user.mrr}` : '-'}
-                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900">{user.searches_used}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900">{user.saves_used}</td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {formatDateTime(user.lastLogin)}
+                    {formatDate(user.created_at)}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <button
@@ -217,8 +197,9 @@ export default function AdminUserList({ onViewUser }: AdminUserListProps) {
 
       {/* Results count */}
       <div className="text-sm text-gray-600 text-center">
-        Showing {filteredUsers.length} of {allUsers.length} users
+        Showing {filteredUsers.length} of {users.length} users
       </div>
     </div>
   );
 }
+

@@ -262,3 +262,4 @@ CREATE INDEX IF NOT EXISTS idx_permits_required_type ON permits_required(permit_
 COMMENT ON TABLE permits_required IS 'Common permits required by zoning district';
 COMMENT ON COLUMN permits_required.required IS 'True if permit is always required';
 COMMENT ON COLUMN permits_required.conditional IS 'True if permit is only required under certain conditions';
+

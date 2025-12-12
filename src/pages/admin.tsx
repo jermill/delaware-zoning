@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import Layout from '@/components/layout/Layout';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import AdminStats from '@/components/admin/AdminStats';
 import AdminTierBreakdown from '@/components/admin/AdminTierBreakdown';
 import AdminUserList from '@/components/admin/AdminUserList';
+import AdminAccountCard from '@/components/admin/AdminAccountCard';
 import { FiArrowLeft, FiHome } from 'react-icons/fi';
 import Link from 'next/link';
+import { useAdmin } from '@/hooks/useAdmin';
 
 // Import dashboard components
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
@@ -17,9 +20,10 @@ import BillingTab from '@/components/dashboard/BillingTab';
 import HelpTab from '@/components/dashboard/HelpTab';
 import { getUserDashboardById } from '@/data/mockAdminData';
 
-export default function Admin() {
+function AdminContent() {
   const [viewingUserId, setViewingUserId] = useState<string | null>(null);
   const [currentTab, setCurrentTab] = useState('overview');
+  const { stats, recentUsers, loading, error } = useAdmin();
 
   const viewedUserData = viewingUserId ? getUserDashboardById(viewingUserId) : null;
 
@@ -140,6 +144,38 @@ export default function Admin() {
     );
   }
 
+  // Show loading state
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-delaware-blue mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading admin dashboard...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-red-500 text-xl mb-4">⚠️</div>
+            <p className="text-gray-900 font-semibold mb-2">Access Denied</p>
+            <p className="text-gray-600">{error}</p>
+            <Link href="/" className="mt-4 inline-block text-delaware-blue hover:underline">
+              Return Home
+            </Link>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   // Admin Dashboard View
   return (
     <Layout>
@@ -166,49 +202,56 @@ export default function Admin() {
         {/* Admin Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
           {/* Stats */}
-          <AdminStats />
+          <AdminStats stats={stats} />
 
-          {/* Tier Breakdown and Quick Actions */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-1">
-              <AdminTierBreakdown />
-            </div>
-            
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Link
-                    href="/dashboard"
-                    className="p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all"
-                  >
-                    <p className="font-semibold text-gray-900 mb-1">View Your Dashboard</p>
-                    <p className="text-sm text-gray-600">See the standard user dashboard</p>
-                  </Link>
-                  <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all text-left">
-                    <p className="font-semibold text-gray-900 mb-1">Export User Data</p>
-                    <p className="text-sm text-gray-600">Download CSV of all users</p>
-                  </button>
-                  <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all text-left">
-                    <p className="font-semibold text-gray-900 mb-1">Revenue Report</p>
-                    <p className="text-sm text-gray-600">View detailed revenue analytics</p>
-                  </button>
-                  <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all text-left">
-                    <p className="font-semibold text-gray-900 mb-1">User Activity</p>
-                    <p className="text-sm text-gray-600">See recent user searches</p>
-                  </button>
-                </div>
-              </div>
+          {/* Account Balance and Tier Breakdown */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AdminAccountCard />
+            <AdminTierBreakdown stats={stats} />
+          </div>
+
+          {/* Quick Actions */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Link
+                href="/dashboard"
+                className="p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all"
+              >
+                <p className="font-semibold text-gray-900 mb-1">View Your Dashboard</p>
+                <p className="text-sm text-gray-600">See the standard user dashboard</p>
+              </Link>
+              <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all text-left">
+                <p className="font-semibold text-gray-900 mb-1">Export User Data</p>
+                <p className="text-sm text-gray-600">Download CSV of all users</p>
+              </button>
+              <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all text-left">
+                <p className="font-semibold text-gray-900 mb-1">Revenue Report</p>
+                <p className="text-sm text-gray-600">View detailed revenue analytics</p>
+              </button>
+              <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all text-left">
+                <p className="font-semibold text-gray-900 mb-1">User Activity</p>
+                <p className="text-sm text-gray-600">See recent user searches</p>
+              </button>
             </div>
           </div>
 
           {/* User List */}
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">All Users</h2>
-            <AdminUserList onViewUser={handleViewUser} />
+            <AdminUserList onViewUser={handleViewUser} users={recentUsers} />
           </div>
         </div>
       </div>
     </Layout>
   );
 }
+
+export default function Admin() {
+  return (
+    <ProtectedRoute requireAdmin={true}>
+      <AdminContent />
+    </ProtectedRoute>
+  );
+}
+

@@ -163,3 +163,4 @@ INSERT INTO zoning_districts (state, county, municipality, district_code, name, 
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_zoning_mock ON zoning_districts(is_mock);
 CREATE INDEX IF NOT EXISTS idx_zoning_county_muni ON zoning_districts(county, municipality);
+

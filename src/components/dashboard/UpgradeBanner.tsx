@@ -65,3 +65,4 @@ export default function UpgradeBanner({ currentTier }: UpgradeBannerProps) {
     </div>
   );
 }
+

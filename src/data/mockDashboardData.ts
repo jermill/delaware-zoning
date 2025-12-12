@@ -632,3 +632,4 @@ export function getDashboardData(tier: UserTier) {
     countyBreakdown: getCountyBreakdown(savedProperties),
   };
 }
+

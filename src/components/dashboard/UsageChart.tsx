@@ -49,3 +49,4 @@ export default function UsageChart({ data }: UsageChartProps) {
     </div>
   );
 }
+

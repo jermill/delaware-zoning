@@ -61,3 +61,4 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
     </motion.div>
   );
 }
+

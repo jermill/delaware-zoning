@@ -85,3 +85,4 @@ See `DEPLOYMENT.md` for detailed instructions.
 ---
 
 **Status:** ✅ Frontend complete, ready to run!
+

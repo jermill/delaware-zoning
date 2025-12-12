@@ -1,7 +1,46 @@
+import { useState, FormEvent } from 'react';
 import Layout from '@/components/layout/Layout';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 export default function Signup() {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { signUp } = useAuth();
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { error } = await signUp(email, password, fullName);
+
+      if (error) {
+        toast.error(error.message || 'Failed to create account');
+        return;
+      }
+
+      toast.success('Account created! Check your email to verify your account.');
+      // Note: Supabase sends a confirmation email by default
+      // User will be automatically signed in after email verification
+    } catch (error) {
+      toast.error('An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout>
       <div className="bg-gray-50 min-h-screen flex items-center justify-center py-12 sm:py-16">
@@ -16,7 +55,7 @@ export default function Signup() {
               </p>
             </div>
 
-            <form className="space-y-5 sm:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
               <div>
                 <label htmlFor="name" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                   Full Name
@@ -24,9 +63,12 @@ export default function Signup() {
                 <input
                   type="text"
                   id="name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
                   placeholder="John Doe"
-                  disabled
+                  required
+                  disabled={loading}
                 />
               </div>
 
@@ -37,9 +79,12 @@ export default function Signup() {
                 <input
                   type="email"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
                   placeholder="you@example.com"
-                  disabled
+                  required
+                  disabled={loading}
                 />
               </div>
 
@@ -50,18 +95,23 @@ export default function Signup() {
                 <input
                   type="password"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-delaware-gold focus:ring-2 focus:ring-delaware-gold/20 transition-all"
                   placeholder="••••••••"
-                  disabled
+                  required
+                  minLength={6}
+                  disabled={loading}
                 />
+                <p className="mt-1 text-xs text-gray-500">Must be at least 6 characters</p>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-delaware-blue text-white px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base rounded-lg sm:rounded-xl font-semibold opacity-50 cursor-not-allowed transition-all duration-300"
-                disabled
+                className="w-full bg-delaware-blue text-white px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base rounded-lg sm:rounded-xl font-semibold hover:bg-opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loading}
               >
-                Sign Up (Coming Soon)
+                {loading ? 'Creating account...' : 'Sign Up'}
               </button>
             </form>
 
@@ -73,15 +123,10 @@ export default function Signup() {
                 </Link>
               </p>
             </div>
-
-            <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-blue-50 rounded-lg sm:rounded-xl border border-blue-100">
-              <p className="text-xs sm:text-sm text-gray-600 text-center">
-                <strong>Note:</strong> Authentication features are coming soon. This is a frontend-only preview.
-              </p>
-            </div>
           </div>
         </div>
       </div>
     </Layout>
   );
 }
+

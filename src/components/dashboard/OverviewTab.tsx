@@ -147,25 +147,50 @@ export default function OverviewTab({
         </motion.div>
       </motion.div>
 
-      {/* Progress Bar for tier limits */}
+      {/* Usage Stats - Different display for Whale tier */}
       <motion.div variants={item} className="bg-blue-50 rounded-2xl shadow-md p-4 sm:p-6">
-        <h3 className="text-base sm:text-lg font-semibold text-delaware-blue mb-3 sm:mb-4">Usage Limits</h3>
-        <div className="space-y-4">
-          <ProgressBar
-            current={usage.searchesThisMonth}
-            max={usage.searchLimit}
-            label="Searches This Month"
-            showPercentage={true}
-          />
-          {userTier === 'whale' && (
+        <h3 className="text-base sm:text-lg font-semibold text-delaware-blue mb-3 sm:mb-4">
+          {userTier === 'whale' ? 'Usage This Month' : 'Usage Limits'}
+        </h3>
+        {userTier === 'whale' ? (
+          // Whale tier: Show actual counts without limits
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="bg-white rounded-xl p-4 border-2 border-delaware-gold/30">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Searches Performed</p>
+                  <p className="text-3xl font-bold text-delaware-blue">{usage.searchesThisMonth}</p>
+                  <p className="text-xs text-delaware-gold mt-1 font-medium">Unlimited Access</p>
+                </div>
+                <div className="p-3 bg-delaware-blue/10 rounded-lg">
+                  <FiSearch className="w-6 h-6 text-delaware-blue" />
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl p-4 border-2 border-delaware-gold/30">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">PDF Exports</p>
+                  <p className="text-3xl font-bold text-delaware-blue">{usage.pdfExportsThisMonth}</p>
+                  <p className="text-xs text-delaware-gold mt-1 font-medium">Unlimited Access</p>
+                </div>
+                <div className="p-3 bg-delaware-gold/10 rounded-lg">
+                  <FiDownload className="w-6 h-6 text-delaware-gold" />
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Other tiers: Show progress bars with limits
+          <div className="space-y-4">
             <ProgressBar
-              current={usage.pdfExportsThisMonth}
-              max={null}
-              label="PDF Exports This Month"
-              showPercentage={false}
+              current={usage.searchesThisMonth}
+              max={usage.searchLimit}
+              label="Searches This Month"
+              showPercentage={true}
             />
-          )}
-        </div>
+          </div>
+        )}
       </motion.div>
 
       {/* Charts Row */}
@@ -300,3 +325,4 @@ export default function OverviewTab({
     </motion.div>
   );
 }
+

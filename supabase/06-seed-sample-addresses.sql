@@ -144,3 +144,4 @@ CREATE INDEX IF NOT EXISTS idx_test_addresses_type ON test_addresses(property_ty
 -- To use in testing:
 --   SELECT * FROM test_addresses WHERE city = 'Wilmington';
 --   SELECT * FROM test_addresses WHERE expected_zone_code = 'B-3';
+

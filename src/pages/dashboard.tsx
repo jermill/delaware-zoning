@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import MobileTabBar from '@/components/dashboard/MobileTabBar';
 import OverviewTab from '@/components/dashboard/OverviewTab';
@@ -8,10 +9,14 @@ import SearchHistoryTab from '@/components/dashboard/SearchHistoryTab';
 import AccountTab from '@/components/dashboard/AccountTab';
 import BillingTab from '@/components/dashboard/BillingTab';
 import HelpTab from '@/components/dashboard/HelpTab';
-import { UserTier, getDashboardData } from '@/data/mockDashboardData';
+import { useAuth } from '@/contexts/AuthContext';
+import { useDashboard } from '@/hooks/useDashboard';
+import { getDashboardData, getCountyBreakdown } from '@/data/mockDashboardData';
 
-export default function Dashboard() {
+function DashboardContent() {
   const router = useRouter();
+  const { user, profile, subscription } = useAuth();
+  const { savedProperties, searchHistory, usage, loading } = useDashboard();
   
   // State for current tab
   const [currentTab, setCurrentTab] = useState('overview');
@@ -29,13 +34,115 @@ export default function Dashboard() {
       }
     }
   }, [router.query.tab]);
-  
-  // State for user tier (for testing - default to 'pro' for demo)
-  // In production, this would come from authentication/session
-  const [currentUserTier, setCurrentUserTier] = useState<UserTier>('pro');
 
-  // Get mock data based on current tier
-  const dashboardData = getDashboardData(currentUserTier);
+  // Map subscription tier to UserTier for UI components
+  const currentUserTier: 'looker' | 'pro' | 'whale' = subscription?.tier === 'free' ? 'looker' : 
+                                                       subscription?.tier === 'pro' ? 'pro' : 
+                                                       subscription?.tier === 'business' ? 'whale' : 'looker';
+
+  // Show loading state
+  if (loading || !subscription || !profile) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-delaware-blue mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Transform search history to match expected format
+  const transformedSearchHistory = searchHistory.map(s => ({
+    id: s.id,
+    address: s.search_query,
+    zoneCode: 'N/A',
+    zoneName: 'N/A',
+    county: 'New Castle' as const,
+    searchedAt: s.searched_at,
+    success: s.results_count > 0,
+  }));
+
+  // Transform usage data for chart (last 30 days)
+  const usageChartData = Array.from({ length: 30 }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() - (29 - i));
+    const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    
+    // Count searches for this day
+    const daySearches = searchHistory.filter(search => {
+      const searchDate = new Date(search.searched_at);
+      return searchDate.toDateString() === date.toDateString();
+    }).length;
+    
+    return { date: dateStr, searches: daySearches };
+  });
+
+  // Get county breakdown from saved properties
+  // Transform database properties to match the expected format
+  const transformedProperties = savedProperties.map(p => ({
+    id: p.id,
+    address: p.address,
+    zoneCode: p.zoning_district || 'Unknown',
+    zoneName: p.zoning_district || 'Unknown',
+    county: p.county as 'New Castle' | 'Kent' | 'Sussex',
+    city: p.city,
+    dateSaved: p.created_at,
+    starred: false,
+    notes: p.notes || undefined,
+    tags: p.tags || undefined,
+  }));
+  const countyBreakdown = getCountyBreakdown(transformedProperties);
+
+  // Transform subscription data to match SubscriptionInfo interface
+  const tierName: 'The Looker' | 'The Pro' | 'The Whale' = 
+    subscription.tier === 'free' ? 'The Looker' : 
+    subscription.tier === 'pro' ? 'The Pro' : 'The Whale';
+
+  // Mock invoices for billing tab (TODO: fetch from Stripe)
+  const mockInvoices = [
+    { 
+      id: '1', 
+      date: '2024-12-01', 
+      amount: subscription.tier === 'pro' ? 29.99 : subscription.tier === 'business' ? 99.99 : 0, 
+      status: 'paid' as const,
+      description: `${tierName} - Monthly Subscription`,
+    },
+  ];
+
+  // Transform usage data to match UsageStats interface
+  const usageData = {
+    searchesThisMonth: usage?.searches_used || 0,
+    searchLimit: subscription.search_limit,
+    savedProperties: savedProperties.length,
+    pdfExportsThisMonth: usage?.exports_used || 0,
+  };
+
+  // Get price for subscription
+  const price = subscription.tier === 'free' ? 0 : 
+                subscription.tier === 'pro' ? 29.99 : 99.99;
+  
+  const subscriptionData = {
+    tier: currentUserTier,
+    tierName,
+    price,
+    billingCycle: (subscription.tier === 'free' ? 'free' : 'monthly') as 'monthly' | 'yearly' | 'free',
+    nextBillingDate: subscription.billing_cycle_end || undefined,
+    status: subscription.status as 'active' | 'trial' | 'cancelled',
+  };
+
+  // Transform user data to match UserProfile interface
+  const userData = {
+    id: profile.id,
+    name: profile.full_name || 'User',
+    email: profile.email,
+    company: profile.company_name || '',
+    phone: profile.phone || '',
+    avatar: profile.avatar_url || undefined,
+    userType: 'developer' as const,
+    tier: currentUserTier,
+    createdAt: profile.created_at,
+  };
 
   // Render tab content
   const renderTabContent = () => {
@@ -44,37 +151,37 @@ export default function Dashboard() {
         return (
           <OverviewTab
             userTier={currentUserTier}
-            usage={dashboardData.usage}
-            subscription={dashboardData.subscription}
-            recentSearches={dashboardData.searchHistory.slice(0, 5)}
-            userName={dashboardData.user.name}
+            usage={usageData}
+            subscription={subscriptionData}
+            recentSearches={transformedSearchHistory.slice(0, 5)}
+            userName={userData.name}
             onTabChange={setCurrentTab}
-            usageChartData={dashboardData.usageChartData}
-            countyBreakdown={dashboardData.countyBreakdown}
+            usageChartData={usageChartData}
+            countyBreakdown={countyBreakdown}
           />
         );
       case 'saved':
         return (
           <SavedPropertiesTab
             userTier={currentUserTier}
-            properties={dashboardData.savedProperties}
+            properties={transformedProperties}
           />
         );
       case 'history':
         return (
           <SearchHistoryTab
             userTier={currentUserTier}
-            searches={dashboardData.searchHistory}
+            searches={transformedSearchHistory}
           />
         );
       case 'account':
-        return <AccountTab user={dashboardData.user} />;
+        return <AccountTab user={userData} />;
       case 'billing':
         return (
           <BillingTab
             userTier={currentUserTier}
-            subscription={dashboardData.subscription}
-            invoices={dashboardData.invoices}
+            subscription={subscriptionData}
+            invoices={mockInvoices}
           />
         );
       case 'help':
@@ -82,23 +189,27 @@ export default function Dashboard() {
       default:
         return <OverviewTab
           userTier={currentUserTier}
-          usage={dashboardData.usage}
-          subscription={dashboardData.subscription}
-          recentSearches={dashboardData.searchHistory.slice(0, 5)}
+          usage={usageData}
+          subscription={subscriptionData}
+          recentSearches={transformedSearchHistory.slice(0, 5)}
+          userName={userData.name}
+          onTabChange={setCurrentTab}
+          usageChartData={usageChartData}
+          countyBreakdown={countyBreakdown}
         />;
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Tier Switcher (for testing only - remove in production) */}
-      <div className="bg-yellow-100 border-b-2 border-yellow-300 px-2 sm:px-4 py-2">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+      {/* Dashboard Header with Sidebar Toggle */}
+      <div className="bg-white border-b border-gray-200 px-2 sm:px-4 py-3">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-4">
             {/* Sidebar Toggle Button */}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="hidden md:flex items-center justify-center w-8 h-8 text-gray-700 hover:bg-yellow-200 rounded transition-colors flex-shrink-0"
+              className="hidden md:flex items-center justify-center w-8 h-8 text-gray-700 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
               aria-label="Toggle sidebar"
             >
               <svg 
@@ -114,55 +225,25 @@ export default function Dashboard() {
                 )}
               </svg>
             </button>
-            <p className="text-xs sm:text-sm font-medium text-gray-800">
-              <strong className="hidden sm:inline">Testing Mode:</strong>
-              <span className="sm:hidden">Test:</span> Switch tiers
-            </p>
+            <h1 className="text-sm sm:text-base font-semibold text-gray-900">
+              Delaware Zoning Dashboard
+            </h1>
           </div>
-          <div className="flex gap-1 sm:gap-2 w-full sm:w-auto justify-end">
-            <button
-              onClick={() => setCurrentUserTier('looker')}
-              className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors ${
-                currentUserTier === 'looker'
-                  ? 'bg-delaware-tan text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Looker
-            </button>
-            <button
-              onClick={() => setCurrentUserTier('pro')}
-              className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors ${
-                currentUserTier === 'pro'
-                  ? 'bg-delaware-blue text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Pro
-            </button>
-            <button
-              onClick={() => setCurrentUserTier('whale')}
-              className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors ${
-                currentUserTier === 'whale'
-                  ? 'bg-delaware-gold text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Whale
-            </button>
+          <div className="text-xs sm:text-sm text-gray-600">
+            {userData.name}
           </div>
         </div>
       </div>
 
       {/* Dashboard Layout */}
-      <div className="flex h-[calc(100vh-80px)] sm:h-[calc(100vh-60px)]">
+      <div className="flex h-[calc(100vh-61px)]">
         {/* Sidebar - Hidden on mobile and when collapsed */}
         {!sidebarCollapsed && (
-          <aside className="hidden md:block w-64 lg:w-72 flex-shrink-0 overflow-y-auto border-r border-gray-200">
+          <aside className="hidden md:block w-56 flex-shrink-0 overflow-y-auto border-r border-gray-200">
             <DashboardSidebar
               currentTab={currentTab}
               onTabChange={setCurrentTab}
-              userName={dashboardData.user.name}
+              userName={userData.name}
               userTier={currentUserTier}
             />
           </aside>
@@ -181,3 +262,12 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default function Dashboard() {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
+  );
+}
+

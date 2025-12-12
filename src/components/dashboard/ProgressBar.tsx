@@ -60,3 +60,4 @@ export default function ProgressBar({ current, max, label, showPercentage = true
     </div>
   );
 }
+

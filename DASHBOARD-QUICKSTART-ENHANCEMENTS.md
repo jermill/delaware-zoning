@@ -446,3 +446,4 @@ When connecting to Supabase:
 **Enjoy the enhanced dashboard!** 🎉
 
 *Questions? Check the full summary in `DASHBOARD-ENHANCEMENTS-SUMMARY.md`*
+

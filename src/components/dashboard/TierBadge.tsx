@@ -66,3 +66,4 @@ export default function TierBadge({ tier, size = 'md' }: TierBadgeProps) {
     </span>
   );
 }
+

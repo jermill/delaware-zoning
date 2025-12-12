@@ -27,3 +27,4 @@ export interface SavedProperty {
   zoneName?: string;
   savedAt: string;
 }
+
