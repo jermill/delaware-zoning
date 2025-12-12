@@ -1,6 +1,15 @@
 // Mock data for dashboard demonstration
 // This will be replaced with real data from Supabase once backend is integrated
 
+import type { 
+  DimensionalStandards, 
+  ParkingRequirements, 
+  PermittedUse, 
+  FloodZone, 
+  RequiredPermit,
+  ZoningContact 
+} from '@/types';
+
 export type UserTier = 'looker' | 'pro' | 'whale';
 
 export interface UserProfile {
@@ -26,6 +35,17 @@ export interface SavedProperty {
   starred?: boolean;
   notes?: string;
   tags?: string[];
+  // Enhanced zoning data
+  municipality?: string;
+  dimensionalStandards?: DimensionalStandards;
+  parkingRequirements?: ParkingRequirements;
+  permittedUses?: PermittedUse[];
+  floodZone?: FloodZone;
+  requiredPermits?: RequiredPermit[];
+  overlayDistricts?: string[];
+  zoningContact?: ZoningContact;
+  ordinanceUrl?: string;
+  lastVerified?: string;
 }
 
 export interface SearchHistoryEntry {
@@ -106,9 +126,94 @@ export const mockSavedProperties: SavedProperty[] = [
     zoneName: 'General Commercial',
     county: 'New Castle',
     city: 'Wilmington',
+    municipality: 'City of Wilmington',
     dateSaved: '2024-12-08T14:30:00Z',
     starred: true,
     tags: ['commercial', 'downtown'],
+    dimensionalStandards: {
+      frontSetback: 15,
+      sideSetback: 10,
+      rearSetback: 20,
+      maxHeight: 65,
+      minLotArea: 7500,
+      minLotWidth: 75,
+      far: 2.5,
+      lotCoverage: 75,
+    },
+    parkingRequirements: {
+      ratio: '1 per 250 sq ft',
+      notes: 'Retail: 1 space per 250 sq ft. Office: 1 space per 300 sq ft. Restaurant: 1 space per 100 sq ft. Shared parking arrangements permitted.',
+    },
+    permittedUses: [
+      {
+        category: 'Retail',
+        description: 'General retail stores, shops, boutiques',
+        type: 'allowed',
+      },
+      {
+        category: 'Office',
+        description: 'Professional offices, business services',
+        type: 'allowed',
+      },
+      {
+        category: 'Restaurant',
+        description: 'Restaurants, cafes, bars (with restrictions)',
+        type: 'allowed',
+        conditions: 'Must meet health department requirements',
+      },
+      {
+        category: 'Mixed-Use Development',
+        description: 'Residential units above commercial (up to 4 stories)',
+        type: 'conditional',
+        conditions: 'Requires site plan approval and design review',
+      },
+      {
+        category: 'Hotel/Lodging',
+        description: 'Hotels, motels, extended stay facilities',
+        type: 'conditional',
+        conditions: 'Requires special use permit and traffic study',
+      },
+      {
+        category: 'Heavy Industrial',
+        description: 'Manufacturing, warehousing, distribution',
+        type: 'prohibited',
+      },
+    ],
+    floodZone: {
+      femaZone: 'X',
+      floodRisk: 'Minimal Risk',
+      description: 'Area of minimal flood hazard, usually above the 500-year flood level.',
+    },
+    requiredPermits: [
+      {
+        type: 'Building Permit',
+        description: 'Required for all new construction and major renovations',
+        processingTime: '4-6 weeks',
+        estimatedCost: '$500-$2,500 (based on project value)',
+      },
+      {
+        type: 'Certificate of Occupancy',
+        description: 'Required before occupying any commercial space',
+        processingTime: '1-2 weeks after final inspection',
+        estimatedCost: '$150',
+      },
+      {
+        type: 'Sign Permit',
+        description: 'Required for all exterior signage',
+        processingTime: '2-3 weeks',
+        estimatedCost: '$75-$250',
+      },
+    ],
+    overlayDistricts: ['Downtown Development District', 'Historic Preservation Overlay'],
+    zoningContact: {
+      office: 'City of Wilmington Planning Department',
+      phone: '(302) 576-2140',
+      email: 'planning@wilmingtonde.gov',
+      website: 'https://www.wilmingtonde.gov/residents/planning-development',
+      address: '800 N French St, Wilmington, DE 19801',
+    },
+    ordinanceUrl: 'https://www.wilmingtonde.gov/government/city-code',
+    lastVerified: '2024-11-15',
   },
   {
     id: 'prop-2',
@@ -137,7 +242,86 @@ export const mockSavedProperties: SavedProperty[] = [
     zoneName: 'Medium Density Residential',
     county: 'New Castle',
     city: 'Newark',
+    municipality: 'City of Newark',
     dateSaved: '2024-12-05T09:20:00Z',
+    dimensionalStandards: {
+      frontSetback: 20,
+      sideSetback: 5,
+      rearSetback: 20,
+      maxHeight: 35,
+      minLotArea: 5000,
+      minLotWidth: 40,
+      far: 0.6,
+      lotCoverage: 40,
+    },
+    parkingRequirements: {
+      ratio: '1.5 per unit',
+      notes: '1.5 spaces per dwelling unit. May use on-street parking to satisfy up to 25% of requirement. Guest parking required for multi-family: 0.25 spaces per unit.',
+    },
+    permittedUses: [
+      {
+        category: 'Single-Family Dwelling',
+        description: 'Detached single-family homes',
+        type: 'allowed',
+      },
+      {
+        category: 'Two-Family Dwelling',
+        description: 'Duplex structures',
+        type: 'allowed',
+      },
+      {
+        category: 'Townhouse',
+        description: 'Attached single-family units (max 6 units per building)',
+        type: 'allowed',
+      },
+      {
+        category: 'Home Office',
+        description: 'Professional office in dwelling (no employees)',
+        type: 'conditional',
+        conditions: 'Must be clearly incidental to residential use, no exterior modifications',
+      },
+      {
+        category: 'Accessory Dwelling Unit',
+        description: 'Garage apartment or granny flat',
+        type: 'conditional',
+        conditions: 'Requires special use permit, owner must occupy main dwelling',
+      },
+    ],
+    floodZone: {
+      femaZone: 'AE',
+      floodRisk: 'High Risk',
+      description: 'Area with 1% annual chance of flooding. Flood insurance required for federally backed mortgages. Base Flood Elevation (BFE): 12 feet.',
+    },
+    requiredPermits: [
+      {
+        type: 'Building Permit',
+        description: 'Required for new construction, additions, and major renovations',
+        processingTime: '3-5 weeks',
+        estimatedCost: '$350-$1,500',
+      },
+      {
+        type: 'Floodplain Development Permit',
+        description: 'Required for all development in AE flood zones',
+        processingTime: '4-6 weeks',
+        estimatedCost: '$250',
+      },
+      {
+        type: 'Zoning Permit',
+        description: 'Required before building permit can be issued',
+        processingTime: '1-2 weeks',
+        estimatedCost: '$50',
+      },
+    ],
+    overlayDistricts: ['Floodplain Overlay District'],
+    zoningContact: {
+      office: 'City of Newark Planning & Development',
+      phone: '(302) 366-7030',
+      email: 'planning@newark.de.us',
+      website: 'https://newark.de.us/departments/planning-development',
+      address: '220 S Main St, Newark, DE 19711',
+    },
+    ordinanceUrl: 'https://ecode360.com/NE1639',
+    lastVerified: '2024-10-22',
   },
   {
     id: 'prop-5',
@@ -146,8 +330,98 @@ export const mockSavedProperties: SavedProperty[] = [
     zoneName: 'Light Industrial',
     county: 'New Castle',
     city: 'Wilmington',
+    municipality: 'New Castle County',
     dateSaved: '2024-12-04T11:30:00Z',
     notes: 'Potential warehouse site',
+    dimensionalStandards: {
+      frontSetback: 30,
+      sideSetback: 20,
+      rearSetback: 30,
+      maxHeight: 45,
+      minLotArea: 20000,
+      minLotWidth: 150,
+      far: 0.5,
+      lotCoverage: 50,
+    },
+    parkingRequirements: {
+      ratio: '1 per 1,000 sq ft',
+      notes: '1 space per 1,000 sq ft of building area. Additional loading spaces required based on building size. Warehouse: 1 loading space per 10,000 sq ft. Office component: 1 space per 300 sq ft.',
+    },
+    permittedUses: [
+      {
+        category: 'Warehouse/Distribution',
+        description: 'Indoor storage and distribution facilities',
+        type: 'allowed',
+      },
+      {
+        category: 'Light Manufacturing',
+        description: 'Assembly, fabrication of goods (no heavy machinery)',
+        type: 'allowed',
+      },
+      {
+        category: 'Research & Development',
+        description: 'R&D facilities, laboratories',
+        type: 'allowed',
+      },
+      {
+        category: 'Contractor Yards',
+        description: 'Storage and dispatch for contractors',
+        type: 'conditional',
+        conditions: 'Outdoor storage must be screened from adjacent properties',
+      },
+      {
+        category: 'Truck Terminal',
+        description: 'Trucking operations, fleet storage',
+        type: 'conditional',
+        conditions: 'Requires traffic impact study and special use permit',
+      },
+      {
+        category: 'Residential Uses',
+        description: 'Any residential occupancy',
+        type: 'prohibited',
+      },
+    ],
+    floodZone: {
+      femaZone: 'X',
+      floodRisk: 'Minimal Risk',
+      description: 'Area of minimal flood hazard, usually above the 500-year flood level.',
+    },
+    requiredPermits: [
+      {
+        type: 'Building Permit',
+        description: 'Required for all construction',
+        processingTime: '6-8 weeks',
+        estimatedCost: '$750-$5,000 (based on project value)',
+      },
+      {
+        type: 'Land Use Permit',
+        description: 'Required before building permit',
+        processingTime: '3-4 weeks',
+        estimatedCost: '$200',
+      },
+      {
+        type: 'Environmental Review',
+        description: 'Phase I Environmental Assessment may be required',
+        processingTime: '4-8 weeks',
+        estimatedCost: '$1,500-$5,000',
+      },
+      {
+        type: 'Stormwater Management Permit',
+        description: 'Required for sites over 5,000 sq ft of disturbance',
+        processingTime: '4-6 weeks',
+        estimatedCost: '$500',
+      },
+    ],
+    overlayDistricts: ['Route 2 Corridor Overlay', 'Airport Influence Area'],
+    zoningContact: {
+      office: 'New Castle County Department of Land Use',
+      phone: '(302) 395-5400',
+      email: 'landuse@newcastlede.gov',
+      website: 'https://nccde.org/293/Land-Use',
+      address: '87 Reads Way, New Castle, DE 19720',
+    },
+    ordinanceUrl: 'https://nccde.org/1192/Unified-Development-Code',
+    lastVerified: '2024-09-30',
   },
   {
     id: 'prop-6',

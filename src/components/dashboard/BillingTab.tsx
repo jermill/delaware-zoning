@@ -3,6 +3,9 @@ import { FiCheck, FiDownload, FiCreditCard, FiAlertCircle, FiStar } from 'react-
 import Link from 'next/link';
 import { UserTier, SubscriptionInfo, Invoice } from '@/data/mockDashboardData';
 import TierBadge from './TierBadge';
+import UpgradeButton from '../billing/UpgradeButton';
+import { useAuth } from '@/contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 interface BillingTabProps {
   userTier: UserTier;
@@ -12,13 +15,42 @@ interface BillingTabProps {
 
 export default function BillingTab({ userTier, subscription, invoices }: BillingTabProps) {
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { session } = useAuth();
 
   const handleDownloadInvoice = (invoiceId: string) => {
-    alert(`Would download invoice ${invoiceId} (backend not connected yet)`);
+    // TODO: Implement invoice download from Stripe
+    toast.error('Invoice download will be available soon');
   };
 
-  const handleUpdatePayment = () => {
-    alert('Payment method update will be available once backend integration is complete.');
+  const handleManageBilling = async () => {
+    if (!session) {
+      toast.error('Please log in to manage billing');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch('/api/stripe/create-portal-session', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to open billing portal');
+      }
+
+      // Redirect to Stripe billing portal
+      window.location.href = data.url;
+    } catch (error: any) {
+      console.error('Billing portal error:', error);
+      toast.error(error.message || 'Failed to open billing portal');
+      setLoading(false);
+    }
   };
 
   const handleCancelSubscription = () => {
@@ -26,7 +58,8 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
   };
 
   const confirmCancel = () => {
-    alert('Subscription cancellation will be available once backend integration is complete.');
+    // Use Stripe billing portal for cancellation
+    handleManageBilling();
     setShowCancelModal(false);
   };
 
@@ -134,12 +167,17 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
 
         {subscription.price > 0 && (
           <div className="flex gap-3 mt-6 pt-6 border-t border-gray-200">
-            <button onClick={handleUpdatePayment} className="btn-secondary">
-              Update Payment Method
+            <button 
+              onClick={handleManageBilling} 
+              disabled={loading}
+              className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Loading...' : 'Manage Billing'}
             </button>
             <button
               onClick={handleCancelSubscription}
-              className="px-6 py-3 text-error border-2 border-error rounded-lg font-semibold hover:bg-error hover:text-white transition-all"
+              disabled={loading}
+              className="px-6 py-3 text-error border-2 border-error rounded-lg font-semibold hover:bg-error hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancel Subscription
             </button>
@@ -197,15 +235,18 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
                 <div className="text-center py-3 bg-gray-50 rounded-lg font-medium text-gray-500">
                   Downgrade Not Available
                 </div>
+              ) : plan.id === 'looker' ? (
+                <div className="text-center py-3 bg-gray-50 rounded-lg font-medium text-gray-500">
+                  Current Plan
+                </div>
               ) : (
-                <button
-                  onClick={() => {
-                    alert(`${plan.price > subscription.price ? 'Upgrade' : 'Select'} to ${plan.name} will be available once backend integration is complete.`);
-                  }}
+                <UpgradeButton
+                  tier={plan.id === 'pro' ? 'pro' : 'business'}
+                  currentTier={userTier}
                   className="block text-center w-full py-3 rounded-lg font-semibold transition-all bg-delaware-blue text-white hover:bg-opacity-90 hover:shadow-elevated"
                 >
-                  {plan.price > subscription.price ? 'Upgrade' : 'Select Plan'}
-                </button>
+                  {plan.price > subscription.price ? 'Upgrade Now' : 'Select Plan'}
+                </UpgradeButton>
               )}
             </div>
           ))}
@@ -279,14 +320,15 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
         </div>
       )}
 
-      {/* Cancellation Info */}
+      {/* Billing Info */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex items-start gap-3">
           <FiAlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="font-semibold text-blue-900 mb-1">Subscription Cancellation</p>
+            <p className="font-semibold text-blue-900 mb-1">Manage Your Subscription</p>
             <p className="text-sm text-blue-800">
-              You can cancel your subscription anytime from this page. Access continues until the end of your billing period.
+              Use the "Manage Billing" button to update your payment method, view invoices, or cancel your subscription. 
+              Access continues until the end of your billing period if you cancel.
             </p>
           </div>
         </div>
@@ -296,23 +338,23 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
       {showCancelModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Cancel Subscription?</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Manage Subscription</h3>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to cancel your {subscription.tierName} subscription? You'll lose
-              access to all premium features at the end of your current billing period.
+              You'll be redirected to our secure billing portal where you can cancel your {subscription.tierName} subscription.
+              Your access will continue until the end of your current billing period.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowCancelModal(false)}
                 className="flex-1 btn-secondary"
               >
-                Keep Subscription
+                Go Back
               </button>
               <button
                 onClick={confirmCancel}
-                className="flex-1 px-6 py-3 bg-error text-white rounded-lg font-semibold hover:bg-red-600 transition-colors"
+                className="flex-1 px-6 py-3 bg-delaware-blue text-white rounded-lg font-semibold hover:bg-opacity-90 transition-colors"
               >
-                Cancel Plan
+                Continue
               </button>
             </div>
           </div>
