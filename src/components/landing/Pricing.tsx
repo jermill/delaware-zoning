@@ -17,8 +17,8 @@ export default function Pricing() {
       cta: 'Start Free'
     },
     {
-      id: 'professional',
-      name: 'The Professional',
+      id: 'pro',
+      name: 'The Pro',
       price: 49,
       period: 'month',
       features: [
@@ -32,19 +32,19 @@ export default function Pricing() {
       popular: true
     },
     {
-      id: 'pro',
-      name: 'The Expert',
+      id: 'whale',
+      name: 'The Whale',
       price: 129,
       period: 'month',
       features: [
-        'Everything in The Professional',
+        'Everything in The Pro',
         'Professional PDF reports',
         'Property dimensions & setbacks',
         'Building requirements',
         'Priority support',
         'Perfect for developers & architects'
       ],
-      cta: 'Get Expert'
+      cta: 'Go Whale'
     }
   ];
 

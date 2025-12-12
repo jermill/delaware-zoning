@@ -12,7 +12,7 @@ export default function FAQ() {
     },
     {
       question: 'Can I export reports?',
-      answer: 'Yes! Expert plan subscribers ($129/month) can download professional PDF reports for any property.'
+      answer: 'Yes! Whale plan subscribers ($129/month) can download professional PDF reports for any property.'
     },
     {
       question: 'Which counties are covered?',
