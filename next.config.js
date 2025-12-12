@@ -7,7 +7,7 @@ const nextConfig = {
   
   // Image optimization
   images: {
-    domains: ['delawarezoning.com'],
+    domains: ['delawarezoning.com', 'images.unsplash.com'],
     formats: ['image/avif', 'image/webp'],
   },
   

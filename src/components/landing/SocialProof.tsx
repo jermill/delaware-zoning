@@ -1,4 +1,5 @@
 import { FiStar } from 'react-icons/fi';
+import Image from 'next/image';
 
 const TESTIMONIALS = [
   {
@@ -7,6 +8,7 @@ const TESTIMONIALS = [
     role: "Real Estate Agent",
     company: "Wilmington Realty",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=faces",
   },
   {
     quote: "Essential tool for any developer working in Delaware. The zoning data is accurate and the reports are professional.",
@@ -14,6 +16,7 @@ const TESTIMONIALS = [
     role: "Property Developer",
     company: "First State Development",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces",
   },
   {
     quote: "My clients love that I can answer their zoning questions on the spot during showings. Game changer.",
@@ -21,6 +24,7 @@ const TESTIMONIALS = [
     role: "Commercial Broker",
     company: "Delaware Commercial Group",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=150&h=150&fit=crop&crop=faces",
   },
 ];
 
@@ -59,7 +63,8 @@ export default function SocialProof() {
           {TESTIMONIALS.map((testimonial, idx) => (
             <div 
               key={idx}
-              className="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+              className="rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+              style={{ backgroundColor: '#a8bdbe' }}
             >
               {/* Stars */}
               <div className="flex items-center gap-1 mb-4">
@@ -75,8 +80,13 @@ export default function SocialProof() {
               
               {/* Author */}
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-delaware-blue to-blue-700 flex items-center justify-center text-white font-bold text-sm">
-                  {testimonial.author.charAt(0)}
+                <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src={testimonial.image}
+                    alt={testimonial.author}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>

@@ -2,15 +2,16 @@ import { FiCheckCircle, FiMapPin } from 'react-icons/fi';
 
 export default function Coverage() {
   const counties = [
-    'New Castle County',
-    'Kent County',
-    'Sussex County'
+    { name: 'New Castle County', available: true },
+    { name: 'Sussex County', available: true },
+    { name: 'Kent County', available: false, note: 'Coming soon' }
   ];
 
   const cities = [
     'Wilmington',
-    'Dover',
-    'Newark'
+    'Newark',
+    'Rehoboth Beach',
+    'Lewes'
   ];
 
   return (
@@ -21,10 +22,10 @@ export default function Coverage() {
             Coverage Area
           </p>
           <h2 className="text-section-heading text-gray-900 mb-4">
-            Complete Delaware Coverage
+            Delaware Coverage
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-            All 3 counties and major cities included
+            New Castle & Sussex counties now available
           </p>
         </div>
 
@@ -41,9 +42,12 @@ export default function Coverage() {
             </div>
             <ul className="space-y-3 sm:space-y-4">
               {counties.map((county, index) => (
-                <li key={index} className="flex items-center text-gray-700 text-base sm:text-lg">
-                  <FiCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-delaware-gold mr-2.5 sm:mr-3 flex-shrink-0" />
-                  {county}
+                <li key={index} className="flex items-center text-base sm:text-lg">
+                  <FiCheckCircle className={`w-4 h-4 sm:w-5 sm:h-5 mr-2.5 sm:mr-3 flex-shrink-0 ${county.available ? 'text-delaware-gold' : 'text-gray-300'}`} />
+                  <span className={county.available ? 'text-gray-700' : 'text-gray-400'}>
+                    {county.name}
+                    {!county.available && <span className="text-xs ml-2 text-gray-500 italic">({county.note})</span>}
+                  </span>
                 </li>
               ))}
             </ul>

@@ -207,7 +207,7 @@ export default function Pricing() {
 
         {/* Additional Options */}
         <div className="mt-12 sm:mt-16 max-w-4xl mx-auto px-4">
-          <div className="bg-blue-50 border-2 border-delaware-blue/20 rounded-xl sm:rounded-2xl p-6 sm:p-8">
+          <div className="rounded-xl sm:rounded-2xl p-6 sm:p-8" style={{ backgroundColor: '#a8bdbe' }}>
             <div className="text-center mb-5 sm:mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                 Other Options

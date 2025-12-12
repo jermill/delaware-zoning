@@ -60,12 +60,12 @@ export default function Hero() {
           {/* Left Column - Content */}
           <div className="text-center lg:text-left order-2 lg:order-1">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
+            <div className="inline-flex items-center gap-2 border border-gray-600 rounded-full px-4 py-1.5 mb-6" style={{ backgroundColor: '#a8bdbe' }}>
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              <span className="text-sm text-white/90 font-medium">Now covering all 3 Delaware counties</span>
+              <span className="text-sm text-gray-900 font-medium">Now covering New Castle & Sussex counties</span>
             </div>
 
             {/* Headline */}
@@ -124,55 +124,27 @@ export default function Hero() {
           <div className="relative order-1 lg:order-2">
             {/* Main Search Card */}
             <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 border border-gray-100">
-              {/* Header with Stats */}
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
-                    Try it now — it's free
-                  </h2>
-                  <p className="text-gray-600 text-sm">
-                    Enter any Delaware address to see zoning info instantly
-                  </p>
-                </div>
-              </div>
-
-              {/* Quick Stats Inline */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-3 border border-green-100">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                      <FiZap className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-gray-900">&lt;2s</div>
-                      <div className="text-[10px] font-medium text-gray-600">Avg. search time</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3 border border-blue-100">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-delaware-blue to-blue-700 rounded-lg flex items-center justify-center">
-                      <FiMapPin className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-gray-900">3</div>
-                      <div className="text-[10px] font-medium text-gray-600">Counties covered</div>
-                    </div>
-                  </div>
-                </div>
+              {/* Header */}
+              <div className="text-center mb-6">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                  Get Started for Free!
+                </h2>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Enter any Delaware address to see zoning info instantly
+                </p>
               </div>
 
               {/* Search Input */}
               <div className="relative z-30 mb-4">
                 <div className="relative">
-                  <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 z-10" />
                   <input
                     ref={inputRef}
                     type="text"
-                    placeholder={isLoaded ? "Enter address (e.g., 123 Main St, Wilmington)" : "Loading..."}
+                    placeholder={isLoaded ? "123 Main St, Wilmington, DE" : "Loading Google Maps..."}
                     onKeyPress={handleKeyPress}
                     disabled={!isLoaded}
-                    className="w-full pl-12 pr-4 py-4 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-delaware-blue focus:ring-2 focus:ring-delaware-blue/20 transition-all disabled:opacity-60"
+                    className="w-full pl-12 pr-4 py-4 text-base bg-white border-2 border-gray-300 rounded-xl focus:outline-none focus:border-delaware-blue focus:ring-4 focus:ring-delaware-blue/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed placeholder:text-gray-400"
                   />
                 </div>
 
@@ -199,7 +171,8 @@ export default function Hero() {
               {/* Search Button */}
               <button 
                 onClick={handleSearch}
-                className="w-full bg-delaware-blue hover:bg-blue-800 text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200"
+                disabled={!isLoaded}
+                className="w-full bg-delaware-blue hover:bg-blue-800 text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <FiSearch className="w-5 h-5" />
                 Search Zoning Info
@@ -231,7 +204,7 @@ export default function Hero() {
               >
                 Create Free Account
               </a>
-              <p className="text-center text-xs text-gray-500 mt-3">
+              <p className="text-center text-xs sm:text-sm text-gray-500 mt-3">
                 Get 3 free searches • No credit card required
               </p>
             </div>

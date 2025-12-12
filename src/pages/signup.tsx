@@ -54,8 +54,11 @@ export default function Signup() {
       }
 
       toast.success('Account created! Check your email to verify your account.');
-      // Note: Supabase sends a confirmation email by default
-      // User will be automatically signed in after email verification
+      // Redirect to verify email page
+      router.push({
+        pathname: '/verify-email',
+        query: { email },
+      });
     } catch (error) {
       toast.error('An unexpected error occurred');
     } finally {
