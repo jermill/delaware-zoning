@@ -92,9 +92,9 @@ export default function Footer() {
               © {currentYear} Delaware Zoning LLC. All rights reserved.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-2 text-xs sm:text-sm text-gray-400">
-              <span>+1-800-555-1234</span>
-              <span className="hidden sm:inline text-gray-600">•</span>
-              <span>info@delawarezoning.com</span>
+              <a href="mailto:support@delawarezoning.com" className="hover:text-delaware-gold transition-colors">
+                support@delawarezoning.com
+              </a>
             </div>
           </div>
         </div>

@@ -45,18 +45,6 @@ export default function Header() {
             >
               Contact
             </Link>
-            <Link 
-              href="/dashboard" 
-              className="text-gray-700 hover:text-delaware-blue hover:bg-gray-50 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
-            >
-              Dashboard
-            </Link>
-            <Link 
-              href="/admin" 
-              className="text-delaware-gold hover:text-yellow-600 hover:bg-yellow-50 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
-            >
-              Admin
-            </Link>
             <div className="w-px h-6 bg-gray-300 mx-2"></div>
             <Link 
               href="/login" 
