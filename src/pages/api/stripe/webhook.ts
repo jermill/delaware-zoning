@@ -1,16 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
 import { buffer } from 'micro';
+import { serverEnv } from '@/lib/env.server';
+import { createSupabaseAdmin } from '@/lib/supabase';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, {
   apiVersion: '2025-11-17.clover',
 });
-
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 // Disable body parser for this route (required for Stripe webhooks)
 export const config = {
@@ -34,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     event = stripe.webhooks.constructEvent(
       buf,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      serverEnv.STRIPE_WEBHOOK_SECRET
     );
   } catch (err: any) {
     console.error('Webhook signature verification failed:', err.message);
@@ -96,6 +92,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     return;
   }
 
+  const supabaseAdmin = createSupabaseAdmin();
+  
   // Update subscription in database
   await supabaseAdmin
     .from('subscriptions')
@@ -122,6 +120,8 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     return;
   }
 
+  const supabaseAdmin = createSupabaseAdmin();
+  
   const status = subscription.status === 'active' ? 'active' :
                  subscription.status === 'past_due' ? 'past_due' :
                  subscription.status === 'canceled' ? 'cancelled' :
@@ -159,6 +159,8 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
     return;
   }
 
+  const supabaseAdmin = createSupabaseAdmin();
+  
   // Downgrade to free tier
   await supabaseAdmin
     .from('subscriptions')
@@ -190,6 +192,8 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
     return;
   }
 
+  const supabaseAdmin = createSupabaseAdmin();
+  
   // Ensure subscription is active
   const currentPeriodEnd = (subscription as any).current_period_end
     ? new Date((subscription as any).current_period_end * 1000).toISOString()
@@ -223,6 +227,8 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
     return;
   }
 
+  const supabaseAdmin = createSupabaseAdmin();
+  
   // Mark subscription as past_due
   await supabaseAdmin
     .from('subscriptions')

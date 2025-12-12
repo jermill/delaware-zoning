@@ -1,15 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
+import { serverEnv } from '@/lib/env.server';
+import { createSupabaseAdmin } from '@/lib/supabase';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY, {
   apiVersion: '2025-11-17.clover',
 });
-
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -33,6 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Get or create Stripe customer
     let customerId: string;
 
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Check if user already has a Stripe customer ID
     const { data: subscription } = await supabaseAdmin
       .from('subscriptions')

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabaseAdmin } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { FiExternalLink, FiEye, FiUsers, FiClock } from 'react-icons/fi';
 
 interface PopularPage {
@@ -18,13 +18,33 @@ export default function PopularPages() {
   useEffect(() => {
     const fetchPopularPages = async () => {
       try {
-        const { data, error } = await supabaseAdmin
-          .from('popular_pages')
-          .select('*');
+        // Get auth token
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          console.error('No active session');
+          setLoading(false);
+          return;
+        }
 
-        if (error) throw error;
+        // Call secure API route with auth token
+        const response = await fetch('/api/admin/popular-pages', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-        setPages(data || []);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to fetch popular pages');
+        }
+
+        const result = await response.json();
+        
+        if (result.success) {
+          setPages(result.data || []);
+        }
       } catch (error) {
         console.error('Error fetching popular pages:', error);
       } finally {

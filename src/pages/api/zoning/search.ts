@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { supabaseAdmin } from '@/lib/supabase';
+import { createSupabaseAdmin } from '@/lib/supabase';
 import { optionalAuth } from '@/middleware/auth';
 import { rateLimit } from '@/middleware/rateLimit';
 import { logger, logApiError, logApiRequest, logSearchPerformed } from '@/lib/logger';
@@ -53,6 +53,8 @@ export default async function handler(
       });
     }
 
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Check usage limits if user is authenticated
     if (user) {
       const { data: canSearch, error: usageError } = await supabaseAdmin.rpc(

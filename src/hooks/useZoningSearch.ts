@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { clientEnv } from '@/lib/env.client';
 
 export interface ZoningData {
   address: string | null;
@@ -60,7 +61,7 @@ interface UseZoningSearchResult {
 
 // Helper function to geocode address using Google Maps API
 async function geocodeAddress(address: string): Promise<{ lat: number; lon: number } | null> {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const apiKey = clientEnv.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   
   if (!apiKey) {
     console.error('Google Maps API key is missing');

@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { supabaseAdmin } from '@/lib/supabase';
+import { createSupabaseAdmin } from '@/lib/supabase';
 import { withAuth, AuthenticatedRequest } from '@/middleware/auth';
 import { withRateLimit } from '@/middleware/rateLimit';
 import { logger, logApiError, logApiRequest } from '@/lib/logger';
@@ -54,6 +54,8 @@ async function handler(
     const sanitizedNotes = notes ? validator.escape(validator.trim(notes)) : null;
     const sanitizedZipCode = zip_code ? validator.trim(zip_code) : null;
 
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Check user's subscription tier and save limit
     const { data: subscription, error: subError } = await supabaseAdmin
       .from('subscriptions')

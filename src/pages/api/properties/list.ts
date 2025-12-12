@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { supabaseAdmin } from '@/lib/supabase';
+import { createSupabaseAdmin } from '@/lib/supabase';
 import { withAuth, AuthenticatedRequest } from '@/middleware/auth';
 import { withRateLimit } from '@/middleware/rateLimit';
 import { logger, logApiError, logApiRequest } from '@/lib/logger';
@@ -23,6 +23,8 @@ async function handler(
   logApiRequest('GET', '/api/properties/list', userId);
 
   try {
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Fetch user's saved properties
     const { data: savedProperties, error: propertiesError } = await supabaseAdmin
       .from('saved_properties')

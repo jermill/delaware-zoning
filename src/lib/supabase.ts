@@ -1,10 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
-import { env } from './env';
+import { clientEnv } from './env.client';
 
-// Client-side Supabase client
+// Client-side Supabase client (safe for browser)
 export const supabase = createClient(
-  env.NEXT_PUBLIC_SUPABASE_URL,
-  env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  clientEnv.NEXT_PUBLIC_SUPABASE_URL,
+  clientEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   {
     auth: {
       persistSession: true,
@@ -13,14 +13,28 @@ export const supabase = createClient(
   }
 );
 
-// Server-side Supabase client with service role (admin access)
-export const supabaseAdmin = createClient(
-  env.NEXT_PUBLIC_SUPABASE_URL,
-  env.SUPABASE_SERVICE_ROLE_KEY,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  }
-);
+/**
+ * Server-side Supabase client with service role (admin access)
+ * 
+ * ⚠️ WARNING: This should ONLY be imported in server-side code:
+ * - API routes (/pages/api/*)
+ * - getServerSideProps
+ * - getStaticProps
+ * 
+ * NEVER import this in client components or hooks!
+ */
+export const createSupabaseAdmin = () => {
+  // Lazy import to ensure this only runs on server
+  const { serverEnv } = require('./env.server');
+  
+  return createClient(
+    serverEnv.NEXT_PUBLIC_SUPABASE_URL,
+    serverEnv.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    }
+  );
+};

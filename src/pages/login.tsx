@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { clientEnv } from '@/lib/env.client';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -94,7 +95,7 @@ export default function Login() {
               {/* hCaptcha Security Verification */}
               <div className="flex justify-center">
                 <HCaptcha
-                  sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!}
+                  sitekey={clientEnv.NEXT_PUBLIC_HCAPTCHA_SITE_KEY}
                   onVerify={(token) => {
                     setCaptchaToken(token);
                     setCaptchaError(false);

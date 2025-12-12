@@ -3,17 +3,18 @@ import { useRouter } from 'next/router';
 import { FiCheck, FiStar, FiLoader } from 'react-icons/fi';
 import { PricingPlan } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
+import { clientEnv } from '@/lib/env.client';
 
 export default function Pricing() {
   const router = useRouter();
   const { user } = useAuth();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
-  // Stripe Price IDs (these should match your .env.local)
+  // Stripe Price IDs
   const stripePrices = {
-    looker: process.env.NEXT_PUBLIC_STRIPE_PRICE_LOOKER || '',
-    pro: process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO || '',
-    whale: process.env.NEXT_PUBLIC_STRIPE_PRICE_WHALE || '',
+    looker: clientEnv.STRIPE_PRICE_LOOKER,
+    pro: clientEnv.STRIPE_PRICE_PRO,
+    whale: clientEnv.STRIPE_PRICE_WHALE,
   };
 
   const handleSubscribe = async (planId: string, tier: 'looker' | 'pro' | 'whale') => {

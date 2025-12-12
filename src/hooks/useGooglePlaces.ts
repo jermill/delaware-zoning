@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { clientEnv } from '@/lib/env.client';
 
 interface PlaceResult {
   address: string;
@@ -24,7 +25,7 @@ export function useGooglePlaces(
 
   // Load Google Maps script
   useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    const apiKey = clientEnv.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     
     if (!apiKey) {
       console.error('Google Maps API key is missing');

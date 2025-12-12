@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { supabaseAdmin } from '@/lib/supabase';
+import { createSupabaseAdmin } from '@/lib/supabase';
 
 /**
  * Handle checkout.session.completed event
@@ -38,6 +38,8 @@ export async function handleCheckoutSessionCompleted(
   const tierLimits = limits[tier];
 
   try {
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Update subscription in Supabase
     const { error } = await supabaseAdmin
       .from('subscriptions')
@@ -100,6 +102,8 @@ export async function handleSubscriptionUpdated(
   const status = statusMap[subscription.status] || 'active';
 
   try {
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Get current period dates if available
     const updateData: any = {
       status: status,
@@ -148,6 +152,8 @@ export async function handleSubscriptionDeleted(
   }
 
   try {
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Downgrade to free tier
     const { error } = await supabaseAdmin
       .from('subscriptions')
@@ -197,6 +203,8 @@ export async function handleInvoicePaymentSucceeded(
   }
 
   try {
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Ensure subscription is marked as active
     const { error } = await supabaseAdmin
       .from('subscriptions')
@@ -240,6 +248,8 @@ export async function handleInvoicePaymentFailed(
   }
 
   try {
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Mark subscription status based on payment failure
     // Stripe will retry automatically, so we keep it active but could send notification
     const { error } = await supabaseAdmin

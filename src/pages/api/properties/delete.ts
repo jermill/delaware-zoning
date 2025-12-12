@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { supabaseAdmin } from '@/lib/supabase';
+import { createSupabaseAdmin } from '@/lib/supabase';
 import { withAuth, AuthenticatedRequest } from '@/middleware/auth';
 import { withRateLimit } from '@/middleware/rateLimit';
 import { logger, logApiError, logApiRequest } from '@/lib/logger';
@@ -32,6 +32,8 @@ async function handler(
       });
     }
 
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Verify property belongs to user and delete
     const { error: deleteError, count } = await supabaseAdmin
       .from('saved_properties')

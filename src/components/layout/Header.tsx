@@ -17,10 +17,11 @@ export default function Header() {
               <Image 
                 src="/logo.png" 
                 alt="Delaware Zoning Logo" 
-                fill
-                className="object-contain mix-blend-multiply"
-                style={{ backgroundColor: 'transparent' }}
+                width={56}
+                height={56}
+                className="object-contain"
                 priority
+                unoptimized
               />
             </div>
           </Link>

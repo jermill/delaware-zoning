@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { supabaseAdmin } from '@/lib/supabase';
+import { createSupabaseAdmin } from '@/lib/supabase';
 import { logger, logApiError } from '@/lib/logger';
 
 export interface AuthenticatedRequest extends NextApiRequest {
@@ -25,6 +25,8 @@ export async function validateAuth(
   const token = authHeader.replace('Bearer ', '');
 
   try {
+    const supabaseAdmin = createSupabaseAdmin();
+    
     // Validate token with Supabase
     const {
       data: { user },
