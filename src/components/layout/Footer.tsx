@@ -12,17 +12,19 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2">
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 bg-white rounded-lg p-1">
+              <div className="relative w-14 h-14 flex-shrink-0 bg-white rounded-md p-2">
                 <Image 
-                  src="/logo.png" 
+                  src="/images/logo.png" 
                   alt="Delaware Zoning Logo" 
                   fill
-                  className="object-contain"
+                  className="object-contain p-1"
                 />
               </div>
-              <p className="text-gray-400 text-sm sm:text-base max-w-md leading-relaxed sm:pt-1">
-                Instant zoning answers for Delaware real estate professionals. We provide tailored solutions, guiding you through every step.
-              </p>
+              <div className="flex-1">
+                <p className="text-gray-300 text-sm sm:text-base max-w-md leading-relaxed">
+                  Instant zoning answers for Delaware real estate professionals. We provide tailored solutions, guiding you through every step.
+                </p>
+              </div>
             </div>
             <div className="flex gap-3 sm:gap-4">
               <a href="#" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-delaware-gold transition-all duration-300 hover:scale-110">

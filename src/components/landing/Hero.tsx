@@ -206,24 +206,24 @@ export default function Hero() {
               </p>
             </div>
 
-            {/* Floating Stats */}
-            <div className="hidden lg:flex absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg px-4 py-3 items-center gap-3">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                <FiZap className="w-5 h-5 text-green-600" />
+            {/* Floating Stats - Redesigned */}
+            <div className="hidden lg:flex absolute -bottom-4 -left-4 bg-gradient-to-br from-green-50 to-emerald-50 backdrop-blur-sm rounded-2xl shadow-xl border border-green-100/50 px-5 py-3.5 items-center gap-3 hover:shadow-2xl transition-all duration-300">
+              <div className="w-11 h-11 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30">
+                <FiZap className="w-5 h-5 text-white" />
               </div>
               <div>
-                <div className="text-lg font-bold text-gray-900">&lt;2s</div>
-                <div className="text-xs text-gray-500">Avg. search time</div>
+                <div className="text-xl font-bold text-gray-900 tracking-tight">&lt;2s</div>
+                <div className="text-xs font-medium text-gray-600">Avg. search time</div>
               </div>
             </div>
 
-            <div className="hidden lg:flex absolute -top-4 -right-4 bg-white rounded-xl shadow-lg px-4 py-3 items-center gap-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <FiMapPin className="w-5 h-5 text-delaware-blue" />
+            <div className="hidden lg:flex absolute -top-4 -right-4 bg-gradient-to-br from-blue-50 to-indigo-50 backdrop-blur-sm rounded-2xl shadow-xl border border-blue-100/50 px-5 py-3.5 items-center gap-3 hover:shadow-2xl transition-all duration-300">
+              <div className="w-11 h-11 bg-gradient-to-br from-delaware-blue to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                <FiMapPin className="w-5 h-5 text-white" />
               </div>
               <div>
-                <div className="text-lg font-bold text-gray-900">3</div>
-                <div className="text-xs text-gray-500">Counties covered</div>
+                <div className="text-xl font-bold text-gray-900 tracking-tight">3</div>
+                <div className="text-xs font-medium text-gray-600">Counties covered</div>
               </div>
             </div>
           </div>

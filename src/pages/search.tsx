@@ -243,7 +243,7 @@ export default function SearchPage() {
           )}
 
           {/* No Query State */}
-          {!address && !loading && (
+          {!address && !loading && router.isReady && (
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-12 text-center">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FiAlertCircle className="w-8 h-8 text-gray-400" />
