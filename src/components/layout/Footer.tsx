@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { FooterDataDisclaimer } from '@/components/common/DataDisclaimerBanner';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -75,6 +76,11 @@ export default function Footer() {
                   Terms of Service
                 </Link>
               </li>
+              <li>
+                <Link href="/data-disclaimer" className="text-sm sm:text-base text-amber-400 hover:text-amber-300 transition-colors duration-300 font-medium">
+                  ⚠️ Data Disclaimer
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -83,7 +89,7 @@ export default function Footer() {
         <div className="pt-6 sm:pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
             <p className="text-gray-400 text-xs sm:text-sm text-center md:text-left">
-              Data from Delaware county records. © {currentYear} Delaware Zoning LLC. All rights reserved.
+              © {currentYear} Delaware Zoning LLC. All rights reserved.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-2 text-xs sm:text-sm text-gray-400">
               <span>+1-800-555-1234</span>
@@ -93,6 +99,9 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      
+      {/* Development Data Warning - Sticky to bottom of footer */}
+      <FooterDataDisclaimer />
     </footer>
   );
 }

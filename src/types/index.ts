@@ -1,5 +1,5 @@
 // Pricing Tiers
-export type PricingTier = 'free' | 'looker' | 'pro';
+export type PricingTier = 'free' | 'looker' | 'pro' | 'whale';
 
 export interface PricingPlan {
   id: PricingTier;

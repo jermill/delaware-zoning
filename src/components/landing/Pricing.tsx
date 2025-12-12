@@ -194,10 +194,9 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* Guarantee */}
+        {/* Cancel Info */}
         <div className="text-center mt-10 sm:mt-12 text-gray-600 px-4">
-          <p className="text-sm sm:text-base font-semibold mb-2">All plans include a 14-day money-back guarantee.</p>
-          <p className="text-xs sm:text-sm">No questions asked. Cancel anytime.</p>
+          <p className="text-xs sm:text-sm">Cancel anytime from your dashboard.</p>
         </div>
       </div>
     </section>

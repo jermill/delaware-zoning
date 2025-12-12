@@ -1,84 +1,158 @@
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Layout from '@/components/layout/Layout';
-import { FiSearch, FiBookmark, FiUser } from 'react-icons/fi';
+import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
+import MobileTabBar from '@/components/dashboard/MobileTabBar';
+import OverviewTab from '@/components/dashboard/OverviewTab';
+import SavedPropertiesTab from '@/components/dashboard/SavedPropertiesTab';
+import SearchHistoryTab from '@/components/dashboard/SearchHistoryTab';
+import AccountTab from '@/components/dashboard/AccountTab';
+import BillingTab from '@/components/dashboard/BillingTab';
+import HelpTab from '@/components/dashboard/HelpTab';
+import { UserTier, getDashboardData } from '@/data/mockDashboardData';
 
 export default function Dashboard() {
+  const router = useRouter();
+  
+  // State for current tab
+  const [currentTab, setCurrentTab] = useState('overview');
+  
+  // Handle URL query parameter for tab navigation
+  useEffect(() => {
+    if (router.query.tab) {
+      const tab = router.query.tab as string;
+      const validTabs = ['overview', 'saved', 'history', 'account', 'billing', 'help'];
+      if (validTabs.includes(tab)) {
+        setCurrentTab(tab);
+      }
+    }
+  }, [router.query.tab]);
+  
+  // State for user tier (for testing - default to 'pro' for demo)
+  // In production, this would come from authentication/session
+  const [currentUserTier, setCurrentUserTier] = useState<UserTier>('pro');
+
+  // Get mock data based on current tier
+  const dashboardData = getDashboardData(currentUserTier);
+
+  // Render tab content
+  const renderTabContent = () => {
+    switch (currentTab) {
+      case 'overview':
+        return (
+          <OverviewTab
+            userTier={currentUserTier}
+            usage={dashboardData.usage}
+            subscription={dashboardData.subscription}
+            recentSearches={dashboardData.searchHistory.slice(0, 5)}
+            userName={dashboardData.user.name}
+            onTabChange={setCurrentTab}
+            usageChartData={dashboardData.usageChartData}
+            countyBreakdown={dashboardData.countyBreakdown}
+          />
+        );
+      case 'saved':
+        return (
+          <SavedPropertiesTab
+            userTier={currentUserTier}
+            properties={dashboardData.savedProperties}
+          />
+        );
+      case 'history':
+        return (
+          <SearchHistoryTab
+            userTier={currentUserTier}
+            searches={dashboardData.searchHistory}
+          />
+        );
+      case 'account':
+        return <AccountTab user={dashboardData.user} />;
+      case 'billing':
+        return (
+          <BillingTab
+            userTier={currentUserTier}
+            subscription={dashboardData.subscription}
+            invoices={dashboardData.invoices}
+          />
+        );
+      case 'help':
+        return <HelpTab />;
+      default:
+        return <OverviewTab
+          userTier={currentUserTier}
+          usage={dashboardData.usage}
+          subscription={dashboardData.subscription}
+          recentSearches={dashboardData.searchHistory.slice(0, 5)}
+        />;
+    }
+  };
+
   return (
     <Layout>
-      <div className="section-container">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            Dashboard
-          </h1>
-          <p className="text-sm sm:text-base text-gray-600">
-            Manage your properties and account
-          </p>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-white rounded-lg shadow p-5 sm:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-xs sm:text-sm mb-1">Searches This Month</p>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-900">0 / 5</p>
-              </div>
-              <div className="bg-blue-100 p-2.5 sm:p-3 rounded-full">
-                <FiSearch className="w-5 h-5 sm:w-6 sm:h-6 text-delaware-blue" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-5 sm:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-xs sm:text-sm mb-1">Saved Properties</p>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-900">0</p>
-              </div>
-              <div className="bg-blue-100 p-2.5 sm:p-3 rounded-full">
-                <FiBookmark className="w-5 h-5 sm:w-6 sm:h-6 text-delaware-blue" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-5 sm:p-6 sm:col-span-2 md:col-span-1">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-xs sm:text-sm mb-1">Current Plan</p>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-900">Free</p>
-              </div>
-              <div className="bg-blue-100 p-2.5 sm:p-3 rounded-full">
-                <FiUser className="w-5 h-5 sm:w-6 sm:h-6 text-delaware-blue" />
-              </div>
+      <div className="min-h-screen bg-gray-50">
+        {/* Tier Switcher (for testing only - remove in production) */}
+        <div className="bg-yellow-100 border-b-2 border-yellow-300 px-4 py-2">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <p className="text-sm font-medium text-gray-800">
+              <strong>Testing Mode:</strong> Switch between user tiers to see different features
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setCurrentUserTier('looker')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  currentUserTier === 'looker'
+                    ? 'bg-delaware-tan text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                The Looker
+              </button>
+              <button
+                onClick={() => setCurrentUserTier('pro')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  currentUserTier === 'pro'
+                    ? 'bg-delaware-blue text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                The Pro
+              </button>
+              <button
+                onClick={() => setCurrentUserTier('whale')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  currentUserTier === 'whale'
+                    ? 'bg-delaware-gold text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                The Whale
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Saved Properties */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-4 sm:p-6 border-b border-gray-200">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-              Saved Properties
-            </h2>
-          </div>
-          <div className="p-4 sm:p-6">
-            <div className="text-center py-8 sm:py-12">
-              <FiBookmark className="w-10 h-10 sm:w-12 sm:h-12 text-gray-300 mx-auto mb-3 sm:mb-4" />
-              <p className="text-sm sm:text-base text-gray-600 mb-4">
-                You haven't saved any properties yet
-              </p>
-              <a href="/" className="btn-primary inline-block">
-                Search Properties
-              </a>
+        {/* Dashboard Layout */}
+        <div className="flex h-[calc(100vh-140px)]">
+          {/* Sidebar - Hidden on mobile */}
+          <aside className="hidden md:block w-64 lg:w-72 flex-shrink-0 overflow-y-auto border-r border-gray-200">
+            <DashboardSidebar
+              currentTab={currentTab}
+              onTabChange={setCurrentTab}
+              userName={dashboardData.user.name}
+              userTier={currentUserTier}
+            />
+          </aside>
+
+          {/* Main Content Area */}
+          <main className="flex-1 overflow-y-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-20 md:pb-8">
+              {renderTabContent()}
             </div>
-          </div>
+          </main>
         </div>
 
-        {/* Coming Soon Notice */}
-        <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-blue-50 rounded-lg">
-          <p className="text-xs sm:text-sm text-gray-600 text-center">
-            <strong>Note:</strong> This is a preview. Full dashboard functionality will be available once backend integration is complete.
-          </p>
-        </div>
+        {/* Mobile Tab Bar */}
+        <MobileTabBar currentTab={currentTab} onTabChange={setCurrentTab} />
       </div>
     </Layout>
   );
