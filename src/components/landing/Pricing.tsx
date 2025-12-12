@@ -5,7 +5,7 @@ export default function Pricing() {
   const plans: PricingPlan[] = [
     {
       id: 'free',
-      name: 'Free Trial',
+      name: 'The Looker',
       price: 0,
       period: 'forever',
       features: [
@@ -17,8 +17,8 @@ export default function Pricing() {
       cta: 'Start Free'
     },
     {
-      id: 'looker',
-      name: 'The Looker',
+      id: 'professional',
+      name: 'The Professional',
       price: 49,
       period: 'month',
       features: [
@@ -37,7 +37,7 @@ export default function Pricing() {
       price: 129,
       period: 'month',
       features: [
-        'Everything in The Looker',
+        'Everything in The Professional',
         'Professional PDF reports',
         'Property dimensions & setbacks',
         'Building requirements',
