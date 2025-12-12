@@ -5,7 +5,7 @@ import { cleanEnv, str, url } from 'envalid';
  * Only NEXT_PUBLIC_* variables are available in the browser
  */
 export const clientEnv = cleanEnv(
-  typeof window !== 'undefined' ? (window as any).ENV : process.env,
+  process.env,
   {
     NEXT_PUBLIC_SUPABASE_URL: url({
       desc: 'Supabase project URL',
@@ -33,19 +33,6 @@ export const clientEnv = cleanEnv(
     NEXT_PUBLIC_GA_TRACKING_ID: str({
       default: '',
       desc: 'Google Analytics 4 tracking ID',
-    }),
-    // Stripe Price IDs (not sensitive - visible in checkout URLs)
-    STRIPE_PRICE_LOOKER: str({
-      default: '',
-      desc: 'Stripe Price ID for Looker tier',
-    }),
-    STRIPE_PRICE_PRO: str({
-      default: '',
-      desc: 'Stripe Price ID for Pro tier',
-    }),
-    STRIPE_PRICE_WHALE: str({
-      default: '',
-      desc: 'Stripe Price ID for Whale tier',
     }),
   }
 );
