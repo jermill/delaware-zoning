@@ -56,7 +56,7 @@ export default function Hero() {
         </div>
 
         <p className="text-sm sm:text-base text-blue-200 mb-12 sm:mb-16 px-4">
-          5 free searches • No credit card needed
+          3 free searches • No credit card needed
         </p>
 
         {/* Stats Section */}

@@ -9,7 +9,7 @@ export default function Pricing() {
       price: 0,
       period: 'forever',
       features: [
-        '5 property searches per month',
+        '3 property searches per month',
         'Basic zoning information',
         'Save properties to dashboard',
         'Perfect for trying it out'
@@ -19,7 +19,7 @@ export default function Pricing() {
     {
       id: 'looker',
       name: 'The Looker',
-      price: 19,
+      price: 49,
       period: 'month',
       features: [
         'Unlimited property searches',
@@ -34,7 +34,7 @@ export default function Pricing() {
     {
       id: 'pro',
       name: 'The Pro',
-      price: 49,
+      price: 129,
       period: 'month',
       features: [
         'Everything in The Looker',
@@ -140,7 +140,7 @@ export default function Pricing() {
                   Single Report
                 </h4>
                 <div className="text-2xl sm:text-3xl font-bold text-delaware-blue mb-3">
-                  $19 <span className="text-sm sm:text-base font-normal text-gray-600">one-time</span>
+                  $39 <span className="text-sm sm:text-base font-normal text-gray-600">one-time</span>
                 </div>
                 <p className="text-sm sm:text-base text-gray-600 mb-4">
                   Need info for just one property? Buy a professional PDF report without subscribing.
