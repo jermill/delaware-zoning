@@ -23,10 +23,6 @@ export default function AccountTab({ user }: AccountTabProps) {
     alert('Password change will be available once backend integration is complete.');
   };
 
-  const handleUploadAvatar = () => {
-    alert('Avatar upload will be available once backend integration is complete.');
-  };
-
   const tabs = [
     { id: 'profile' as TabView, label: 'Profile', icon: FiUser },
     { id: 'preferences' as TabView, label: 'Preferences', icon: FiBell },
@@ -47,7 +43,7 @@ export default function AccountTab({ user }: AccountTabProps) {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-6 py-4 border-b-2 font-medium text-sm transition-colors ${
                     activeTab === tab.id
-                      ? 'border-delaware-blue text-delaware-blue'
+                      ? 'border-[#152F50] text-[#152F50]'
                       : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                   }`}
                 >
@@ -65,27 +61,12 @@ export default function AccountTab({ user }: AccountTabProps) {
             <div className="space-y-6">
               {/* Avatar Section */}
               <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
-                <div className="relative">
-                  <div className="w-20 h-20 rounded-full bg-delaware-gold flex items-center justify-center text-white text-3xl font-bold">
-                    {user.name.charAt(0)}
-                  </div>
-                  <button
-                    onClick={handleUploadAvatar}
-                    className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
-                    title="Upload avatar"
-                  >
-                    <FiCamera className="w-4 h-4 text-gray-600" />
-                  </button>
+                <div className="w-20 h-20 rounded-full bg-[#D8B368] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                  {user.name.charAt(0)}
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">{user.name}</h3>
                   <p className="text-sm text-gray-600">{user.email}</p>
-                  <button
-                    onClick={handleUploadAvatar}
-                    className="text-sm text-delaware-blue hover:underline mt-1"
-                  >
-                    Change photo
-                  </button>
                 </div>
               </div>
 
@@ -245,7 +226,7 @@ export default function AccountTab({ user }: AccountTabProps) {
                     <button
                       onClick={() => setEmailNotifications(!emailNotifications)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        emailNotifications ? 'bg-delaware-blue' : 'bg-gray-300'
+                        emailNotifications ? 'bg-[#82B8DE]' : 'bg-gray-300'
                       }`}
                     >
                       <span
@@ -266,7 +247,7 @@ export default function AccountTab({ user }: AccountTabProps) {
                     <button
                       onClick={() => setWeeklyDigest(!weeklyDigest)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        weeklyDigest ? 'bg-delaware-blue' : 'bg-gray-300'
+                        weeklyDigest ? 'bg-[#82B8DE]' : 'bg-gray-300'
                       }`}
                     >
                       <span
@@ -287,7 +268,7 @@ export default function AccountTab({ user }: AccountTabProps) {
                     <button
                       onClick={() => setMarketingEmails(!marketingEmails)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        marketingEmails ? 'bg-delaware-blue' : 'bg-gray-300'
+                        marketingEmails ? 'bg-[#82B8DE]' : 'bg-gray-300'
                       }`}
                     >
                       <span
@@ -309,7 +290,7 @@ export default function AccountTab({ user }: AccountTabProps) {
                   <select
                     value={defaultCounty}
                     onChange={(e) => setDefaultCounty(e.target.value)}
-                    className="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-delaware-blue focus:border-delaware-blue bg-white"
+                    className="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#82B8DE] focus:border-[#82B8DE] bg-white"
                   >
                     <option value="New Castle">New Castle County</option>
                     <option value="Kent">Kent County</option>
@@ -389,7 +370,7 @@ export default function AccountTab({ user }: AccountTabProps) {
                 </p>
                 <a
                   href="mailto:support@delawarezoning.com"
-                  className="text-delaware-blue hover:underline font-medium"
+                  className="text-[#82B8DE] hover:text-[#152F50] hover:underline font-medium"
                 >
                   support@delawarezoning.com
                 </a>
