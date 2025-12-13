@@ -164,8 +164,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       setSession(session);
       setUser(session?.user ?? null);
+      setLoading(false);
 
-      if (session?.user) {
+      // Redirect immediately without waiting for data
+      if (event === 'SIGNED_IN') {
+        router.push('/dashboard');
+        // Fetch data in background after redirect
+        if (session?.user) {
+          Promise.all([
+            fetchProfile(session.user.id),
+            fetchSubscription(session.user.id),
+          ]);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        setProfile(null);
+        setSubscription(null);
+        router.push('/');
+      } else if (session?.user) {
+        // For other events, fetch data normally
         await Promise.all([
           fetchProfile(session.user.id),
           fetchSubscription(session.user.id),
@@ -173,15 +189,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setProfile(null);
         setSubscription(null);
-      }
-
-      setLoading(false);
-
-      // Redirect based on auth state
-      if (event === 'SIGNED_IN') {
-        router.push('/dashboard');
-      } else if (event === 'SIGNED_OUT') {
-        router.push('/');
       }
     });
 

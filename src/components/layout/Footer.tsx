@@ -12,7 +12,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2">
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
-              <div className="relative w-14 h-14 flex-shrink-0 bg-white rounded-md p-2">
+              <div className="relative w-14 h-14 flex-shrink-0 rounded-md p-2">
                 <Image 
                   src="/images/logo.png" 
                   alt="Delaware Zoning Logo" 

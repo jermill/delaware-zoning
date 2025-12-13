@@ -3,12 +3,7 @@ import { FiArrowRight, FiCheck } from 'react-icons/fi';
 export default function FinalCTA() {
   return (
     <section className="bg-delaware-navy relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-delaware-blue/10"></div>
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
         {/* Headline */}
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
           Ready to Save Hours on Every Deal?

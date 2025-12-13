@@ -35,14 +35,14 @@ export default function Login() {
 
       if (error) {
         toast.error(error.message || 'Failed to log in');
+        setLoading(false);
         return;
       }
 
       toast.success('Welcome back!');
-      router.push('/dashboard');
+      // Don't set loading to false or redirect here - let AuthContext handle it
     } catch (error) {
       toast.error('An unexpected error occurred');
-    } finally {
       setLoading(false);
     }
   };
