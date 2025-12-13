@@ -13,8 +13,8 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
 
   const { inputRef, isLoaded, selectedPlace } = useGooglePlaces((place) => {
     // When a place is selected from autocomplete, trigger search
-    if (place?.formatted_address) {
-      handleSearchWithAddress(place.formatted_address);
+    if (place?.address) {
+      handleSearchWithAddress(place.address);
     }
   });
 
