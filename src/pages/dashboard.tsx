@@ -104,7 +104,7 @@ function DashboardContent() {
     { 
       id: '1', 
       date: '2024-12-01', 
-      amount: subscription.tier === 'pro' ? 29.99 : subscription.tier === 'business' ? 99.99 : 0, 
+      amount: subscription.tier === 'free' ? 0 : subscription.tier === 'pro' ? 49 : 129, 
       status: 'paid' as const,
       description: `${tierName} - Monthly Subscription`,
     },
@@ -118,9 +118,9 @@ function DashboardContent() {
     pdfExportsThisMonth: usage?.exports_used || 0,
   };
 
-  // Get price for subscription
+  // Get price for subscription - CORRECT PRICING
   const price = subscription.tier === 'free' ? 0 : 
-                subscription.tier === 'pro' ? 29.99 : 99.99;
+                subscription.tier === 'pro' ? 49 : 129;
   
   const subscriptionData = {
     tier: currentUserTier,
