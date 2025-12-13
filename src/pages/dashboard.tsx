@@ -214,8 +214,8 @@ function DashboardContent() {
       {/* Modern Dashboard Header */}
       <div className="bg-white border-b border-[#A8BDBE] px-4 sm:px-6 py-4 sticky top-0 z-40 shadow-sm">
         <div className="max-w-[1920px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {/* Sidebar Toggle Button */}
+          <div className="flex items-center gap-3 md:gap-4">
+            {/* Sidebar Toggle Button - Desktop Only */}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               className="hidden md:flex items-center justify-center w-10 h-10 text-gray-600 hover:text-delaware-blue hover:bg-blue-50 rounded-xl transition-all duration-200 flex-shrink-0"
@@ -236,19 +236,43 @@ function DashboardContent() {
                 )}
               </svg>
             </button>
+
+            {/* Mobile: Avatar */}
+            <div className="md:hidden">
+              {userData.avatar ? (
+                <img
+                  src={userData.avatar}
+                  alt={userData.name}
+                  className="w-10 h-10 rounded-xl object-cover shadow-md"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-xl bg-[#152F50] flex items-center justify-center text-white font-bold text-base shadow-md">
+                  {userData.name.charAt(0)}
+                </div>
+              )}
+            </div>
+
+            {/* Title */}
             <div>
-              <h1 className="text-lg font-bold text-gray-900 tracking-tight">
+              <h1 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
                 Delaware Zoning
               </h1>
-              <p className="text-xs text-gray-500">Dashboard</p>
+              <p className="text-xs text-gray-500 hidden sm:block">Dashboard</p>
+            </div>
+          </div>
+
+          {/* Desktop: Tier Badge */}
+          <div className="hidden md:flex items-center gap-3">
+            <div className="px-4 py-1.5 bg-blue-50 border border-[#82B8DE] rounded-lg">
+              <p className="text-sm font-semibold text-[#152F50]">{subscriptionData.tierName}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Dashboard Layout */}
-      <div className="flex h-[calc(100vh-73px)]">
-        {/* Modern Sidebar - Icon only when collapsed, full when expanded */}
+      <div className="flex h-[calc(100vh-65px)] md:h-[calc(100vh-73px)]">
+        {/* Modern Sidebar - Desktop Only */}
         <aside className={`hidden md:block ${sidebarCollapsed ? 'w-20' : 'w-64'} flex-shrink-0 overflow-y-auto transition-all duration-300 ease-in-out`}>
           <DashboardSidebar
             currentTab={currentTab}
@@ -261,9 +285,9 @@ function DashboardContent() {
           />
         </aside>
 
-        {/* Main Content Area with more padding */}
+        {/* Main Content Area - Responsive padding */}
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 pb-24 md:pb-10">
+          <div className="max-w-[1600px] mx-auto px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8 pb-24 md:pb-10">
             {renderTabContent()}
           </div>
         </main>

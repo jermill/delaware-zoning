@@ -194,13 +194,13 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
       </div>
 
       {/* Plan Comparison */}
-      <div className="bg-white rounded-2xl shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Available Plans</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="bg-white rounded-2xl shadow p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Available Plans</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {plans.map((plan) => (
             <div
               key={plan.id}
-                  className={`relative rounded-2xl p-6 transition-all ${
+                  className={`relative rounded-2xl p-5 sm:p-6 transition-all ${
                 plan.id === userTier
                   ? 'bg-blue-50 border-2 border-[#152F50]'
                   : 'border-2 border-[#A8BDBE] hover:border-[#D8B368]'
@@ -215,16 +215,16 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
                   </div>
               )}
 
-              <h3 className="text-xl font-bold text-gray-900 mb-2 mt-2">{plan.name}</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 mt-2">{plan.name}</h3>
               
-              <div className="mb-6 pb-6 border-b border-gray-200">
+              <div className="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-200">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-gray-900">${plan.price}</span>
-                  <span className="text-gray-600">/{plan.period}</span>
+                  <span className="text-3xl sm:text-4xl font-bold text-gray-900">${plan.price}</span>
+                  <span className="text-sm sm:text-base text-gray-600">/{plan.period}</span>
                 </div>
               </div>
 
-              <ul className="space-y-3 mb-6">
+              <ul className="space-y-2.5 sm:space-y-3 mb-4 sm:mb-6">
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#D8B368]/20 flex items-center justify-center mt-0.5">
@@ -236,22 +236,22 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
               </ul>
 
               {plan.id === userTier ? (
-                <div className="text-center py-3 bg-gray-100 rounded-lg font-semibold text-gray-600">
+                <div className="text-center py-3 bg-gray-100 rounded-lg font-semibold text-gray-600 text-sm sm:text-base">
                   Current Plan
                 </div>
               ) : plan.id === 'looker' && userTier !== 'looker' ? (
-                <div className="text-center py-3 bg-gray-50 rounded-lg font-medium text-gray-500">
+                <div className="text-center py-3 bg-gray-50 rounded-lg font-medium text-gray-500 text-sm sm:text-base">
                   Downgrade Not Available
                 </div>
               ) : plan.id === 'looker' ? (
-                <div className="text-center py-3 bg-gray-50 rounded-lg font-medium text-gray-500">
+                <div className="text-center py-3 bg-gray-50 rounded-lg font-medium text-gray-500 text-sm sm:text-base">
                   Current Plan
                 </div>
               ) : (
                 <UpgradeButton
                   tier={plan.id === 'pro' ? 'pro' : 'business'}
                   currentTier={userTier}
-                  className="block text-center w-full py-3 rounded-lg font-semibold transition-all bg-[#152F50] text-white hover:bg-[#82B8DE]"
+                  className="block text-center w-full py-3 rounded-lg font-semibold transition-all bg-[#152F50] text-white hover:bg-[#82B8DE] text-sm sm:text-base"
                 >
                   {plan.price > subscription.price ? 'Upgrade Now' : 'Select Plan'}
                 </UpgradeButton>

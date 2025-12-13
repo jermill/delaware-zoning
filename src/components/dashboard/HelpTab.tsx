@@ -73,7 +73,7 @@ export default function HelpTab() {
   return (
     <div className="space-y-6">
       {/* Quick Support Card */}
-      <div className="bg-gradient-to-r from-delaware-blue to-blue-900 text-white rounded-2xl p-6 sm:p-8">
+      <div className="bg-blue-900 text-white rounded-2xl p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="p-3 bg-white/10 rounded-lg">
             <FiMessageCircle className="w-8 h-8" />

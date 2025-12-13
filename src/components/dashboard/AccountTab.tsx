@@ -85,18 +85,18 @@ export default function AccountTab({ user }: AccountTabProps) {
         <div className="p-6">
           {/* Profile Tab */}
           {activeTab === 'profile' && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Avatar Section */}
-              <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 pb-4 sm:pb-6 border-b border-gray-200">
                 <div className="relative group">
                   {avatarUrl ? (
                     <img 
                       src={avatarUrl} 
                       alt={user.name}
-                      className="w-20 h-20 rounded-xl object-cover shadow-lg"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover shadow-lg"
                     />
                   ) : (
-                    <div className="w-20 h-20 rounded-xl bg-[#D8B368] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-[#D8B368] flex items-center justify-center text-white text-2xl sm:text-3xl font-bold shadow-lg">
                       {user.name.charAt(0)}
                     </div>
                   )}
@@ -104,7 +104,7 @@ export default function AccountTab({ user }: AccountTabProps) {
                     htmlFor="avatar-upload"
                     className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                   >
-                    <FiCamera className="w-6 h-6 text-white" />
+                    <FiCamera className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </label>
                   <input
                     id="avatar-upload"
@@ -114,8 +114,8 @@ export default function AccountTab({ user }: AccountTabProps) {
                     className="hidden"
                   />
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{user.name}</h3>
+                <div className="text-center sm:text-left">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900">{user.name}</h3>
                   <p className="text-sm text-gray-600">{user.email}</p>
                   <label 
                     htmlFor="avatar-upload"

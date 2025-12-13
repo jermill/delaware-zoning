@@ -50,7 +50,7 @@ export default function MobileTabBar({ currentTab, onTabChange }: MobileTabBarPr
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
                 className={`w-full text-left px-4 py-3 hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg transition-colors ${
-                  currentTab === tab.id ? 'bg-blue-50 text-delaware-blue font-semibold' : 'text-gray-700'
+                  currentTab === tab.id ? 'bg-blue-50 text-[#152F50] font-semibold' : 'text-gray-700'
                 }`}
                 role="menuitem"
                 aria-label={`${tab.label} tab`}
@@ -79,13 +79,13 @@ export default function MobileTabBar({ currentTab, onTabChange }: MobileTabBarPr
                 onClick={() => handleTabClick(tab.id)}
                 className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors ${
                   isActive
-                    ? 'text-delaware-blue bg-blue-50'
-                    : 'text-gray-600 hover:text-delaware-blue hover:bg-gray-50'
+                    ? 'text-[#152F50] bg-blue-50'
+                    : 'text-gray-600 hover:text-[#152F50] hover:bg-gray-50'
                 }`}
                 aria-label={`${tab.label} tab`}
                 aria-current={isActive ? 'page' : undefined}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-delaware-blue' : ''}`} aria-hidden="true" />
+                <Icon className={`w-5 h-5 ${isActive ? 'text-[#152F50]' : ''}`} aria-hidden="true" />
                 <span className={`text-xs ${isActive ? 'font-semibold' : ''}`}>
                   {tab.label}
                 </span>
@@ -98,8 +98,8 @@ export default function MobileTabBar({ currentTab, onTabChange }: MobileTabBarPr
             onClick={handleMoreClick}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors ${
               showMoreMenu || ['billing', 'help'].includes(currentTab)
-                ? 'text-delaware-blue bg-blue-50'
-                : 'text-gray-600 hover:text-delaware-blue hover:bg-gray-50'
+                ? 'text-[#152F50] bg-blue-50'
+                : 'text-gray-600 hover:text-[#152F50] hover:bg-gray-50'
             }`}
             aria-label="More options"
             aria-expanded={showMoreMenu}
