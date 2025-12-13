@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { FiSearch, FiX, FiMapPin } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useGooglePlaces } from '@/hooks/useGooglePlaces';
 
 interface DashboardSearchProps {
   isOpen: boolean;
@@ -8,22 +9,34 @@ interface DashboardSearchProps {
 }
 
 export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProps) {
-  const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!address.trim()) return;
-    
+  const { inputRef, isLoaded, selectedPlace } = useGooglePlaces((place) => {
+    // When a place is selected from autocomplete, trigger search
+    if (place?.formatted_address) {
+      handleSearchWithAddress(place.formatted_address);
+    }
+  });
+
+  const handleSearchWithAddress = (address: string) => {
     setLoading(true);
-    
     // Redirect to search results page with the query
     window.location.href = `/?address=${encodeURIComponent(address)}`;
   };
 
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const address = inputRef.current?.value;
+    if (!address?.trim()) return;
+    
+    handleSearchWithAddress(address);
+  };
+
   const handleClose = () => {
-    setAddress('');
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
     onClose();
   };
 
@@ -78,13 +91,18 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
                         <FiMapPin className="w-5 h-5 text-gray-400" />
                       </div>
                       <input
+                        ref={inputRef}
                         type="text"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
                         placeholder="Enter address (e.g., 123 Main St, Wilmington, DE)"
                         className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl text-base focus:border-[#82B8DE] focus:ring-4 focus:ring-[#82B8DE]/20 transition-all outline-none"
                         autoFocus
+                        disabled={!isLoaded}
                       />
+                      {!isLoaded && (
+                        <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
+                          <div className="w-5 h-5 border-2 border-gray-300 border-t-[#82B8DE] rounded-full animate-spin" />
+                        </div>
+                      )}
                     </div>
                     <p className="mt-2 text-sm text-gray-600">
                       Search for any property in Delaware to view zoning information
@@ -102,7 +120,7 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
                     </button>
                     <button
                       type="submit"
-                      disabled={loading || !address.trim()}
+                      disabled={loading || !isLoaded}
                       className="flex-1 px-6 py-3 bg-[#152F50] text-white rounded-xl font-semibold hover:bg-[#82B8DE] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                     >
                       {loading ? (
