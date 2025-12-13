@@ -105,7 +105,9 @@ export default function DashboardSidebar({
               </h3>
             </div>
             <p className="text-[11px] text-gray-600 mb-3 leading-relaxed">
-              Get unlimited searches and save unlimited properties
+              {userTier === 'looker' 
+                ? 'Get unlimited searches and save unlimited properties'
+                : 'Get PDF reports and property dimensions'}
             </p>
             <Link
               href="/dashboard?tab=billing"
