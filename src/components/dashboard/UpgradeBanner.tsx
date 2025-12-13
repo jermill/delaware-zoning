@@ -38,31 +38,31 @@ export default function UpgradeBanner({ currentTier }: UpgradeBannerProps) {
   const content = getbannerContent();
 
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 relative">
+    <div className="bg-white border border-[#82B8DE] rounded-xl p-4 relative">
       <button
         onClick={() => setIsDismissed(true)}
-        className="absolute top-3 right-3 p-1 hover:bg-blue-100 rounded-md transition-colors text-gray-500 hover:text-gray-700"
+        className="absolute top-3 right-3 p-1 hover:bg-gray-100 rounded-md transition-colors text-gray-500 hover:text-gray-700"
         aria-label="Dismiss banner"
       >
         <FiX className="w-4 h-4" />
       </button>
 
       <div className="flex items-start gap-3 pr-8">
-        <div className="flex-shrink-0 w-8 h-8 bg-delaware-blue/10 rounded-lg flex items-center justify-center text-delaware-blue">
+        <div className="flex-shrink-0 w-10 h-10 bg-[#82B8DE] rounded-xl flex items-center justify-center text-white">
           {content.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 text-sm mb-1">{content.title}</h3>
-          <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          <h3 className="font-bold text-gray-900 text-base mb-1.5">{content.title}</h3>
+          <p className="text-sm text-gray-600 mb-4 leading-relaxed">
             {content.description}
           </p>
-        <Link
-          href={content.ctaLink}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[#152F50] hover:text-[#82B8DE] transition-colors"
-        >
-          {content.ctaText}
-          <FiArrowRight className="w-4 h-4" />
-        </Link>
+          <Link
+            href={content.ctaLink}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#152F50] text-white text-sm font-semibold rounded-xl hover:bg-[#82B8DE] transition-all shadow-sm"
+          >
+            {content.ctaText}
+            <FiArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </div>
