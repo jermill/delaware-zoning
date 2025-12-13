@@ -21,13 +21,24 @@ export default function Hero() {
   });
 
   const handleSearch = () => {
-    if (!selectedPlace && inputRef.current?.value.trim()) {
-      alert('Please select an address from the autocomplete suggestions');
+    const address = inputRef.current?.value.trim();
+    
+    if (!address) {
+      setShowExamples(true);
       return;
     }
-    if (!inputRef.current?.value.trim()) {
-      setShowExamples(true);
+
+    // If a place was selected from autocomplete, use it with coordinates
+    if (selectedPlace) {
+      router.push(
+        `/search?address=${encodeURIComponent(selectedPlace.address)}&lat=${selectedPlace.latitude}&lon=${selectedPlace.longitude}`
+      );
+      return;
     }
+
+    // Otherwise, allow manual search with just the address
+    // The search page will handle geocoding if needed
+    router.push(`/search?address=${encodeURIComponent(address)}`);
   };
 
   const handleExampleSelect = (example: typeof EXAMPLE_ADDRESSES[0]) => {
