@@ -243,17 +243,6 @@ function DashboardContent() {
               <p className="text-xs text-gray-500">Dashboard</p>
             </div>
           </div>
-          
-          {/* User Profile in Header */}
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:block text-right">
-              <p className="text-sm font-semibold text-gray-900">{userData.name}</p>
-              <p className="text-xs text-gray-500">{subscriptionData.tierName}</p>
-            </div>
-            <div className="w-10 h-10 rounded-xl bg-[#152F50] flex items-center justify-center text-white font-bold text-base shadow-md">
-              {userData.name.charAt(0)}
-            </div>
-          </div>
         </div>
       </div>
 
@@ -268,6 +257,7 @@ function DashboardContent() {
             userTier={currentUserTier}
             isCollapsed={sidebarCollapsed}
             onToggleCollapse={() => setSidebarCollapsed(true)}
+            avatarUrl={userData.avatar}
           />
         </aside>
 

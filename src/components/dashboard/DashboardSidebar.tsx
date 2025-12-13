@@ -10,6 +10,7 @@ interface DashboardSidebarProps {
   userTier: UserTier;
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
+  avatarUrl?: string;
 }
 
 export default function DashboardSidebar({
@@ -19,6 +20,7 @@ export default function DashboardSidebar({
   userTier,
   isCollapsed = false,
   onToggleCollapse,
+  avatarUrl,
 }: DashboardSidebarProps) {
   const navItems = [
     { id: 'overview', label: 'Overview', icon: FiHome },
@@ -35,9 +37,17 @@ export default function DashboardSidebar({
       {!isCollapsed && (
         <div className="p-5 border-b border-gray-200">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-[#152F50] flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
-              {userName.charAt(0)}
-            </div>
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt={userName}
+                className="w-14 h-14 rounded-xl object-cover shadow-md flex-shrink-0"
+              />
+            ) : (
+              <div className="w-14 h-14 rounded-xl bg-[#152F50] flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
+                {userName.charAt(0)}
+              </div>
+            )}
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-gray-900 text-base truncate mb-1.5">{userName}</p>
               <TierBadge tier={userTier} size="sm" />
@@ -49,9 +59,17 @@ export default function DashboardSidebar({
       {/* Icon-only avatar when collapsed */}
       {isCollapsed && (
         <div className="p-4 border-b border-gray-200 flex justify-center">
-          <div className="w-10 h-10 rounded-xl bg-[#152F50] flex items-center justify-center font-bold text-white text-base shadow-md">
-            {userName.charAt(0)}
-          </div>
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt={userName}
+              className="w-10 h-10 rounded-xl object-cover shadow-md"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-xl bg-[#152F50] flex items-center justify-center font-bold text-white text-base shadow-md">
+              {userName.charAt(0)}
+            </div>
+          )}
         </div>
       )}
 
