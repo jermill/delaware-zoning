@@ -139,7 +139,7 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
             </div>
           </div>
           {userTier !== 'whale' && (
-            <Link href="/dashboard?tab=billing" className="btn-gold text-sm px-4 py-2">
+            <Link href="/dashboard?tab=billing" className="bg-[#152F50] text-white hover:bg-[#82B8DE] transition-colors font-semibold rounded-lg text-sm px-4 py-2">
               Upgrade Plan
             </Link>
           )}
@@ -238,7 +238,7 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
               </ul>
 
               {plan.id === userTier ? (
-                <div className="text-center py-3 bg-gray-100 rounded-lg font-semibold text-gray-600 text-sm sm:text-base">
+                <div className="text-center py-3 bg-[#F2AF29] rounded-lg font-semibold text-white text-sm sm:text-base">
                   Current Plan
                 </div>
               ) : plan.id === 'looker' && userTier !== 'looker' ? (
@@ -246,7 +246,7 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
                   Downgrade Not Available
                 </div>
               ) : plan.id === 'looker' ? (
-                <div className="text-center py-3 bg-gray-50 rounded-lg font-medium text-gray-500 text-sm sm:text-base">
+                <div className="text-center py-3 bg-[#F2AF29] rounded-lg font-semibold text-white text-sm sm:text-base">
                   Current Plan
                 </div>
               ) : (

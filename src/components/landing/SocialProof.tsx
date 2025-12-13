@@ -103,12 +103,9 @@ export default function SocialProof() {
         {/* Stats Row - Mobile First */}
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
-            <h3 className="text-subsection-heading text-delaware-navy mb-2">
-              Trusted By Delaware Professionals
-            </h3>
-            <p className="text-gray-600 text-base">
+            <h3 className="text-2xl sm:text-3xl font-bold text-delaware-navy mb-2">
               Fast, accurate, and comprehensive zoning data
-            </p>
+            </h3>
           </div>
           
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

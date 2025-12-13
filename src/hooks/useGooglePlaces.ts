@@ -25,6 +25,9 @@ export function useGooglePlaces(
 
   // Load Google Maps script
   useEffect(() => {
+    // Ensure we're in the browser
+    if (typeof window === 'undefined') return;
+    
     const apiKey = clientEnv.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     
     if (!apiKey) {
@@ -33,7 +36,7 @@ export function useGooglePlaces(
     }
 
     // Check if script is already loaded
-    if (window.google?.maps?.places) {
+    if (typeof window !== 'undefined' && window.google?.maps?.places) {
       setIsLoaded(true);
       return;
     }
@@ -68,10 +71,15 @@ export function useGooglePlaces(
     if (!isLoaded || !inputRef.current || autocompleteRef.current) {
       return;
     }
+    
+    // Double check we're in browser and google is available
+    if (typeof window === 'undefined' || !window.google) {
+      return;
+    }
 
     try {
       // Initialize autocomplete with Delaware bounds
-      const google = window.google!;
+      const google = window.google;
       const delawareBounds = new google.maps.LatLngBounds(
         new google.maps.LatLng(38.45, -75.79), // Southwest corner
         new google.maps.LatLng(39.84, -75.05)  // Northeast corner
@@ -127,7 +135,7 @@ export function useGooglePlaces(
     } catch (error) {
       console.error('Error initializing Google Places Autocomplete:', error);
     }
-  }, [isLoaded, onPlaceSelected]);
+  }, [isLoaded]); // Removed onPlaceSelected from dependencies to prevent re-initialization
 
   const clearSelection = useCallback(() => {
     setSelectedPlace(null);

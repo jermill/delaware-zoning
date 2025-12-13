@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { FiHome, FiBookmark, FiClock, FiUser, FiCreditCard, FiHelpCircle, FiLogOut } from 'react-icons/fi';
 import Link from 'next/link';
 import Image from 'next/image';
 import { UserTier } from '@/data/mockDashboardData';
 import TierBadge from './TierBadge';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface DashboardSidebarProps {
   currentTab: string;
@@ -23,6 +25,9 @@ export default function DashboardSidebar({
   onToggleCollapse,
   avatarUrl,
 }: DashboardSidebarProps) {
+  const { signOut } = useAuth();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
   const navItems = [
     { id: 'overview', label: 'Overview', icon: FiHome },
     { id: 'saved', label: 'Saved Properties', icon: FiBookmark },
@@ -31,6 +36,11 @@ export default function DashboardSidebar({
     { id: 'billing', label: 'Billing', icon: FiCreditCard },
     { id: 'help', label: 'Help & Support', icon: FiHelpCircle },
   ];
+
+  const handleLogout = async () => {
+    setShowLogoutModal(false);
+    await signOut();
+  };
 
   return (
     <div className="h-full bg-[#A8BDBE] border-r border-[#A8BDBE] flex flex-col relative transition-all duration-300">
@@ -168,12 +178,7 @@ export default function DashboardSidebar({
       {isCollapsed && (
         <div className="p-2 border-t border-white/20">
           <button
-            onClick={() => {
-              // In production, this would call your logout function
-              // For now, redirect to home
-              alert('Logout functionality will be connected to authentication system');
-              window.location.href = '/';
-            }}
+            onClick={() => setShowLogoutModal(true)}
             className="w-full flex items-center justify-center px-3 py-3 text-red-600 hover:text-red-100 hover:bg-red-600/80 rounded-xl transition-all duration-200 group relative"
             title="Log Out"
           >
@@ -241,17 +246,47 @@ export default function DashboardSidebar({
       {!isCollapsed && (
         <div className="p-3 border-t border-white/20">
           <button
-            onClick={() => {
-              // In production, this would call your logout function
-              // For now, redirect to home
-              alert('Logout functionality will be connected to authentication system');
-              window.location.href = '/';
-            }}
+            onClick={() => setShowLogoutModal(true)}
             className="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-600 hover:text-red-100 hover:bg-red-600/80 rounded-xl transition-all duration-200 group"
           >
             <FiLogOut className="w-4 h-4" />
             <span className="text-sm font-semibold">Log Out</span>
           </button>
+        </div>
+      )}
+
+      {/* Logout Confirmation Modal - Centered */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4" onClick={() => setShowLogoutModal(false)}>
+          <div 
+            className="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full mx-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FiLogOut className="w-6 h-6 text-red-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Log Out?</h3>
+              <p className="text-gray-600 text-sm">
+                Are you sure you want to log out of your account?
+              </p>
+            </div>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors"
+              >
+                Log Out
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

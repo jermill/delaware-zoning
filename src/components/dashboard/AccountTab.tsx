@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { FiUser, FiMail, FiPhone, FiBriefcase, FiBell, FiLock, FiMonitor, FiCamera, FiMapPin, FiAward, FiGlobe } from 'react-icons/fi';
 import { UserProfile } from '@/data/mockDashboardData';
 import ModernToggle from '@/components/shared/ModernToggle';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import toast from 'react-hot-toast';
 
 interface AccountTabProps {
   user: UserProfile;
@@ -10,6 +13,7 @@ interface AccountTabProps {
 type TabView = 'profile' | 'preferences' | 'security';
 
 export default function AccountTab({ user }: AccountTabProps) {
+  const { updateProfile, refreshUserData } = useAuth();
   const [activeTab, setActiveTab] = useState<TabView>('profile');
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [weeklyDigest, setWeeklyDigest] = useState(true);
@@ -18,6 +22,8 @@ export default function AccountTab({ user }: AccountTabProps) {
   const [avatarUrl, setAvatarUrl] = useState(user.avatar);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleSaveChanges = () => {
     alert('Profile updates will be available once backend integration is complete.');
@@ -45,24 +51,66 @@ export default function AccountTab({ user }: AccountTabProps) {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file');
+      toast.error('Please upload an image file');
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image must be less than 5MB');
+      toast.error('Image must be less than 5MB');
       return;
     }
 
-    // For now, create a local preview URL
-    // In production, this would upload to Supabase Storage
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setAvatarUrl(reader.result as string);
-      alert('Avatar updated! In production, this would be saved to your profile.');
-    };
-    reader.readAsDataURL(file);
+    setUploading(true);
+
+    try {
+      // Create a unique file name
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+      const filePath = `avatars/${fileName}`;
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('profiles')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('profiles')
+        .getPublicUrl(filePath);
+
+      // Update user profile with new avatar URL
+      const { error: updateError } = await updateProfile({ avatar_url: publicUrl });
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      // Update local state
+      setAvatarUrl(publicUrl);
+      
+      // Refresh user data
+      await refreshUserData();
+      
+      // Show success modal
+      setShowSuccessModal(true);
+      
+      // Auto-close modal after 2 seconds
+      setTimeout(() => setShowSuccessModal(false), 2000);
+      
+    } catch (error: any) {
+      console.error('Error uploading avatar:', error);
+      toast.error(error.message || 'Failed to upload avatar');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const tabs = [
@@ -117,15 +165,20 @@ export default function AccountTab({ user }: AccountTabProps) {
                   )}
                   <label 
                     htmlFor="avatar-upload"
-                    className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                    className={`absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity ${uploading ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                   >
-                    <FiCamera className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    {uploading ? (
+                      <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
+                    ) : (
+                      <FiCamera className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    )}
                   </label>
                   <input
                     id="avatar-upload"
                     type="file"
                     accept="image/*"
                     onChange={handleAvatarUpload}
+                    disabled={uploading}
                     className="hidden"
                   />
                 </div>
@@ -134,9 +187,9 @@ export default function AccountTab({ user }: AccountTabProps) {
                   <p className="text-sm text-gray-600">{user.email}</p>
                   <label 
                     htmlFor="avatar-upload"
-                    className="text-sm text-[#82B8DE] hover:text-[#152F50] cursor-pointer font-medium mt-1 inline-block"
+                    className={`text-sm text-[#82B8DE] hover:text-[#152F50] font-medium mt-1 inline-block ${uploading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
                   >
-                    Change photo
+                    {uploading ? 'Uploading...' : 'Change photo'}
                   </label>
                 </div>
               </div>
@@ -534,6 +587,25 @@ export default function AccountTab({ user }: AccountTabProps) {
               >
                 Delete Forever
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal - Centered */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full mx-auto animate-fade-in">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Avatar Updated!</h3>
+              <p className="text-gray-600 text-sm">
+                Your profile picture has been successfully saved.
+              </p>
             </div>
           </div>
         </div>

@@ -2,9 +2,13 @@ import { createClient } from '@supabase/supabase-js';
 import { clientEnv } from './env.client';
 
 // Client-side Supabase client (safe for browser)
+// Use fallback values to prevent runtime errors during development
+const supabaseUrl = clientEnv.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = clientEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
+
 export const supabase = createClient(
-  clientEnv.NEXT_PUBLIC_SUPABASE_URL,
-  clientEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  supabaseUrl,
+  supabaseAnonKey,
   {
     auth: {
       persistSession: true,

@@ -10,6 +10,11 @@ export async function handleCheckoutSessionCompleted(
 ) {
   console.log('Processing checkout.session.completed:', session.id);
 
+  // Check if this is a single report purchase
+  if (session.metadata?.type === 'single_report') {
+    return handleSingleReportPurchase(session);
+  }
+
   const userId = session.metadata?.supabase_user_id;
   const tier = session.metadata?.tier as 'pro' | 'business';
 
@@ -270,6 +275,46 @@ export async function handleInvoicePaymentFailed(
     // TODO: Send email notification to user about failed payment
   } catch (error) {
     console.error('Failed to process invoice.payment_failed:', error);
+    throw error;
+  }
+}
+
+/**
+ * Handle single report purchase
+ * This processes a one-time payment for a single property report
+ */
+async function handleSingleReportPurchase(
+  session: Stripe.Checkout.Session
+) {
+  console.log('Processing single report purchase:', session.id);
+
+  const address = session.metadata?.address;
+  const latitude = session.metadata?.latitude;
+  const longitude = session.metadata?.longitude;
+  const customerEmail = session.customer_details?.email;
+
+  if (!address || !customerEmail) {
+    console.error('Missing required data for single report:', session.id);
+    return;
+  }
+
+  try {
+    // TODO: Generate PDF report for the property
+    // TODO: Send email with PDF attachment to customerEmail
+    
+    console.log(`✅ Single report purchase processed:`);
+    console.log(`   Address: ${address}`);
+    console.log(`   Email: ${customerEmail}`);
+    console.log(`   Amount: $${(session.amount_total || 0) / 100}`);
+    
+    // For now, just log it. In production, you would:
+    // 1. Query zoning data for the address
+    // 2. Generate a PDF report
+    // 3. Send email with the PDF attached
+    // 4. Store purchase record in database
+    
+  } catch (error) {
+    console.error('Failed to process single report purchase:', error);
     throw error;
   }
 }

@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { FiCheck, FiStar, FiLoader } from 'react-icons/fi';
+import { FiCheck, FiStar, FiLoader, FiX } from 'react-icons/fi';
 import { PricingPlan } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
+import { useGooglePlaces } from '@/hooks/useGooglePlaces';
+import toast from 'react-hot-toast';
 
 export default function Pricing() {
   const router = useRouter();
   const { user } = useAuth();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [buyingReport, setBuyingReport] = useState(false);
+
+  const { inputRef, isLoaded, selectedPlace } = useGooglePlaces();
 
   // Stripe Price IDs (these are not sensitive - they're visible in checkout URLs)
   const stripePrices = {
@@ -70,6 +76,52 @@ export default function Pricing() {
       alert(error.message || 'Failed to start checkout. Please try again.');
     } finally {
       setLoadingPlan(null);
+    }
+  };
+
+  const handleBuySingleReport = () => {
+    setShowAddressModal(true);
+  };
+
+  const handlePurchaseReport = async () => {
+    const address = inputRef.current?.value.trim();
+    
+    if (!address) {
+      toast.error('Please enter a property address');
+      return;
+    }
+
+    setBuyingReport(true);
+
+    try {
+      const response = await fetch('/api/stripe/create-single-report-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          address,
+          latitude: selectedPlace?.latitude,
+          longitude: selectedPlace?.longitude,
+          userEmail: user?.email || null,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      // Redirect to Stripe Checkout
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error: any) {
+      console.error('Single report purchase error:', error);
+      toast.error(error.message || 'Failed to start checkout. Please try again.');
+    } finally {
+      setBuyingReport(false);
     }
   };
 
@@ -274,7 +326,10 @@ export default function Pricing() {
                 </ul>
 
                 {/* CTA Button */}
-                <button className="w-full bg-[#152F50] text-white py-3 px-6 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg min-h-touch">
+                <button 
+                  onClick={handleBuySingleReport}
+                  className="w-full bg-[#152F50] text-white py-3 px-6 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg min-h-touch"
+                >
                   Buy Single Report
                 </button>
               </div>
@@ -346,6 +401,69 @@ export default function Pricing() {
           <p className="text-sm">Cancel anytime from your dashboard.</p>
         </div>
       </div>
+
+      {/* Address Modal for Single Report */}
+      {showAddressModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4" onClick={() => setShowAddressModal(false)}>
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-900">Enter Property Address</h3>
+              <button
+                onClick={() => setShowAddressModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <FiX className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            
+            <p className="text-sm text-gray-600 mb-4">
+              Enter the Delaware property address for your zoning report.
+            </p>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Property Address
+              </label>
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder={isLoaded ? "123 Main St, Wilmington, DE" : "Loading Google Maps..."}
+                disabled={!isLoaded}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-delaware-blue focus:ring-4 focus:ring-delaware-blue/10 transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed placeholder:text-gray-400"
+              />
+              <p className="text-xs text-gray-500 mt-2">
+                Start typing and select from autocomplete suggestions
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowAddressModal(false)}
+                className="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handlePurchaseReport}
+                disabled={buyingReport || !isLoaded}
+                className="flex-1 px-4 py-3 bg-[#152F50] hover:bg-[#82B8DE] text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {buyingReport ? (
+                  <>
+                    <FiLoader className="w-4 h-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  'Continue to Payment'
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

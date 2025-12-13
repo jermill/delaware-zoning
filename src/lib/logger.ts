@@ -4,32 +4,36 @@ import pino from 'pino';
  * Structured logger using Pino
  * Replace all console.log/error/warn with this logger
  */
-export const logger = pino({
-  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-  browser: {
-    asObject: true,
-  },
-  formatters: {
-    level: (label) => {
-      return { level: label.toUpperCase() };
-    },
-  },
-  timestamp: pino.stdTimeFunctions.isoTime,
-  // Redact sensitive fields
-  redact: {
-    paths: [
-      'password',
-      'token',
-      'authorization',
-      'cookie',
-      'apiKey',
-      'secret',
-      'stripe_customer_id',
-      'email',
-    ],
-    remove: true,
-  },
-});
+export const logger = typeof window !== 'undefined' 
+  ? pino({
+      level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+      browser: {
+        asObject: true,
+      },
+    })
+  : pino({
+      level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+      formatters: {
+        level: (label) => {
+          return { level: label.toUpperCase() };
+        },
+      },
+      timestamp: pino.stdTimeFunctions.isoTime,
+      // Redact sensitive fields
+      redact: {
+        paths: [
+          'password',
+          'token',
+          'authorization',
+          'cookie',
+          'apiKey',
+          'secret',
+          'stripe_customer_id',
+          'email',
+        ],
+        remove: true,
+      },
+    });
 
 // Helper functions for common log patterns
 export const logApiRequest = (method: string, path: string, userId?: string) => {

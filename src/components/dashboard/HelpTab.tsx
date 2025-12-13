@@ -3,6 +3,7 @@ import { FiChevronDown, FiMail, FiMessageCircle, FiBook, FiSearch, FiFileText, F
 
 export default function HelpTab() {
   const [openFaqId, setOpenFaqId] = useState<number | null>(null);
+  const [selectedGuide, setSelectedGuide] = useState<number | null>(null);
 
   const toggleFaq = (id: number) => {
     setOpenFaqId(openFaqId === id ? null : id);
@@ -49,24 +50,103 @@ export default function HelpTab() {
 
   const guides = [
     {
+      id: 1,
       icon: <FiSearch className="w-6 h-6" />,
       title: 'How to Search for Zoning',
       description: 'Learn how to use the address search and find zoning information quickly.',
+      content: (
+        <div className="space-y-4">
+          <p className="text-gray-700">Follow these steps to search for zoning information:</p>
+          <ol className="list-decimal list-inside space-y-3 text-gray-700">
+            <li><strong>Enter an Address:</strong> Type any Delaware address in the search bar. Use our autocomplete for accurate results.</li>
+            <li><strong>Select from Suggestions:</strong> Choose the correct address from the dropdown suggestions.</li>
+            <li><strong>View Results:</strong> Instantly see the zoning code, permitted uses, setbacks, and requirements.</li>
+            <li><strong>Save Properties:</strong> Click "Save Property" to add it to your dashboard for future reference.</li>
+            <li><strong>Export (Whale only):</strong> Generate a professional PDF report of the zoning details.</li>
+          </ol>
+          <p className="text-sm text-gray-600 mt-4">💡 <strong>Tip:</strong> Pro and Whale members get unlimited searches!</p>
+        </div>
+      ),
     },
     {
+      id: 2,
       icon: <FiCode className="w-6 h-6" />,
       title: 'Understanding Zone Codes',
       description: 'Decode common zoning classifications like R-1, C-3, and I-1.',
+      content: (
+        <div className="space-y-4">
+          <p className="text-gray-700">Common Delaware zoning codes explained:</p>
+          <div className="space-y-3">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <p><strong className="text-delaware-navy">R-1, R-2, R-3:</strong> Residential zones (single-family, duplex, multi-family)</p>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <p><strong className="text-delaware-navy">C-1, C-2, C-3:</strong> Commercial zones (neighborhood, general, intensive)</p>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <p><strong className="text-delaware-navy">I-1, I-2:</strong> Industrial zones (light, heavy)</p>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <p><strong className="text-delaware-navy">MX:</strong> Mixed-use zones (residential + commercial)</p>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <p><strong className="text-delaware-navy">AG:</strong> Agricultural zones</p>
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 mt-4">💡 <strong>Tip:</strong> Each code has specific permitted uses and restrictions.</p>
+        </div>
+      ),
     },
     {
+      id: 3,
       icon: <FiFileText className="w-6 h-6" />,
       title: 'Reading Zoning Results',
       description: 'Understand permitted uses, conditional uses, and restrictions.',
+      content: (
+        <div className="space-y-4">
+          <p className="text-gray-700">Your zoning results include:</p>
+          <div className="space-y-3">
+            <div className="border-l-4 border-green-500 pl-4 py-2">
+              <p className="font-semibold text-gray-900">Permitted Uses</p>
+              <p className="text-sm text-gray-600">Uses allowed by-right without special approval</p>
+            </div>
+            <div className="border-l-4 border-yellow-500 pl-4 py-2">
+              <p className="font-semibold text-gray-900">Conditional Uses</p>
+              <p className="text-sm text-gray-600">Uses requiring special permit and public hearing</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4 py-2">
+              <p className="font-semibold text-gray-900">Dimensional Standards</p>
+              <p className="text-sm text-gray-600">Setbacks, lot sizes, height limits, and coverage ratios</p>
+            </div>
+            <div className="border-l-4 border-purple-500 pl-4 py-2">
+              <p className="font-semibold text-gray-900">Required Permits</p>
+              <p className="text-sm text-gray-600">Building permits, site plan reviews, and special permits needed</p>
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 mt-4">💡 <strong>Tip:</strong> Always verify with local planning office for final decisions.</p>
+        </div>
+      ),
     },
     {
+      id: 4,
       icon: <FiBook className="w-6 h-6" />,
       title: 'Tips for Realtors',
       description: 'Best practices for using zoning info in client consultations.',
+      content: (
+        <div className="space-y-4">
+          <p className="text-gray-700">Best practices for real estate professionals:</p>
+          <ol className="list-decimal list-inside space-y-3 text-gray-700">
+            <li><strong>Pre-listing Research:</strong> Check zoning before listing to highlight opportunities (ADU potential, commercial conversion, etc.)</li>
+            <li><strong>Buyer Consultations:</strong> Show clients what they can build or operate on the property</li>
+            <li><strong>Due Diligence:</strong> Include zoning reports in your buyer packages</li>
+            <li><strong>Investment Properties:</strong> Identify properties with development potential</li>
+            <li><strong>Competitive Edge:</strong> Be the realtor who knows zoning inside-out</li>
+          </ol>
+          <div className="mt-4 p-4 bg-delaware-gold/10 border border-delaware-gold rounded-lg">
+            <p className="text-sm text-gray-700"><strong>📈 Pro Tip:</strong> Upgrade to The Whale to generate professional PDF reports for clients!</p>
+          </div>
+        </div>
+      ),
     },
   ];
 
@@ -106,9 +186,10 @@ export default function HelpTab() {
       <div className="bg-white rounded-2xl shadow p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Guides</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {guides.map((guide, index) => (
+          {guides.map((guide) => (
             <button
-              key={index}
+              key={guide.id}
+              onClick={() => setSelectedGuide(guide.id)}
               className="flex items-start gap-4 p-4 border-2 border-gray-200 rounded-lg hover:border-delaware-blue hover:bg-blue-50 transition-all text-left group"
             >
               <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-delaware-blue transition-colors">
@@ -235,6 +316,48 @@ export default function HelpTab() {
           </li>
         </ul>
       </div>
+
+      {/* Guide Modal */}
+      {selectedGuide !== null && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4" onClick={() => setSelectedGuide(null)}>
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-delaware-blue rounded-lg">
+                  <div className="text-white">
+                    {guides.find(g => g.id === selectedGuide)?.icon}
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">
+                  {guides.find(g => g.id === selectedGuide)?.title}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedGuide(null)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              {guides.find(g => g.id === selectedGuide)?.content}
+            </div>
+            <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 rounded-b-2xl">
+              <button
+                onClick={() => setSelectedGuide(null)}
+                className="w-full px-4 py-3 bg-delaware-blue text-white rounded-lg font-semibold hover:bg-[#82B8DE] transition-colors"
+              >
+                Got it, thanks!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

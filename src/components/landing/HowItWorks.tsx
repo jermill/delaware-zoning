@@ -26,7 +26,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="relative bg-white py-16 sm:py-20 lg:py-24 overflow-hidden">
+    <section className="relative bg-delaware-cream py-16 sm:py-20 lg:py-24 overflow-hidden">
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
