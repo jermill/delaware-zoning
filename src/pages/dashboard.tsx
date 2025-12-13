@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import MobileTabBar from '@/components/dashboard/MobileTabBar';
@@ -211,67 +212,8 @@ function DashboardContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Modern Dashboard Header */}
-      <div className="bg-white border-b border-[#A8BDBE] px-4 sm:px-6 py-4 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-[1920px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3 md:gap-4">
-            {/* Sidebar Toggle Button - Desktop Only */}
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="hidden md:flex items-center justify-center w-10 h-10 text-gray-600 hover:text-delaware-blue hover:bg-blue-50 rounded-xl transition-all duration-200 flex-shrink-0"
-              aria-label="Toggle sidebar"
-              title={sidebarCollapsed ? "Open sidebar" : "Close sidebar"}
-            >
-              <svg 
-                className="w-5 h-5" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-              >
-                {sidebarCollapsed ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-                )}
-              </svg>
-            </button>
-
-            {/* Mobile: Avatar */}
-            <div className="md:hidden">
-              {userData.avatar ? (
-                <img
-                  src={userData.avatar}
-                  alt={userData.name}
-                  className="w-10 h-10 rounded-xl object-cover shadow-md"
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-xl bg-[#152F50] flex items-center justify-center text-white font-bold text-base shadow-md">
-                  {userData.name.charAt(0)}
-                </div>
-              )}
-            </div>
-
-            {/* Title */}
-            <div>
-              <h1 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
-                Delaware Zoning
-              </h1>
-              <p className="text-xs text-gray-500 hidden sm:block">Dashboard</p>
-            </div>
-          </div>
-
-          {/* Desktop: Tier Badge */}
-          <div className="hidden md:flex items-center gap-3">
-            <div className="px-4 py-1.5 bg-[#A8BDBE] border border-[#A8BDBE] rounded-lg">
-              <p className="text-sm font-semibold text-white">{subscriptionData.tierName}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Dashboard Layout */}
-      <div className="flex h-[calc(100vh-65px)] md:h-[calc(100vh-73px)]">
+      <div className="flex h-screen">
         {/* Modern Sidebar - Desktop Only */}
         <aside className={`hidden md:block ${sidebarCollapsed ? 'w-20' : 'w-64'} flex-shrink-0 overflow-y-auto transition-all duration-300 ease-in-out`}>
           <DashboardSidebar
@@ -280,7 +222,7 @@ function DashboardContent() {
             userName={userData.name}
             userTier={currentUserTier}
             isCollapsed={sidebarCollapsed}
-            onToggleCollapse={() => setSidebarCollapsed(true)}
+            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
             avatarUrl={userData.avatar}
           />
         </aside>
