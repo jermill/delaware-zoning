@@ -11,6 +11,18 @@ interface UpgradeButtonProps {
   children?: React.ReactNode;
 }
 
+// Map tier to Stripe price IDs
+const STRIPE_PRICES = {
+  pro: process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO || 'price_1SdbN9FCgX2xIDAtxRQw6jx8',
+  business: process.env.NEXT_PUBLIC_STRIPE_PRICE_WHALE || 'price_1SdbNAFCgX2xIDAtCWnMB4U7',
+};
+
+// Map tier to subscription tier names
+const TIER_NAMES = {
+  pro: 'pro',
+  business: 'whale',
+};
+
 export default function UpgradeButton({
   tier,
   currentTier,
@@ -18,10 +30,10 @@ export default function UpgradeButton({
   children,
 }: UpgradeButtonProps) {
   const [loading, setLoading] = useState(false);
-  const { session } = useAuth();
+  const { session, user } = useAuth();
 
   const handleUpgrade = async () => {
-    if (!session) {
+    if (!session || !user) {
       toast.error('Please log in to upgrade');
       return;
     }
@@ -29,6 +41,9 @@ export default function UpgradeButton({
     setLoading(true);
 
     try {
+      const priceId = STRIPE_PRICES[tier];
+      const subscriptionTier = TIER_NAMES[tier];
+
       // Call API to create checkout session
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
@@ -36,7 +51,12 @@ export default function UpgradeButton({
           'Content-Type': 'application/json',
           Authorization: `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({ tier }),
+        body: JSON.stringify({
+          priceId,
+          userId: user.id,
+          userEmail: user.email,
+          tier: subscriptionTier,
+        }),
       });
 
       const data = await response.json();
