@@ -52,14 +52,14 @@ export default function DashboardSidebar({
       )}
 
       {/* User Profile Section */}
-      <div className="p-6 border-b border-gray-100">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-delaware-blue flex items-center justify-center font-bold text-white text-lg shadow-md">
+      <div className="p-5 border-b border-gray-200">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-delaware-blue to-blue-600 flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
             {userName.charAt(0)}
           </div>
           {!isCollapsed && (
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-gray-900 text-base truncate">{userName}</p>
+              <p className="font-semibold text-gray-900 text-base truncate mb-1.5">{userName}</p>
               <TierBadge tier={userTier} size="sm" />
             </div>
           )}
