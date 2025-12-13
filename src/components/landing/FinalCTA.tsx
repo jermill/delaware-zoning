@@ -22,7 +22,7 @@ export default function FinalCTA() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
           <a
             href="/signup"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-delaware-gold hover:opacity-90 text-delaware-navy px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-delaware-gold hover:opacity-90 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
           >
             Start Free Now
             <FiArrowRight className="w-5 h-5" />

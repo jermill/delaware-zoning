@@ -81,7 +81,7 @@ a,
   }
 
   .btn-primary {
-    @apply btn-base bg-delaware-gold text-delaware-navy px-6 py-3 sm:px-8 sm:py-4 hover:opacity-90 hover:shadow-lg transform hover:-translate-y-0.5;
+    @apply btn-base bg-delaware-gold text-white px-6 py-3 sm:px-8 sm:py-4 hover:opacity-90 hover:shadow-lg transform hover:-translate-y-0.5;
   }
   
   .btn-secondary {

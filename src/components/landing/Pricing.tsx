@@ -188,7 +188,7 @@ export default function Pricing() {
                   disabled={loadingPlan === plan.id}
                   className={`block text-center w-full py-4 rounded-xl text-base font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 min-h-touch ${
                     plan.popular
-                      ? 'bg-delaware-gold text-delaware-navy hover:opacity-90'
+                      ? 'bg-delaware-gold text-white hover:opacity-90'
                       : 'bg-delaware-blue text-white hover:opacity-90'
                   }`}
                 >
@@ -328,7 +328,7 @@ export default function Pricing() {
                 {/* CTA Button */}
                 <a 
                   href="/contact" 
-                  className="w-full inline-flex items-center justify-center gap-2 bg-delaware-gold text-delaware-navy py-3 px-6 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg min-h-touch"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-delaware-gold text-white py-3 px-6 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg min-h-touch"
                 >
                   Contact Sales
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

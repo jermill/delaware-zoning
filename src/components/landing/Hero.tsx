@@ -118,7 +118,7 @@ export default function Hero() {
             <div className="lg:hidden">
               <a 
                 href="/signup" 
-                className="inline-flex items-center justify-center w-full sm:w-auto gap-2 bg-delaware-gold hover:opacity-90 text-delaware-navy px-8 py-4 rounded-xl text-lg font-bold shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center w-full sm:w-auto gap-2 bg-delaware-gold hover:opacity-90 text-white px-8 py-4 rounded-xl text-lg font-bold shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
               >
                 Start Free Now
                 <FiArrowRight className="w-5 h-5" />
@@ -206,7 +206,7 @@ export default function Hero() {
               {/* Signup CTA */}
               <a 
                 href="/signup" 
-                className="w-full inline-flex items-center justify-center bg-delaware-gold hover:opacity-90 text-delaware-navy font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 min-h-touch"
+                className="w-full inline-flex items-center justify-center bg-delaware-gold hover:opacity-90 text-white font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 min-h-touch"
               >
                 Create Free Account
               </a>
