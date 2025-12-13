@@ -31,26 +31,6 @@ export default function DashboardSidebar({
 
   return (
     <div className="h-full bg-white/80 backdrop-blur-md border-r border-gray-200/50 flex flex-col relative transition-all duration-300">
-      {/* Collapse Toggle Button - Only show when not collapsed */}
-      {!isCollapsed && onToggleCollapse && (
-        <button
-          onClick={onToggleCollapse}
-          className="absolute top-4 -right-3 z-10 w-6 h-6 bg-white border border-gray-200 rounded-full shadow-sm hover:shadow-md flex items-center justify-center text-gray-600 hover:text-delaware-blue hover:border-delaware-blue transition-all duration-200"
-          aria-label="Close sidebar"
-          title="Close sidebar"
-        >
-          <svg 
-            className="w-3.5 h-3.5" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-      )}
-
       {/* User Profile Section - Only show when not collapsed */}
       {!isCollapsed && (
         <div className="p-5 border-b border-gray-200">
