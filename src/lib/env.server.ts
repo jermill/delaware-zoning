@@ -50,6 +50,10 @@ export const serverEnv = cleanEnv(process.env, {
   HCAPTCHA_SECRET_KEY: str({
     desc: 'hCaptcha secret key (server-side only)',
   }),
+  RESEND_API_KEY: str({
+    desc: 'Resend API key for sending emails',
+    default: '',
+  }),
 
   // Optional
   NODE_ENV: str({

@@ -22,6 +22,11 @@ STRIPE_PRICE_WHALE=price_1SdbNAFCgX2xIDAtCWnMB4U7
 # ============================================================================
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
 
+# ============================================================================
+# RESEND - Email Service for PDF Reports ✅ NEW
+# ============================================================================
+RESEND_API_KEY=re_your_resend_api_key_here
+
 
 ================================================================================
 📝 WEBHOOK SETUP INSTRUCTIONS (Do this after deployment)
@@ -45,6 +50,20 @@ After you deploy to Netlify, you'll need to create a webhook:
 8. Also add it to Netlify environment variables
 
 ================================================================================
+📧 RESEND SETUP INSTRUCTIONS (Required for PDF email delivery)
+================================================================================
+
+1. Go to: https://resend.com
+2. Sign up for a free account (allows 100 emails/day, 3,000/month)
+3. Verify your domain (delawarezoning.com) or use their test domain for now
+4. Go to API Keys section
+5. Create a new API key
+6. Copy the key (starts with re_...)
+7. Add RESEND_API_KEY to .env.local
+
+Note: For production, you MUST verify your domain to send from reports@delawarezoning.com
+
+================================================================================
 ✅ YOUR .env.local SHOULD NOW HAVE:
 ================================================================================
 
@@ -60,17 +79,20 @@ After you deploy to Netlify, you'll need to create a webhook:
 ✅ STRIPE_PRICE_PRO=price_1SdbN9FCgX2xIDAtxRQw6jx8
 ✅ STRIPE_PRICE_WHALE=price_1SdbNAFCgX2xIDAtCWnMB4U7
 ✅ STRIPE_WEBHOOK_SECRET=whsec_... (placeholder for now)
+✅ RESEND_API_KEY=re_... (NEW - get from resend.com)
 
 ================================================================================
 🚀 NEXT STEPS AFTER UPDATING .env.local:
 ================================================================================
 
 1. Save the .env.local file
-2. Run: npm run build (test build locally)
-3. If build succeeds, deploy to Netlify
-4. After deployment, set up Stripe webhook (see instructions above)
-5. Add all env vars to Netlify dashboard
-6. Launch! 🎉
+2. Run: npm install (to install puppeteer and resend)
+3. Run: npm run build (test build locally)
+4. If build succeeds, deploy to Netlify
+5. After deployment, set up Stripe webhook (see instructions above)
+6. Add all env vars to Netlify dashboard
+7. Run database migration: supabase/14-single-report-purchases.sql
+8. Launch! 🎉
 
 ================================================================================
 

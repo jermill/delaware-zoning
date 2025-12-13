@@ -1,5 +1,8 @@
 import Stripe from 'stripe';
 import { createSupabaseAdmin } from '@/lib/supabase';
+import { fetchZoningData, retryOperation } from '@/lib/zoning-data-fetcher';
+import { generateZoningReportPDF } from '@/lib/pdf-generator';
+import { sendZoningReport } from '@/lib/email-service';
 
 /**
  * Handle checkout.session.completed event
@@ -289,32 +292,104 @@ async function handleSingleReportPurchase(
   console.log('Processing single report purchase:', session.id);
 
   const address = session.metadata?.address;
-  const latitude = session.metadata?.latitude;
-  const longitude = session.metadata?.longitude;
+  const latitude = session.metadata?.latitude ? parseFloat(session.metadata.latitude) : null;
+  const longitude = session.metadata?.longitude ? parseFloat(session.metadata.longitude) : null;
   const customerEmail = session.customer_details?.email;
 
-  if (!address || !customerEmail) {
+  if (!address || !customerEmail || !latitude || !longitude) {
     console.error('Missing required data for single report:', session.id);
-    return;
+    throw new Error('Missing required purchase data');
   }
 
+  const supabaseAdmin = createSupabaseAdmin();
+  let purchaseId: string | undefined;
+
   try {
-    // TODO: Generate PDF report for the property
-    // TODO: Send email with PDF attachment to customerEmail
-    
-    console.log(`✅ Single report purchase processed:`);
-    console.log(`   Address: ${address}`);
-    console.log(`   Email: ${customerEmail}`);
-    console.log(`   Amount: $${(session.amount_total || 0) / 100}`);
-    
-    // For now, just log it. In production, you would:
-    // 1. Query zoning data for the address
-    // 2. Generate a PDF report
-    // 3. Send email with the PDF attached
-    // 4. Store purchase record in database
-    
-  } catch (error) {
+    // 1. Create purchase record
+    const { data: purchase, error: insertError } = await supabaseAdmin
+      .from('single_report_purchases')
+      .insert({
+        stripe_session_id: session.id,
+        stripe_payment_intent_id: session.payment_intent as string,
+        customer_email: customerEmail,
+        property_address: address,
+        latitude,
+        longitude,
+        amount_paid: session.amount_total || 3900,
+      })
+      .select()
+      .single();
+
+    if (insertError) {
+      throw new Error(`Failed to create purchase record: ${insertError.message}`);
+    }
+
+    purchaseId = purchase.id;
+    console.log(`✅ Purchase record created: ${purchaseId}`);
+
+    // 2. Fetch comprehensive zoning data with retry
+    const zoningData = await retryOperation(
+      () => fetchZoningData(latitude, longitude),
+      3,
+      2000
+    );
+    console.log(`✅ Zoning data fetched for ${zoningData.districtCode}`);
+
+    // 3. Generate PDF with retry
+    const pdfBuffer = await retryOperation(
+      () => generateZoningReportPDF({
+        address,
+        coordinates: { latitude, longitude },
+        zoning: zoningData,
+      }),
+      3,
+      2000
+    );
+    console.log(`✅ PDF generated (${pdfBuffer.length} bytes)`);
+
+    // Update that PDF was generated
+    await supabaseAdmin
+      .from('single_report_purchases')
+      .update({
+        zoning_district_id: zoningData.id,
+        pdf_generated: true,
+        generated_at: new Date().toISOString(),
+      })
+      .eq('id', purchaseId);
+
+    // 4. Send email with PDF attachment with retry
+    await retryOperation(
+      () => sendZoningReport(customerEmail, pdfBuffer, address),
+      3,
+      2000
+    );
+    console.log(`✅ Email sent to ${customerEmail}`);
+
+    // 5. Update purchase record as complete
+    await supabaseAdmin
+      .from('single_report_purchases')
+      .update({
+        pdf_sent: true,
+        sent_at: new Date().toISOString(),
+      })
+      .eq('id', purchaseId);
+
+    console.log(`✅ Single report delivered successfully: ${address}`);
+
+  } catch (error: any) {
     console.error('Failed to process single report purchase:', error);
+    
+    // Store error in database if we have a purchase record
+    if (purchaseId) {
+      await supabaseAdmin
+        .from('single_report_purchases')
+        .update({
+          error_message: error.message || 'Unknown error',
+        })
+        .eq('id', purchaseId);
+    }
+    
+    // Re-throw to mark webhook as failed (Stripe will retry)
     throw error;
   }
 }
