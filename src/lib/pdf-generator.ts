@@ -657,3 +657,4 @@ function getCountyContact(county: string): string {
     <div class="contact-item">Please contact your local planning department for more information.</div>
   `;
 }
+

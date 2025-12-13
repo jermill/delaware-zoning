@@ -18,3 +18,4 @@ describe('Vitest Setup', () => {
     expect(result).toBe(42);
   });
 });
+

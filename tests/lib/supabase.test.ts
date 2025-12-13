@@ -249,3 +249,4 @@ describe('Supabase Client', () => {
     });
   });
 });
+

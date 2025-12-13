@@ -45,3 +45,4 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
   );
 }
 
+

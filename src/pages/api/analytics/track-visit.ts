@@ -81,3 +81,4 @@ function extractOS(userAgent: string): string {
   return 'Other';
 }
 
+

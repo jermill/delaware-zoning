@@ -189,3 +189,4 @@ The avatar upload is now fully functional! Users can:
 5. See their new avatar immediately
 
 Make sure to create the `profiles` storage bucket in Supabase if it doesn't exist yet!
+

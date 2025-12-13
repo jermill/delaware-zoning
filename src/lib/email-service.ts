@@ -311,3 +311,4 @@ function createEmailTemplate(propertyAddress: string): string {
 </html>
   `;
 }
+

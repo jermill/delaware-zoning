@@ -187,13 +187,13 @@ export default function Pricing() {
         </div>
 
         {/* Mobile: 1 col, Tablet: 2 col, Desktop: 3 col */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto px-4 lg:px-8 items-center">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`relative bg-white rounded-2xl p-6 sm:p-8 transition-all duration-300 border-2 ${
+              className={`relative bg-white rounded-2xl p-6 sm:p-8 transition-all duration-300 border-2 flex flex-col ${
                 plan.popular 
-                  ? 'shadow-elevated border-delaware-gold lg:scale-105' 
+                  ? 'shadow-2xl border-delaware-gold lg:scale-110 lg:z-10 lg:-mx-4' 
                   : 'shadow-md hover:shadow-lg border-delaware-sage/20 hover:border-delaware-blue/30'
               }`}
             >
@@ -222,7 +222,7 @@ export default function Pricing() {
                   </div>
                 </div>
 
-                <ul className="space-y-3 sm:space-y-4 mb-8 sm:mb-10">
+                <ul className="space-y-3 sm:space-y-4 mb-8 sm:mb-10 flex-grow">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2.5 sm:gap-3">
                       <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#A8BDBE]/10 flex items-center justify-center mt-0.5">

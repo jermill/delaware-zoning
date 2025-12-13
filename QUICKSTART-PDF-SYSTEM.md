@@ -126,3 +126,4 @@ FROM single_report_purchases;
 ## 🎉 That's It!
 
 Your single report purchase system is fully functional and production-ready!
+

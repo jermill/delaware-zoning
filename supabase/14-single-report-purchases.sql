@@ -101,3 +101,4 @@ GROUP BY DATE_TRUNC('day', created_at)
 ORDER BY report_date DESC;
 
 COMMENT ON VIEW single_report_stats IS 'Daily statistics for single report purchases';
+

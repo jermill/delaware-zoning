@@ -83,3 +83,4 @@ Updated from previous palette:
 - Old Delaware Gray (#A8BDBE) → Delaware Sage (name change only)
 - New Delaware Cream (#FFFCF6) added for backgrounds
 
+

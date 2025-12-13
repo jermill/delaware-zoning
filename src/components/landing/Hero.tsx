@@ -117,15 +117,22 @@ export default function Hero() {
             </div>
 
             {/* Social Proof */}
-            <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
-              <div className="flex -space-x-2">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
-                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
-                <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
-                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
+            <div className="mb-6">
+              <div className="text-center lg:text-left mb-4">
+                <h3 className="text-xs sm:text-sm font-bold tracking-widest text-white/70 uppercase">
+                  Trusted by Delaware Professionals
+                </h3>
               </div>
-              <div className="text-sm text-white/80">
-                <span className="font-semibold text-white">100+</span> Delaware professionals trust us
+              <div className="flex items-center justify-center lg:justify-start gap-3">
+                <div className="flex -space-x-2">
+                  <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
+                  <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
+                  <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
+                </div>
+                <div className="text-sm text-white/80">
+                  <span className="font-semibold text-white">100+</span> real estate pros, developers & homeowners
+                </div>
               </div>
             </div>
 

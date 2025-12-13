@@ -188,3 +188,4 @@ To prevent this from happening again:
 - [Supabase Security Best Practices](https://supabase.com/docs/guides/platform/security)
 - [OWASP: Sensitive Data Exposure](https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure)
 
+

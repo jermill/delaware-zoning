@@ -205,3 +205,4 @@ See these files for more details:
 - `SECURITY-FIX-SUMMARY.md` - Quick reference and security checklist
 - `GOOGLE-PLACES-SETUP.md` - Google Places API setup guide
 
+

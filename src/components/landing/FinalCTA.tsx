@@ -2,10 +2,7 @@ import { FiArrowRight, FiCheck } from 'react-icons/fi';
 
 export default function FinalCTA() {
   return (
-    <section className="bg-[#152F50] relative overflow-hidden">
-      {/* Gold divider line at top */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-delaware-gold to-transparent"></div>
-      
+    <section className="bg-[#152F50] relative overflow-hidden border-t border-white/10">
       {/* White divider line at bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10"></div>
       

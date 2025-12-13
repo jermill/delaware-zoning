@@ -206,3 +206,4 @@ ORDER BY count DESC;
 4. Consider adding more metrics based on needs
 5. Update privacy policy to reflect data collection
 
+
