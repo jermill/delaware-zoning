@@ -121,7 +121,8 @@ function DashboardContent() {
 
   // Get price for subscription - CORRECT PRICING
   const price = subscription.tier === 'free' ? 0 : 
-                subscription.tier === 'pro' ? 49 : 129;
+                subscription.tier === 'pro' ? 49 : 
+                subscription.tier === 'business' ? 129 : 0; // Default to 0 for looker/free
   
   const subscriptionData = {
     tier: currentUserTier,
