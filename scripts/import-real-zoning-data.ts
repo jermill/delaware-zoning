@@ -63,24 +63,38 @@ async function fetchArcGISData(url: string): Promise<ArcGISResponse> {
 }
 
 /**
- * Convert ArcGIS polygon to PostGIS MultiPolygon WKT format
+ * Convert ArcGIS Esri JSON polygon to PostGIS GeoJSON
  */
-function convertToWKT(geometry: any): string | null {
+function convertToGeoJSON(geometry: any): any | null {
   if (!geometry || !geometry.rings) {
     return null;
   }
 
   try {
+    // Esri polygon format has "rings" array
+    // Each ring is an array of [lon, lat] coordinates
+    // First ring is outer boundary, subsequent rings are holes
+    
+    // Convert to GeoJSON Polygon/MultiPolygon format
     const rings = geometry.rings;
     
-    // Build polygon string from rings
-    const polygonParts = rings.map((ring: number[][]) => {
-      const coords = ring.map(coord => `${coord[0]} ${coord[1]}`).join(', ');
-      return `((${coords}))`;
-    }).join(', ');
+    if (rings.length === 0) {
+      return null;
+    }
 
-    // Return as MultiPolygon
-    return `MULTIPOLYGON(${polygonParts})`;
+    // GeoJSON MultiPolygon structure
+    const coordinates = [rings];  // Wrap all rings in another array for MultiPolygon
+    
+    return {
+      type: 'MultiPolygon',
+      coordinates: coordinates,
+      crs: {
+        type: 'name',
+        properties: {
+          name: 'EPSG:4326'
+        }
+      }
+    };
   } catch (error) {
     console.error('Error converting geometry:', error);
     return null;
@@ -110,8 +124,8 @@ async function importNewCastleCounty() {
       const zoneName = attrs.DESCRIPTION || attrs.ZONENAME || attrs.ZONE_DESC || districtCode;
       const description = attrs.GENERIC_DESCRIPTION || attrs.DESCRIPTION || attrs.ZONE_DESC || `${zoneName} zoning district`;
       
-      // Convert geometry
-      const wkt = convertToWKT(feature.geometry);
+      // Convert geometry to GeoJSON
+      const geojson = convertToGeoJSON(feature.geometry);
       
       try {
         const { error } = await supabase
@@ -123,7 +137,7 @@ async function importNewCastleCounty() {
             district_code: districtCode,
             name: zoneName,
             description: description,
-            geom: wkt ? `SRID=4326;${wkt}` : null,
+            geom: geojson,  // PostGIS accepts GeoJSON directly
             is_mock: false,
             data_source: 'New Castle County GIS - Official ArcGIS REST API',
             last_verified: new Date().toISOString(),
@@ -176,8 +190,8 @@ async function importKentCounty() {
       const zoneName = attrs.ZONE_NAME || attrs.ZONENAME || attrs.ZONE_DESC || attrs.DESCRIPTION || districtCode;
       const description = attrs.ZONE_DESCRIPTION || attrs.DESCRIPTION || attrs.ZONE_DESC || `${zoneName} zoning district`;
       
-      // Convert geometry
-      const wkt = convertToWKT(feature.geometry);
+      // Convert geometry to GeoJSON
+      const geojson = convertToGeoJSON(feature.geometry);
       
       try {
         const { error } = await supabase
@@ -189,7 +203,7 @@ async function importKentCounty() {
             district_code: districtCode,
             name: zoneName,
             description: description,
-            geom: wkt ? `SRID=4326;${wkt}` : null,
+            geom: geojson,
             is_mock: false,
             data_source: 'Kent County GIS - Official ArcGIS REST API',
             last_verified: new Date().toISOString(),
@@ -242,10 +256,10 @@ async function importSussexCounty() {
       const zoneName = attrs.ZONE_NAME || attrs.ZONENAME || attrs.ZONE_DESC || districtCode;
       const description = attrs.ZONE_DESCRIPTION || attrs.DESCRIPTION || `${zoneName} zoning district`;
       
-      // Convert geometry
-      const wkt = convertToWKT(feature.geometry);
+      // Convert geometry to GeoJSON
+      const geojson = convertToGeoJSON(feature.geometry);
       
-      try {
+      try{
         const { error } = await supabase
           .from('zoning_districts')
           .insert({
@@ -255,7 +269,7 @@ async function importSussexCounty() {
             district_code: districtCode,
             name: zoneName,
             description: description,
-            geom: wkt ? `SRID=4326;${wkt}` : null,
+            geom: geojson,
             is_mock: false,
             data_source: 'Sussex County GIS - Official ArcGIS REST API',
             last_verified: new Date().toISOString(),
