@@ -13,14 +13,15 @@ export default function Header() {
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center group">
-            <div className="relative w-12 h-12 md:w-14 md:h-14 group-hover:scale-110 transition-transform duration-300 rounded-lg overflow-hidden bg-white">
+            <div className="relative w-12 h-12 md:w-14 md:h-14 group-hover:scale-110 transition-transform duration-300 rounded-lg overflow-hidden bg-white p-1">
               <Image 
                 src="/images/logo.png" 
                 alt="Delaware Zoning Logo" 
                 width={56}
                 height={56}
-                className="object-contain p-1"
+                className="object-contain"
                 priority
+                unoptimized
               />
             </div>
           </Link>

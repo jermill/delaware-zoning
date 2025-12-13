@@ -16,8 +16,10 @@ export default function Footer() {
                 <Image 
                   src="/images/logo.png" 
                   alt="Delaware Zoning Logo" 
-                  fill
-                  className="object-contain p-1"
+                  width={56}
+                  height={56}
+                  className="object-contain"
+                  unoptimized
                 />
               </div>
               <div className="flex-1">
