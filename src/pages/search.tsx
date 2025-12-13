@@ -23,16 +23,55 @@ export default function SearchPage() {
     (subscription?.tier as any) === 'pro' ? 'pro' :
     (subscription?.tier as any) === 'whale' || subscription?.tier === 'business' ? 'whale' : 'looker';
 
+  // Geocode address if coordinates not provided
+  const geocodeAddress = async (addressString: string) => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressString)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+      );
+      const data = await response.json();
+      
+      if (data.results && data.results.length > 0) {
+        const location = data.results[0].geometry.location;
+        return { lat: location.lat, lng: location.lng };
+      }
+      throw new Error('No results found');
+    } catch (err) {
+      console.error('Geocoding error:', err);
+      return null;
+    }
+  };
+
   // Execute search when query params are available
   useEffect(() => {
-    if (address && lat && lon) {
-      const latitude = parseFloat(lat as string);
-      const longitude = parseFloat(lon as string);
-      
-      if (!isNaN(latitude) && !isNaN(longitude)) {
-        search(address as string, latitude, longitude);
+    const executeSearch = async () => {
+      if (!address) return;
+
+      // If we have coordinates, use them directly
+      if (lat && lon) {
+        const latitude = parseFloat(lat as string);
+        const longitude = parseFloat(lon as string);
+        
+        if (!isNaN(latitude) && !isNaN(longitude)) {
+          search(address as string, latitude, longitude);
+          return;
+        }
       }
-    }
+
+      // Otherwise, geocode the address
+      console.log('[SearchPage] No coordinates provided, geocoding address:', address);
+      const coords = await geocodeAddress(address as string);
+      
+      if (coords) {
+        console.log('[SearchPage] Geocoded coordinates:', coords);
+        search(address as string, coords.lat, coords.lng);
+      } else {
+        console.error('[SearchPage] Failed to geocode address');
+        // The search hook will handle the error state
+      }
+    };
+
+    executeSearch();
   }, [address, lat, lon]);
 
   const handleSaveProperty = async () => {
