@@ -281,6 +281,9 @@ declare global {
       maps: {
         LatLng: any;
         LatLngBounds: any;
+        event: {
+          clearInstanceListeners: (instance: any) => void;
+        };
         places: {
           Autocomplete: any;
           PlacesServiceStatus: any;
