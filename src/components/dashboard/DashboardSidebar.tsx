@@ -30,8 +30,8 @@ export default function DashboardSidebar({
   ];
 
   return (
-    <div className="h-full bg-white border-r border-gray-200 flex flex-col relative">
-      {/* Collapse Toggle Button - Positioned on the right edge */}
+    <div className="h-full bg-white/80 backdrop-blur-md border-r border-gray-200/50 flex flex-col relative transition-all duration-300">
+      {/* Collapse Toggle Button - Only show when not collapsed */}
       {!isCollapsed && onToggleCollapse && (
         <button
           onClick={onToggleCollapse}
@@ -51,23 +51,32 @@ export default function DashboardSidebar({
         </button>
       )}
 
-      {/* User Profile Section */}
-      <div className="p-5 border-b border-gray-200">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-delaware-blue to-blue-600 flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
-            {userName.charAt(0)}
-          </div>
-          {!isCollapsed && (
+      {/* User Profile Section - Only show when not collapsed */}
+      {!isCollapsed && (
+        <div className="p-5 border-b border-gray-200">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-delaware-blue to-blue-600 flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
+              {userName.charAt(0)}
+            </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-gray-900 text-base truncate mb-1.5">{userName}</p>
               <TierBadge tier={userTier} size="sm" />
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Icon-only avatar when collapsed */}
+      {isCollapsed && (
+        <div className="p-4 border-b border-gray-200 flex justify-center">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-delaware-blue to-blue-600 flex items-center justify-center font-bold text-white text-base shadow-md">
+            {userName.charAt(0)}
+          </div>
+        </div>
+      )}
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1" role="navigation" aria-label="Dashboard navigation">
+      <nav className={`flex-1 ${isCollapsed ? 'px-2' : 'px-3'} py-4 space-y-1`} role="navigation" aria-label="Dashboard navigation">
         {navItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = currentTab === item.id;
@@ -76,24 +85,25 @@ export default function DashboardSidebar({
             <button
               key={item.id}
               onClick={() => onTabChange(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+              className={`w-full flex items-center ${isCollapsed ? 'justify-center px-3' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 group relative ${
                 isActive
-                  ? 'bg-delaware-blue text-delaware-navy shadow-md'
-                  : 'text-gray-600 hover:bg-delaware-cream hover:text-gray-900'
+                  ? 'bg-delaware-blue text-white shadow-md'
+                  : 'text-gray-600 hover:bg-blue-50 hover:text-gray-900'
               }`}
               aria-label={`${item.label} tab`}
               aria-current={isActive ? 'page' : undefined}
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onTabChange(item.id);
-                }
-              }}
+              title={isCollapsed ? item.label : undefined}
             >
               <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-delaware-blue'}`} aria-hidden="true" />
               {!isCollapsed && (
                 <span className="text-sm font-semibold">{item.label}</span>
+              )}
+              
+              {/* Tooltip for collapsed mode */}
+              {isCollapsed && (
+                <span className="absolute left-full ml-4 px-3 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-lg">
+                  {item.label}
+                </span>
               )}
             </button>
           );

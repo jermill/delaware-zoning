@@ -27,15 +27,18 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
 
   return (
     <motion.div 
-      className="bg-white border border-gray-200 rounded-2xl p-4 shadow-md hover:border-gray-300 hover:shadow-lg transition-all cursor-default h-full"
+      className="bg-white/70 backdrop-blur-xl rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-200/50 transition-all cursor-default h-full relative overflow-hidden"
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
     >
-      <div className="flex items-center justify-between gap-3">
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent pointer-events-none" />
+      
+      <div className="flex items-center justify-between gap-4 relative z-10">
         <div className="flex-1 min-w-0">
-          <p className="text-gray-500 text-[10px] font-semibold uppercase tracking-wider mb-1.5 truncate">{title}</p>
+          <p className="text-gray-500 text-[11px] font-semibold uppercase tracking-wide mb-2 truncate">{title}</p>
           <motion.p 
-            className="text-2xl font-bold text-gray-900 mb-0.5 whitespace-nowrap"
+            className="text-3xl font-bold text-gray-900 mb-1 whitespace-nowrap"
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ 
@@ -47,15 +50,15 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
             {value}
           </motion.p>
           {subtitle && (
-            <p className="text-xs text-gray-600">{subtitle}</p>
+            <p className="text-sm text-gray-600 font-medium">{subtitle}</p>
           )}
         </div>
         <motion.div 
-          className={`${getIconColor()} flex-shrink-0 p-2.5 rounded-xl`}
-          whileHover={{ rotate: 360 }}
+          className={`${getIconColor()} flex-shrink-0 p-3 rounded-xl shadow-sm`}
+          whileHover={{ rotate: 360, scale: 1.1 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="w-5 h-5">
+          <div className="w-6 h-6">
             {icon}
           </div>
         </motion.div>

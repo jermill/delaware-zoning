@@ -9,6 +9,7 @@ import SearchHistoryTab from '@/components/dashboard/SearchHistoryTab';
 import AccountTab from '@/components/dashboard/AccountTab';
 import BillingTab from '@/components/dashboard/BillingTab';
 import HelpTab from '@/components/dashboard/HelpTab';
+import FloatingActionButton from '@/components/dashboard/FloatingActionButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDashboard } from '@/hooks/useDashboard';
 import { getDashboardData, getCountyBreakdown } from '@/data/mockDashboardData';
@@ -201,15 +202,15 @@ function DashboardContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Dashboard Header with Sidebar Toggle */}
-      <div className="bg-white border-b border-gray-200 px-2 sm:px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+      {/* Modern Dashboard Header */}
+      <div className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 px-4 sm:px-6 py-4 sticky top-0 z-40 shadow-sm">
+        <div className="max-w-[1920px] mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-4">
             {/* Sidebar Toggle Button */}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="hidden md:flex items-center justify-center w-9 h-9 text-gray-600 hover:text-delaware-blue hover:bg-gray-100 rounded-lg transition-all duration-200 flex-shrink-0"
+              className="hidden md:flex items-center justify-center w-10 h-10 text-gray-600 hover:text-delaware-blue hover:bg-blue-50 rounded-xl transition-all duration-200 flex-shrink-0"
               aria-label="Toggle sidebar"
               title={sidebarCollapsed ? "Open sidebar" : "Close sidebar"}
             >
@@ -221,42 +222,50 @@ function DashboardContent() {
                 strokeWidth={2}
               >
                 {sidebarCollapsed ? (
-                  // Hamburger menu icon when collapsed
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 ) : (
-                  // Sidebar with arrow icon when open
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                 )}
               </svg>
             </button>
-            <h1 className="text-sm sm:text-base font-semibold text-gray-900">
-              Delaware Zoning Dashboard
-            </h1>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900 tracking-tight">
+                Delaware Zoning
+              </h1>
+              <p className="text-xs text-gray-500">Dashboard</p>
+            </div>
           </div>
-          <div className="text-xs sm:text-sm text-gray-600">
-            {userData.name}
+          
+          {/* User Profile in Header */}
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:block text-right">
+              <p className="text-sm font-semibold text-gray-900">{userData.name}</p>
+              <p className="text-xs text-gray-500">{subscriptionData.tierName}</p>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-delaware-blue to-blue-600 flex items-center justify-center text-white font-bold text-base shadow-md">
+              {userData.name.charAt(0)}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Dashboard Layout */}
-      <div className="flex h-[calc(100vh-61px)]">
-        {/* Sidebar - Hidden on mobile and when collapsed */}
-        {!sidebarCollapsed && (
-          <aside className="hidden md:block w-56 flex-shrink-0 overflow-y-auto border-r border-gray-200">
-            <DashboardSidebar
-              currentTab={currentTab}
-              onTabChange={setCurrentTab}
-              userName={userData.name}
-              userTier={currentUserTier}
-              onToggleCollapse={() => setSidebarCollapsed(true)}
-            />
-          </aside>
-        )}
+      <div className="flex h-[calc(100vh-73px)]">
+        {/* Modern Sidebar - Icon only when collapsed, full when expanded */}
+        <aside className={`hidden md:block ${sidebarCollapsed ? 'w-20' : 'w-64'} flex-shrink-0 overflow-y-auto transition-all duration-300 ease-in-out`}>
+          <DashboardSidebar
+            currentTab={currentTab}
+            onTabChange={setCurrentTab}
+            userName={userData.name}
+            userTier={currentUserTier}
+            isCollapsed={sidebarCollapsed}
+            onToggleCollapse={() => setSidebarCollapsed(true)}
+          />
+        </aside>
 
-        {/* Main Content Area */}
+        {/* Main Content Area with more padding */}
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 pb-24 md:pb-8">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 pb-24 md:pb-10">
             {renderTabContent()}
           </div>
         </main>
@@ -264,6 +273,9 @@ function DashboardContent() {
 
       {/* Mobile Tab Bar */}
       <MobileTabBar currentTab={currentTab} onTabChange={setCurrentTab} />
+      
+      {/* Floating Action Button */}
+      <FloatingActionButton href="/" />
     </div>
   );
 }
