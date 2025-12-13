@@ -73,3 +73,4 @@ export const logSearchPerformed = (userId: string, tier: string, address: string
     address,
   });
 };
+

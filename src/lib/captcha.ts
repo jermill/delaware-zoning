@@ -50,3 +50,4 @@ export async function verifyCaptcha(token: string): Promise<boolean> {
     return false;
   }
 }
+

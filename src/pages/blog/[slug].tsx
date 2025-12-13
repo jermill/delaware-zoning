@@ -113,3 +113,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     revalidate: 3600, // Revalidate every hour
   };
 };
+

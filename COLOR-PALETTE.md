@@ -82,3 +82,4 @@ Updated from previous palette:
 - Old Delaware Gold (#CB9C30) → New Delaware Gold (#D8B368)
 - Old Delaware Gray (#A8BDBE) → Delaware Sage (name change only)
 - New Delaware Cream (#FFFCF6) added for backgrounds
+

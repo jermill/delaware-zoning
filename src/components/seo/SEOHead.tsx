@@ -21,7 +21,7 @@ export default function SEOHead({
   title = 'Delaware Zoning Lookup | Instant Zoning Codes & Permits',
   description = 'Search any Delaware address to instantly see zoning codes, permitted uses, setbacks & required permits. Used by 100+ realtors, developers & architects.',
   keywords = 'Delaware zoning, zoning lookup, New Castle County zoning, Kent County zoning, Sussex County zoning, Delaware zoning code, Delaware permits',
-  ogImage = '/images/og-image.png',
+  ogImage = '/og-image.png',
   ogType = 'website',
   article,
   noindex = false,
@@ -99,4 +99,5 @@ export default function SEOHead({
     </Head>
   );
 }
+
 

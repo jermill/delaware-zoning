@@ -194,3 +194,4 @@ export default function SearchResults({ data, onViewDetails, onSaveProperty, use
     </div>
   );
 }
+

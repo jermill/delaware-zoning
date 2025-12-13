@@ -159,3 +159,4 @@ async function handler(
 export default withRateLimit('properties', (req) => (req as AuthenticatedRequest).user?.id)(
   withAuth(handler)
 );
+

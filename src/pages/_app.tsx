@@ -33,12 +33,16 @@ export default function App({ Component, pageProps }: AppProps) {
     trackPageView(router.pathname)
     
     // Track initial page visit (Database)
-    trackPageVisit(router.pathname, document.title)
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      trackPageVisit(router.pathname, document.title)
+    }
 
     // Track page changes
     const handleRouteChange = (url: string) => {
       trackPageView(url)
-      trackPageVisit(url, document.title)
+      if (typeof document !== 'undefined') {
+        trackPageVisit(url, document.title)
+      }
     }
 
     router.events.on('routeChangeComplete', handleRouteChange)

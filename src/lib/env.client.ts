@@ -27,3 +27,4 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
     console.warn(`⚠️ Missing environment variables: ${missing.join(', ')}\nSome features may not work correctly.`);
   }
 }
+

@@ -85,3 +85,4 @@ npx ts-node scripts/test-zoning-lookup.ts
 ## 🎯 Immediate Priority
 
 Fix the spatial query issue so searches return proper zone codes instead of "UNKNOWN"
+

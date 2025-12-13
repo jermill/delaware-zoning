@@ -106,3 +106,4 @@ export default function PopularZonesCard({ zones = [], onSearchZone }: PopularZo
     </motion.div>
   );
 }
+

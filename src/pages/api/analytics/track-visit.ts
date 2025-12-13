@@ -80,3 +80,4 @@ function extractOS(userAgent: string): string {
   if (/iOS|iPhone|iPad/i.test(userAgent)) return 'iOS';
   return 'Other';
 }
+

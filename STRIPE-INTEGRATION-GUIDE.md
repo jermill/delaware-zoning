@@ -394,3 +394,4 @@ Before going live:
 **You're ready to accept payments!** 🎉
 
 All code is production-ready. Just add your keys, create the products, and register the webhook.
+

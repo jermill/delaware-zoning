@@ -159,3 +159,4 @@ Once search is working, you need to:
 Just trigger that redeploy and verify Google API key, and you'll be 100% operational!
 
 **Your site looks AMAZING!** 🔥
+

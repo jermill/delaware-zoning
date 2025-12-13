@@ -357,3 +357,4 @@ DROP TRIGGER IF EXISTS update_usage_tracking_updated_at ON public.usage_tracking
 CREATE TRIGGER update_usage_tracking_updated_at
   BEFORE UPDATE ON public.usage_tracking
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
+

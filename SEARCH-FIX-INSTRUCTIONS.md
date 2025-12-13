@@ -137,3 +137,4 @@ Your `zoning_districts` table must have:
 ---
 
 **Questions?** Check the Supabase logs in the dashboard or share any error messages for help.
+

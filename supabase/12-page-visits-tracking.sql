@@ -112,3 +112,4 @@ LIMIT 20;
 
 COMMENT ON TABLE public.page_visits IS 'Tracks all page visits for analytics';
 COMMENT ON VIEW public.popular_pages IS 'Most visited pages in the last 30 days';
+

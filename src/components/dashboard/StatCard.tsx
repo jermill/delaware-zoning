@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { motion } from 'framer-motion';
 
 interface StatCardProps {
   title: string;
@@ -53,15 +52,9 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
   const colors = getGradientColors();
 
   return (
-    <motion.div 
-      className={`relative ${colors.gradient} rounded-2xl p-6 shadow-lg hover:shadow-xl border-2 ${colors.border} transition-all cursor-default h-full overflow-hidden group`}
-      whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
+    <div 
+      className={`relative ${colors.gradient} rounded-2xl p-6 shadow-lg hover:shadow-xl border-2 ${colors.border} transition-all duration-300 hover:-translate-y-1 cursor-default h-full overflow-hidden`}
     >
-      {/* Decorative background element */}
-      <div className="absolute top-0 right-0 w-32 h-32 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className={`absolute inset-0 ${colors.iconBg} opacity-5 rounded-full blur-3xl`}></div>
-      </div>
 
       <div className="relative">
         {/* Title */}
@@ -71,19 +64,11 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
         
         {/* Value and Icon Row */}
         <div className="flex items-center justify-between gap-4 mb-3">
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ 
-              type: "spring",
-              stiffness: 100,
-              delay: 0.1 
-            }}
-          >
+          <div>
             <p className="text-4xl font-extrabold text-gray-900 leading-none">
               {value}
             </p>
-          </motion.div>
+          </div>
           
           <div 
             className={`${colors.iconBg} flex-shrink-0 p-3.5 rounded-xl shadow-lg ring-4 ${colors.accentRing}`}
@@ -102,7 +87,7 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 

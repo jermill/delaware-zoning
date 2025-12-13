@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { FiSearch, FiX, FiMapPin } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGooglePlaces } from '@/hooks/useGooglePlaces';
@@ -9,28 +10,51 @@ interface DashboardSearchProps {
 }
 
 export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const { inputRef, isLoaded, selectedPlace } = useGooglePlaces((place) => {
-    // When a place is selected from autocomplete, trigger search
-    if (place?.address) {
-      handleSearchWithAddress(place.address);
-    }
-  });
-
-  const handleSearchWithAddress = (address: string) => {
+  const handleSearchWithAddress = (address: string, latitude?: number, longitude?: number) => {
+    if (loading) return; // Prevent double submissions
+    
+    console.log('[DashboardSearch] handleSearchWithAddress called', {address, latitude, longitude});
     setLoading(true);
+    
     // Redirect to search results page with the query
-    window.location.href = `/?address=${encodeURIComponent(address)}`;
+    const searchUrl = `/search?address=${encodeURIComponent(address)}${latitude && longitude ? `&lat=${latitude}&lon=${longitude}` : ''}`;
+    console.log('[DashboardSearch] Navigating to:', searchUrl);
+    
+    // Close modal before navigation
+    onClose();
+    
+    // Navigate
+    router.push(searchUrl).catch((err) => {
+      console.error('[DashboardSearch] Navigation error:', err);
+      setLoading(false);
+    });
   };
 
+  // Don't auto-navigate on place selection - wait for user to click button
+  const { inputRef, isLoaded, selectedPlace } = useGooglePlaces();
+
   const handleSearch = async (e: React.FormEvent) => {
+    console.log('[DashboardSearch] handleSearch called');
     e.preventDefault();
     
     const address = inputRef.current?.value;
-    if (!address?.trim()) return;
+    console.log('[DashboardSearch] Input value:', {address, selectedPlace});
+    if (!address?.trim()) {
+      console.log('[DashboardSearch] No address provided, returning');
+      return;
+    }
     
-    handleSearchWithAddress(address);
+    // If we have a selected place with coordinates, use them
+    if (selectedPlace && selectedPlace.address === address.trim()) {
+      console.log('[DashboardSearch] Using selectedPlace coordinates');
+      handleSearchWithAddress(address, selectedPlace.latitude, selectedPlace.longitude);
+    } else {
+      console.log('[DashboardSearch] No matching selectedPlace, searching without coords');
+      handleSearchWithAddress(address);
+    }
   };
 
   const handleClose = () => {
@@ -155,3 +179,4 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
     </AnimatePresence>
   );
 }
+

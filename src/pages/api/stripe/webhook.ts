@@ -240,3 +240,4 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
 
   console.log(`Payment failed for user ${userId}, subscription marked past_due`);
 }
+

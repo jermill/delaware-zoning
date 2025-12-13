@@ -90,3 +90,4 @@ export default function DashboardSearchBar({ onSearch }: DashboardSearchBarProps
     </motion.div>
   );
 }
+

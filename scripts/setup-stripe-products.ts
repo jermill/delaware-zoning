@@ -223,3 +223,4 @@ https://dashboard.stripe.com/products
 
 // Run the setup
 setupProducts();
+

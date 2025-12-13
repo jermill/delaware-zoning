@@ -87,3 +87,4 @@ BEGIN
     RAISE NOTICE 'User hi@jermill.dev not found - please sign up first, then run this script again';
   END IF;
 END $$;
+
