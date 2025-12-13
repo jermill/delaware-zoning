@@ -11,25 +11,16 @@ interface UsageChartProps {
 export default function UsageChart({ data }: UsageChartProps) {
   return (
     <motion.div 
-      className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 border border-gray-200/50 relative overflow-hidden"
+      className="bg-white rounded-2xl shadow-md p-6 border border-[#A8BDBE]"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent pointer-events-none" />
-      
-      <div className="relative z-10">
+      <div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">Search Activity</h3>
         <p className="text-sm text-gray-600 mb-6">Last 30 Days</p>
         <ResponsiveContainer width="100%" height={240}>
           <AreaChart data={data}>
-            <defs>
-              <linearGradient id="colorSearches" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#2C5F9E" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#2C5F9E" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
             <XAxis 
               dataKey="date" 
@@ -60,12 +51,11 @@ export default function UsageChart({ data }: UsageChartProps) {
             <Area 
               type="monotone" 
               dataKey="searches" 
-              stroke="#2C5F9E" 
+              stroke="#152F50" 
               strokeWidth={3}
-              fillOpacity={1} 
-              fill="url(#colorSearches)"
-              dot={{ r: 4, fill: '#2C5F9E', strokeWidth: 2, stroke: '#fff' }}
-              activeDot={{ r: 6, fill: '#2C5F9E', strokeWidth: 3, stroke: '#fff' }}
+              fill="#82B8DE"
+              dot={{ r: 4, fill: '#152F50', strokeWidth: 2, stroke: '#fff' }}
+              activeDot={{ r: 6, fill: '#152F50', strokeWidth: 3, stroke: '#fff' }}
             />
           </AreaChart>
         </ResponsiveContainer>

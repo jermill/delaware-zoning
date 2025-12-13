@@ -13,28 +13,25 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
   const getIconColor = () => {
     switch (color) {
       case 'blue':
-        return 'text-delaware-blue bg-blue-50';
+        return 'text-white bg-[#82B8DE]';
       case 'gold':
-        return 'text-delaware-gold bg-yellow-50';
+        return 'text-white bg-[#D8B368]';
       case 'gray':
-        return 'text-gray-400 bg-gray-50';
+        return 'text-white bg-[#A8BDBE]';
       case 'green':
-        return 'text-success bg-green-50';
+        return 'text-white bg-[#82B8DE]';
       case 'purple':
-        return 'text-purple-600 bg-purple-50';
+        return 'text-white bg-[#152F50]';
     }
   };
 
   return (
     <motion.div 
-      className="bg-white/70 backdrop-blur-xl rounded-2xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-200/50 transition-all cursor-default h-full relative overflow-hidden"
+      className="bg-white rounded-2xl p-5 shadow-md hover:shadow-lg border border-[#A8BDBE] transition-all cursor-default h-full"
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
     >
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent pointer-events-none" />
-      
-      <div className="flex items-center justify-between gap-4 relative z-10">
+      <div className="flex items-center justify-between gap-4">
         <div className="flex-1 min-w-0">
           <p className="text-gray-500 text-[11px] font-semibold uppercase tracking-wide mb-2 truncate">{title}</p>
           <motion.p 

@@ -202,9 +202,9 @@ function DashboardContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+    <div className="min-h-screen bg-[#FFFCF6]">
       {/* Modern Dashboard Header */}
-      <div className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 px-4 sm:px-6 py-4 sticky top-0 z-40 shadow-sm">
+      <div className="bg-white border-b border-[#A8BDBE] px-4 sm:px-6 py-4 sticky top-0 z-40 shadow-sm">
         <div className="max-w-[1920px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             {/* Sidebar Toggle Button */}
@@ -242,7 +242,7 @@ function DashboardContent() {
               <p className="text-sm font-semibold text-gray-900">{userData.name}</p>
               <p className="text-xs text-gray-500">{subscriptionData.tierName}</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-delaware-blue to-blue-600 flex items-center justify-center text-white font-bold text-base shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-[#152F50] flex items-center justify-center text-white font-bold text-base shadow-md">
               {userData.name.charAt(0)}
             </div>
           </div>

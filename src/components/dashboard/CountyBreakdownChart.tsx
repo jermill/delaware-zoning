@@ -8,20 +8,17 @@ interface CountyBreakdownChartProps {
   }>;
 }
 
-const COLORS = ['#2C5F9E', '#D4AF37', '#6B7280'];
+const COLORS = ['#152F50', '#82B8DE', '#D8B368'];
 
 export default function CountyBreakdownChart({ data }: CountyBreakdownChartProps) {
   return (
     <motion.div 
-      className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 border border-gray-200/50 relative overflow-hidden"
+      className="bg-white rounded-2xl shadow-md p-6 border border-[#A8BDBE]"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent pointer-events-none" />
-      
-      <div className="relative z-10">
+      <div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">County Distribution</h3>
         <p className="text-sm text-gray-600 mb-6">Saved Properties by County</p>
         <ResponsiveContainer width="100%" height={240}>

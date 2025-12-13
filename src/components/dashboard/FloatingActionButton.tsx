@@ -25,8 +25,6 @@ export default function FloatingActionButton({ onClick, href }: FloatingActionBu
         <FiSearch className="w-7 h-7" />
       </motion.div>
       
-      {/* Ripple effect */}
-      <span className="absolute inset-0 rounded-2xl bg-delaware-blue animate-ping opacity-20" />
       
       {/* Tooltip */}
       <span className="absolute right-full mr-3 px-4 py-2 bg-gray-900 text-white text-sm font-semibold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">

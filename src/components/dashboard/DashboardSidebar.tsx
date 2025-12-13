@@ -30,12 +30,12 @@ export default function DashboardSidebar({
   ];
 
   return (
-    <div className="h-full bg-white/80 backdrop-blur-md border-r border-gray-200/50 flex flex-col relative transition-all duration-300">
+    <div className="h-full bg-white border-r border-[#A8BDBE] flex flex-col relative transition-all duration-300">
       {/* User Profile Section - Only show when not collapsed */}
       {!isCollapsed && (
         <div className="p-5 border-b border-gray-200">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-delaware-blue to-blue-600 flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
+            <div className="w-14 h-14 rounded-xl bg-[#152F50] flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
               {userName.charAt(0)}
             </div>
             <div className="flex-1 min-w-0">
@@ -49,7 +49,7 @@ export default function DashboardSidebar({
       {/* Icon-only avatar when collapsed */}
       {isCollapsed && (
         <div className="p-4 border-b border-gray-200 flex justify-center">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-delaware-blue to-blue-600 flex items-center justify-center font-bold text-white text-base shadow-md">
+          <div className="w-10 h-10 rounded-xl bg-[#152F50] flex items-center justify-center font-bold text-white text-base shadow-md">
             {userName.charAt(0)}
           </div>
         </div>
@@ -67,14 +67,14 @@ export default function DashboardSidebar({
               onClick={() => onTabChange(item.id)}
               className={`w-full flex items-center ${isCollapsed ? 'justify-center px-3' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 group relative ${
                 isActive
-                  ? 'bg-delaware-blue text-white shadow-md'
-                  : 'text-gray-600 hover:bg-blue-50 hover:text-gray-900'
+                  ? 'bg-[#152F50] text-white shadow-md'
+                  : 'text-gray-600 hover:bg-[#FFFCF6] hover:text-gray-900'
               }`}
               aria-label={`${item.label} tab`}
               aria-current={isActive ? 'page' : undefined}
               title={isCollapsed ? item.label : undefined}
             >
-              <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-delaware-blue'}`} aria-hidden="true" />
+              <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-[#A8BDBE] group-hover:text-[#152F50]'}`} aria-hidden="true" />
               {!isCollapsed && (
                 <span className="text-sm font-semibold">{item.label}</span>
               )}
@@ -93,10 +93,10 @@ export default function DashboardSidebar({
       {/* Upgrade Banner */}
       {!isCollapsed && userTier !== 'whale' && (
         <div className="px-3 pb-4">
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3.5">
+          <div className="bg-[#FFFCF6] border border-[#82B8DE] rounded-xl p-3.5">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-6 bg-delaware-blue/10 rounded-md flex items-center justify-center flex-shrink-0">
-                <svg className="w-3.5 h-3.5 text-delaware-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-6 h-6 bg-[#82B8DE] rounded-md flex items-center justify-center flex-shrink-0">
+                <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
@@ -109,7 +109,7 @@ export default function DashboardSidebar({
             </p>
             <Link
               href="/dashboard?tab=billing"
-              className="block w-full text-center bg-delaware-blue text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors"
+              className="block w-full text-center bg-[#152F50] text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-[#82B8DE] transition-colors"
             >
               Upgrade Now →
             </Link>
