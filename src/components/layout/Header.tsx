@@ -49,13 +49,13 @@ export default function Header() {
             <div className="w-px h-6 bg-delaware-sage/30 mx-2"></div>
             <Link 
               href="/login" 
-              className="text-delaware-navy hover:text-delaware-blue hover:bg-delaware-cream px-4 py-2 rounded-xl transition-all duration-300 font-semibold"
+              className="text-delaware-navy hover:bg-delaware-cream px-4 py-2 rounded-xl transition-all duration-300 font-semibold"
             >
               Log In
             </Link>
             <Link 
               href="/signup" 
-              className="bg-delaware-gold text-white px-6 py-3 rounded-xl font-bold hover:opacity-90 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
+              className="bg-[#A8BDBE] text-white px-6 py-3 rounded-xl font-bold hover:opacity-90 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
             >
               Get Started Free
             </Link>
@@ -65,7 +65,7 @@ export default function Header() {
           <div className="md:hidden flex items-center gap-3">
             <Link 
               href="/signup" 
-              className="bg-delaware-gold text-white px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-all duration-300"
+              className="bg-[#A8BDBE] text-white px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-all duration-300"
             >
               Sign Up
             </Link>
@@ -122,7 +122,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/signup" 
-                  className="block bg-delaware-gold text-white px-4 py-3 rounded-xl font-bold hover:opacity-90 transition-all duration-300 text-center min-h-touch"
+                  className="block bg-[#A8BDBE] text-white px-4 py-3 rounded-xl font-bold hover:opacity-90 transition-all duration-300 text-center min-h-touch"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Get Started Free

@@ -32,10 +32,10 @@ export default function DashboardSidebar({
   ];
 
   return (
-    <div className="h-full bg-white border-r border-[#A8BDBE] flex flex-col relative transition-all duration-300">
+    <div className="h-full bg-[#A8BDBE] border-r border-[#A8BDBE] flex flex-col relative transition-all duration-300">
       {/* User Profile Section - Only show when not collapsed */}
       {!isCollapsed && (
-        <div className="p-5 border-b border-gray-200">
+        <div className="p-5 border-b border-white/20">
           <div className="flex items-center gap-4">
             {avatarUrl ? (
               <img
@@ -49,7 +49,9 @@ export default function DashboardSidebar({
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-gray-900 text-base truncate mb-1.5">{userName}</p>
+              <p className="font-semibold text-white text-base truncate mb-1.5">
+                Hi, {userName.split(' ')[0]}
+              </p>
               <TierBadge tier={userTier} size="sm" />
             </div>
           </div>
@@ -58,7 +60,7 @@ export default function DashboardSidebar({
 
       {/* Icon-only avatar when collapsed */}
       {isCollapsed && (
-        <div className="p-4 border-b border-gray-200 flex justify-center">
+        <div className="p-4 border-b border-white/20 flex justify-center">
           {avatarUrl ? (
             <img
               src={avatarUrl}
@@ -85,14 +87,14 @@ export default function DashboardSidebar({
               onClick={() => onTabChange(item.id)}
               className={`w-full flex items-center ${isCollapsed ? 'justify-center px-3' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 group relative ${
                 isActive
-                  ? 'bg-[#152F50] text-white shadow-md'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-white/20 backdrop-blur-md text-white shadow-lg border border-white/30'
+                  : 'text-[#272727] hover:bg-white/20 hover:text-[#272727]'
               }`}
               aria-label={`${item.label} tab`}
               aria-current={isActive ? 'page' : undefined}
               title={isCollapsed ? item.label : undefined}
             >
-              <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-[#A8BDBE] group-hover:text-[#152F50]'}`} aria-hidden="true" />
+              <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-[#272727] group-hover:text-[#272727]'}`} aria-hidden="true" />
               {!isCollapsed && (
                 <span className="text-sm font-semibold">{item.label}</span>
               )}
@@ -139,7 +141,7 @@ export default function DashboardSidebar({
 
       {/* Logout Button */}
       {!isCollapsed && (
-        <div className="p-3 border-t border-gray-100">
+        <div className="p-3 border-t border-white/20">
           <button
             onClick={() => {
               // In production, this would call your logout function
@@ -147,9 +149,9 @@ export default function DashboardSidebar({
               alert('Logout functionality will be connected to authentication system');
               window.location.href = '/';
             }}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 group"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-white hover:text-red-100 hover:bg-red-600/80 rounded-xl transition-all duration-200 group"
           >
-            <FiLogOut className="w-4 h-4 group-hover:text-red-600" />
+            <FiLogOut className="w-4 h-4" />
             <span className="text-sm font-semibold">Log Out</span>
           </button>
         </div>

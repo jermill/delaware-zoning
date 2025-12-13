@@ -46,7 +46,7 @@ export default function Footer() {
 
           {/* Company Links */}
           <div>
-            <h3 className="font-semibold text-white mb-3 sm:mb-4 text-base sm:text-lg">Company</h3>
+            <h3 className="font-semibold text-delaware-gold mb-3 sm:mb-4 text-base sm:text-lg">Company</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link href="/pricing" className="text-sm sm:text-base text-gray-400 hover:text-delaware-gold transition-colors duration-300">
@@ -68,7 +68,7 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h3 className="font-semibold text-white mb-3 sm:mb-4 text-base sm:text-lg">Legal</h3>
+            <h3 className="font-semibold text-delaware-gold mb-3 sm:mb-4 text-base sm:text-lg">Legal</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link href="/privacy" className="text-sm sm:text-base text-gray-400 hover:text-delaware-gold transition-colors duration-300">

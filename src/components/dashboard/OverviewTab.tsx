@@ -6,6 +6,8 @@ import UpgradeBanner from './UpgradeBanner';
 import ProgressBar from './ProgressBar';
 import UsageChart from './UsageChart';
 import CountyBreakdownChart from './CountyBreakdownChart';
+import PopularZonesCard from './PopularZonesCard';
+import DashboardSearchBar from './DashboardSearchBar';
 import { exportDashboardSummary } from '@/utils/exportHelpers';
 import Link from 'next/link';
 
@@ -96,6 +98,11 @@ export default function OverviewTab({
       initial="hidden"
       animate="show"
     >
+      {/* Search Bar */}
+      <motion.div variants={item}>
+        <DashboardSearchBar onSearch={onOpenSearch} />
+      </motion.div>
+
       {/* Upgrade Banner for non-whale users */}
       {userTier !== 'whale' && (
         <motion.div variants={item}>
@@ -216,19 +223,22 @@ export default function OverviewTab({
       {/* Charts Row - Modern glassmorphic design */}
       {(usageChartData.length > 0 || countyBreakdown.length > 0) && (
         <motion.div 
-          className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
           variants={container}
         >
           {usageChartData.length > 0 && (
-            <motion.div variants={item}>
+            <motion.div variants={item} className="w-full">
               <UsageChart data={usageChartData} />
             </motion.div>
           )}
           {countyBreakdown.length > 0 && (
-            <motion.div variants={item}>
+            <motion.div variants={item} className="w-full">
               <CountyBreakdownChart data={countyBreakdown} />
             </motion.div>
           )}
+          <motion.div variants={item} className="w-full">
+            <PopularZonesCard />
+          </motion.div>
         </motion.div>
       )}
 

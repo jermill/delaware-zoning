@@ -117,56 +117,58 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
   return (
     <div className="space-y-6">
       {/* Current Plan */}
-      <div className="bg-white rounded-2xl shadow p-6">
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Current Plan</h2>
-            <div className="flex items-center gap-3">
-              <TierBadge tier={userTier} size="md" />
-              {subscription.price > 0 ? (
-                <span className="text-2xl font-bold text-gray-900">
-                  ${subscription.price}
-                  <span className="text-base font-normal text-gray-600">/month</span>
-                </span>
-              ) : (
-                <span className="text-2xl font-bold text-gray-900">
-                  Free
-                  <span className="text-base font-normal text-gray-600"> forever</span>
-                </span>
-              )}
+      <div className="bg-white rounded-xl shadow p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div>
+              <h2 className="text-base font-semibold text-gray-900 mb-1">Current Plan</h2>
+              <div className="flex items-center gap-3">
+                <TierBadge tier={userTier} size="sm" />
+                {subscription.price > 0 ? (
+                  <span className="text-lg font-bold text-gray-900">
+                    ${subscription.price}
+                    <span className="text-sm font-normal text-gray-600">/mo</span>
+                  </span>
+                ) : (
+                  <span className="text-lg font-bold text-gray-900">
+                    Free
+                    <span className="text-sm font-normal text-gray-600"> forever</span>
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           {userTier !== 'whale' && (
-            <Link href="/dashboard?tab=billing" className="btn-gold">
+            <Link href="/dashboard?tab=billing" className="btn-gold text-sm px-4 py-2">
               Upgrade Plan
             </Link>
           )}
         </div>
 
         {subscription.price > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-200">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Billing Cycle</p>
-              <p className="font-medium text-gray-900 capitalize">{subscription.billingCycle}</p>
+              <p className="text-xs text-gray-600 mb-0.5">Billing Cycle</p>
+              <p className="text-sm font-medium text-gray-900 capitalize">{subscription.billingCycle}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Next Billing Date</p>
-              <p className="font-medium text-gray-900">
+              <p className="text-xs text-gray-600 mb-0.5">Next Billing</p>
+              <p className="text-sm font-medium text-gray-900">
                 {subscription.nextBillingDate
                   ? formatDate(subscription.nextBillingDate)
                   : 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Payment Method</p>
-              <div className="flex items-center gap-2">
-                <FiCreditCard className="w-4 h-4 text-gray-400" />
-                <p className="font-medium text-gray-900">{subscription.paymentMethod}</p>
+              <p className="text-xs text-gray-600 mb-0.5">Payment</p>
+              <div className="flex items-center gap-1.5">
+                <FiCreditCard className="w-3.5 h-3.5 text-gray-400" />
+                <p className="text-sm font-medium text-gray-900">{subscription.paymentMethod}</p>
               </div>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Status</p>
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 capitalize">
+              <p className="text-xs text-gray-600 mb-0.5">Status</p>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 capitalize">
                 {subscription.status}
               </span>
             </div>
@@ -174,18 +176,18 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
         )}
 
         {subscription.price > 0 && (
-          <div className="flex gap-3 mt-6 pt-6 border-t border-gray-200">
+          <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200">
             <button 
               onClick={handleManageBilling} 
               disabled={loading}
-              className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-secondary text-sm px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Loading...' : 'Manage Billing'}
             </button>
             <button
               onClick={handleCancelSubscription}
               disabled={loading}
-              className="px-6 py-3 text-error border-2 border-error rounded-lg font-semibold hover:bg-error hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 text-sm text-error border-2 border-error rounded-lg font-semibold hover:bg-error hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancel Subscription
             </button>
@@ -227,8 +229,8 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
               <ul className="space-y-2.5 sm:space-y-3 mb-4 sm:mb-6">
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#D8B368]/20 flex items-center justify-center mt-0.5">
-                      <FiCheck className="w-3 h-3 text-[#D8B368]" />
+                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#A8BDBE]/20 flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-[#A8BDBE]" />
                     </div>
                     <span className="text-sm text-gray-700">{feature}</span>
                   </li>

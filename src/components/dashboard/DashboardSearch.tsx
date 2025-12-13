@@ -94,7 +94,7 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
                         ref={inputRef}
                         type="text"
                         placeholder="Enter address (e.g., 123 Main St, Wilmington, DE)"
-                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl text-base focus:border-[#82B8DE] focus:ring-4 focus:ring-[#82B8DE]/20 transition-all outline-none"
+                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl text-base focus:border-[#82B8DE] transition-all outline-none"
                         autoFocus
                         disabled={!isLoaded}
                       />

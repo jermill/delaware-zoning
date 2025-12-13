@@ -56,6 +56,7 @@ export default function UpgradeButton({
           userId: user.id,
           userEmail: user.email,
           tier: subscriptionTier,
+          returnUrl: window.location.href, // Pass current URL to know where user came from
         }),
       });
 

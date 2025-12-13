@@ -51,6 +51,7 @@ export default function Pricing() {
           userId: user.id,
           userEmail: user.email,
           tier,
+          returnUrl: window.location.href, // Pass current URL to know where user came from
         }),
       });
 
@@ -172,8 +173,8 @@ export default function Pricing() {
                 <ul className="space-y-3 sm:space-y-4 mb-8 sm:mb-10">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2.5 sm:gap-3">
-                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-delaware-gold/10 flex items-center justify-center mt-0.5">
-                        <FiCheck className="w-3.5 h-3.5 text-delaware-gold" />
+                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#A8BDBE]/10 flex items-center justify-center mt-0.5">
+                        <FiCheck className="w-3.5 h-3.5 text-[#A8BDBE]" />
                       </div>
                       <span className="text-sm sm:text-base text-gray-700 leading-relaxed">{feature}</span>
                     </li>
@@ -189,7 +190,7 @@ export default function Pricing() {
                   className={`block text-center w-full py-4 rounded-xl text-base font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 min-h-touch ${
                     plan.popular
                       ? 'bg-delaware-gold text-white hover:opacity-90'
-                      : 'bg-delaware-blue text-white hover:opacity-90'
+                      : 'bg-[#A8BDBE] text-white hover:opacity-90'
                   }`}
                 >
                   {loadingPlan === plan.id ? (
@@ -253,20 +254,20 @@ export default function Pricing() {
                 {/* Features */}
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
-                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    <div className="flex-shrink-0 w-5 h-5 bg-[#A8BDBE]/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-[#A8BDBE] font-bold" />
                     </div>
                     <span className="text-sm text-gray-700">Full zoning report PDF</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
-                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    <div className="flex-shrink-0 w-5 h-5 bg-[#A8BDBE]/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-[#A8BDBE] font-bold" />
                     </div>
                     <span className="text-sm text-gray-700">No subscription required</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
-                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    <div className="flex-shrink-0 w-5 h-5 bg-[#A8BDBE]/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-[#A8BDBE] font-bold" />
                     </div>
                     <span className="text-sm text-gray-700">Instant download</span>
                   </li>
@@ -306,20 +307,20 @@ export default function Pricing() {
                 {/* Features */}
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
-                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    <div className="flex-shrink-0 w-5 h-5 bg-[#A8BDBE]/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-[#A8BDBE] font-bold" />
                     </div>
                     <span className="text-sm text-gray-700">$15-20 per agent</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
-                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    <div className="flex-shrink-0 w-5 h-5 bg-[#A8BDBE]/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-[#A8BDBE] font-bold" />
                     </div>
                     <span className="text-sm text-gray-700">Recruit & retain talent</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
-                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    <div className="flex-shrink-0 w-5 h-5 bg-[#A8BDBE]/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-[#A8BDBE] font-bold" />
                     </div>
                     <span className="text-sm text-gray-700">Volume discounts available</span>
                   </li>

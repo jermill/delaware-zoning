@@ -24,7 +24,7 @@ export default function FinalCTA() {
           </a>
           <a
             href="/pricing"
-            className="w-full sm:w-auto inline-flex items-center justify-center bg-delaware-sage text-delaware-navy border border-delaware-blue/30 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-opacity-90 transition-all duration-200"
+            className="w-full sm:w-auto inline-flex items-center justify-center bg-transparent text-white border-2 border-[#D8B368] px-8 py-4 rounded-xl text-lg font-semibold hover:bg-[#D8B368]/10 transition-all duration-200"
           >
             View Pricing
           </a>

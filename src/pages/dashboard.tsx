@@ -145,7 +145,7 @@ function DashboardContent() {
     email: profile.email,
     company: profile.company_name || '',
     phone: profile.phone || '',
-    avatar: profile.avatar_url || undefined,
+    avatar: profile.avatar_url || user?.user_metadata?.avatar_url || user?.user_metadata?.picture || undefined,
     userType: 'developer' as const,
     tier: currentUserTier,
     createdAt: profile.created_at,
@@ -263,8 +263,8 @@ function DashboardContent() {
 
           {/* Desktop: Tier Badge */}
           <div className="hidden md:flex items-center gap-3">
-            <div className="px-4 py-1.5 bg-blue-50 border border-[#82B8DE] rounded-lg">
-              <p className="text-sm font-semibold text-[#152F50]">{subscriptionData.tierName}</p>
+            <div className="px-4 py-1.5 bg-[#A8BDBE] border border-[#A8BDBE] rounded-lg">
+              <p className="text-sm font-semibold text-white">{subscriptionData.tierName}</p>
             </div>
           </div>
         </div>

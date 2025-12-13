@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { priceId, userId, userEmail, tier } = req.body;
+    const { priceId, userId, userEmail, tier, returnUrl } = req.body;
 
     if (!priceId || !userId || !userEmail || !tier) {
       return res.status(400).json({ 
@@ -57,6 +57,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .eq('user_id', userId);
     }
 
+    // Determine return URLs based on where user came from
+    const successUrl = returnUrl?.includes('dashboard') 
+      ? `${req.headers.origin}/dashboard?tab=billing&checkout=success`
+      : `${req.headers.origin}/dashboard?checkout=success`;
+    
+    const cancelUrl = returnUrl?.includes('dashboard')
+      ? `${req.headers.origin}/dashboard?tab=billing&checkout=cancelled`
+      : `${req.headers.origin}/pricing?checkout=cancelled`;
+
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -67,8 +76,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       ],
       mode: 'subscription',
-      success_url: `${req.headers.origin}/dashboard?checkout=success`,
-      cancel_url: `${req.headers.origin}/pricing?checkout=cancelled`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
       metadata: {
         user_id: userId,
         tier: tier,
