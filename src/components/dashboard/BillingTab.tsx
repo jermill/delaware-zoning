@@ -123,10 +123,15 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Current Plan</h2>
             <div className="flex items-center gap-3">
               <TierBadge tier={userTier} size="md" />
-              {subscription.price > 0 && (
+              {subscription.price > 0 ? (
                 <span className="text-2xl font-bold text-gray-900">
                   ${subscription.price}
                   <span className="text-base font-normal text-gray-600">/month</span>
+                </span>
+              ) : (
+                <span className="text-2xl font-bold text-gray-900">
+                  Free
+                  <span className="text-base font-normal text-gray-600"> forever</span>
                 </span>
               )}
             </div>
@@ -195,19 +200,19 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`relative rounded-2xl p-6 transition-all ${
+                  className={`relative rounded-2xl p-6 transition-all ${
                 plan.id === userTier
-                  ? 'bg-blue-50 border-2 border-delaware-blue'
-                  : 'border-2 border-gray-200 hover:border-delaware-gold/50'
+                  ? 'bg-[#FFFCF6] border-2 border-[#152F50]'
+                  : 'border-2 border-[#A8BDBE] hover:border-[#D8B368]'
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-delaware-gold to-yellow-600 text-white text-xs font-semibold px-4 py-1 rounded-full inline-flex items-center gap-1.5">
-                    <FiStar className="w-3 h-3" />
-                    Most Popular
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <div className="bg-[#D8B368] text-white text-xs font-semibold px-4 py-1 rounded-full inline-flex items-center gap-1.5">
+                      <FiStar className="w-3 h-3" />
+                      Most Popular
+                    </div>
                   </div>
-                </div>
               )}
 
               <h3 className="text-xl font-bold text-gray-900 mb-2 mt-2">{plan.name}</h3>
@@ -222,8 +227,8 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
               <ul className="space-y-3 mb-6">
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-delaware-gold/10 flex items-center justify-center mt-0.5">
-                      <FiCheck className="w-3 h-3 text-delaware-gold" />
+                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#D8B368]/20 flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-[#D8B368]" />
                     </div>
                     <span className="text-sm text-gray-700">{feature}</span>
                   </li>
@@ -246,7 +251,7 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
                 <UpgradeButton
                   tier={plan.id === 'pro' ? 'pro' : 'business'}
                   currentTier={userTier}
-                  className="block text-center w-full py-3 rounded-lg font-semibold transition-all bg-delaware-blue text-white hover:bg-opacity-90 hover:shadow-elevated"
+                  className="block text-center w-full py-3 rounded-lg font-semibold transition-all bg-[#152F50] text-white hover:bg-[#82B8DE]"
                 >
                   {plan.price > subscription.price ? 'Upgrade Now' : 'Select Plan'}
                 </UpgradeButton>
@@ -309,7 +314,7 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => handleDownloadInvoice(invoice.id)}
-                        className="inline-flex items-center gap-2 text-sm text-delaware-blue hover:underline"
+                        className="inline-flex items-center gap-2 text-sm text-[#82B8DE] hover:text-[#152F50] hover:underline"
                       >
                         <FiDownload className="w-4 h-4" />
                         Download
@@ -355,7 +360,7 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
               </button>
               <button
                 onClick={confirmCancel}
-                className="flex-1 px-6 py-3 bg-delaware-blue text-white rounded-lg font-semibold hover:bg-opacity-90 transition-colors"
+                className="flex-1 px-6 py-3 bg-[#152F50] text-white rounded-lg font-semibold hover:bg-[#82B8DE] transition-colors"
               >
                 Continue
               </button>
