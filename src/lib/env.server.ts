@@ -50,8 +50,8 @@ export const serverEnv = cleanEnv(process.env, {
   HCAPTCHA_SECRET_KEY: str({
     desc: 'hCaptcha secret key (server-side only)',
   }),
-  RESEND_API_KEY: str({
-    desc: 'Resend API key for sending emails',
+  SENDGRID_API_KEY: str({
+    desc: 'SendGrid API key for sending emails',
     default: '',
   }),
 

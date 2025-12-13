@@ -11,15 +11,22 @@ This installs:
 - `puppeteer` (PDF generation)
 - `resend` (Email delivery)
 
-### Step 2: Set Up Resend
+### Step 2: Set Up SendGrid
 
-1. Go to https://resend.com
-2. Sign up for free account (100 emails/day)
-3. Get your API key (starts with `re_`)
-4. Add to `.env.local`:
+Since you already have SendGrid:
+
+1. Go to https://app.sendgrid.com
+2. Navigate to Settings → API Keys
+3. Create or use existing API key with "Mail Send" permissions
+4. Copy your API key (starts with `SG.`)
+5. Add to `.env.local`:
 ```bash
-RESEND_API_KEY=re_your_api_key_here
+SENDGRID_API_KEY=SG.your_api_key_here
 ```
+
+6. Verify sender email:
+   - Settings → Sender Authentication
+   - Add `reports@delawarezoning.com` as verified sender
 
 ### Step 3: Run Database Migration
 
@@ -58,15 +65,14 @@ http://localhost:3000/api/test/generate-report?lat=39.7459&lon=-75.5466&address=
 
 ## 📧 Email Configuration
 
-### Development (Using Resend Test Domain)
-Works immediately - emails sent from `onboarding@resend.dev`
+### Using SendGrid (You Already Have This!)
 
-### Production (Custom Domain)
-1. Go to Resend dashboard → Domains
-2. Add `delawarezoning.com`
-3. Add DNS records they provide
-4. Wait for verification (usually < 1 hour)
-5. Emails now sent from `reports@delawarezoning.com`
+Just add your API key to `.env.local`:
+```bash
+SENDGRID_API_KEY=SG.your_existing_key
+```
+
+Make sure `reports@delawarezoning.com` is verified as a sender in SendGrid dashboard.
 
 ## 🐛 Troubleshooting
 
@@ -76,10 +82,10 @@ Works immediately - emails sent from `onboarding@resend.dev`
 - Verify zoning data exists: Query database for lat/lon
 
 **Email not received?**
-- Check Resend dashboard → Logs
-- Verify RESEND_API_KEY is set correctly
+- Check SendGrid dashboard → Activity
+- Verify SENDGRID_API_KEY is set correctly
+- Check `reports@delawarezoning.com` is verified sender
 - Check customer's spam folder
-- Verify domain in production
 
 **Webhook not working?**
 - Test locally: `stripe listen --forward-to localhost:3000/api/stripe/webhook`

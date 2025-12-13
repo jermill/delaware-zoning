@@ -23,9 +23,9 @@ STRIPE_PRICE_WHALE=price_1SdbNAFCgX2xIDAtCWnMB4U7
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
 
 # ============================================================================
-# RESEND - Email Service for PDF Reports ✅ NEW
+# SENDGRID - Email Service for PDF Reports ✅
 # ============================================================================
-RESEND_API_KEY=re_your_resend_api_key_here
+SENDGRID_API_KEY=your_sendgrid_api_key_here
 
 
 ================================================================================
@@ -50,18 +50,20 @@ After you deploy to Netlify, you'll need to create a webhook:
 8. Also add it to Netlify environment variables
 
 ================================================================================
-📧 RESEND SETUP INSTRUCTIONS (Required for PDF email delivery)
+📧 SENDGRID SETUP INSTRUCTIONS (Required for PDF email delivery)
 ================================================================================
 
-1. Go to: https://resend.com
-2. Sign up for a free account (allows 100 emails/day, 3,000/month)
-3. Verify your domain (delawarezoning.com) or use their test domain for now
-4. Go to API Keys section
-5. Create a new API key
-6. Copy the key (starts with re_...)
-7. Add RESEND_API_KEY to .env.local
+Since you already have SendGrid set up:
 
-Note: For production, you MUST verify your domain to send from reports@delawarezoning.com
+1. Go to: https://app.sendgrid.com
+2. Navigate to Settings → API Keys
+3. Create a new API key with "Mail Send" permissions (or use existing)
+4. Copy the API key (starts with SG....)
+5. Add SENDGRID_API_KEY to .env.local
+
+Note: Make sure reports@delawarezoning.com is verified as a sender in SendGrid:
+- Go to Settings → Sender Authentication
+- Verify your domain OR add reports@delawarezoning.com as a single sender
 
 ================================================================================
 ✅ YOUR .env.local SHOULD NOW HAVE:
@@ -79,7 +81,7 @@ Note: For production, you MUST verify your domain to send from reports@delawarez
 ✅ STRIPE_PRICE_PRO=price_1SdbN9FCgX2xIDAtxRQw6jx8
 ✅ STRIPE_PRICE_WHALE=price_1SdbNAFCgX2xIDAtCWnMB4U7
 ✅ STRIPE_WEBHOOK_SECRET=whsec_... (placeholder for now)
-✅ RESEND_API_KEY=re_... (NEW - get from resend.com)
+✅ SENDGRID_API_KEY=SG.... (get from SendGrid dashboard)
 
 ================================================================================
 🚀 NEXT STEPS AFTER UPDATING .env.local:

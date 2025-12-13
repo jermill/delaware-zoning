@@ -1,12 +1,8 @@
-import { Resend } from 'resend';
+import sgMail from '@sendgrid/mail';
 import { serverEnv } from './env.server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-interface EmailAttachment {
-  filename: string;
-  content: Buffer;
-}
+// Initialize SendGrid with API key
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export async function sendZoningReport(
   customerEmail: string,
@@ -16,26 +12,31 @@ export async function sendZoningReport(
   const emailHtml = createEmailTemplate(propertyAddress);
   
   try {
-    const { data, error } = await resend.emails.send({
-      from: 'Delaware Zoning <reports@delawarezoning.com>',
-      to: [customerEmail],
+    const message = {
+      to: customerEmail,
+      from: {
+        email: 'reports@delawarezoning.com',
+        name: 'Delaware Zoning'
+      },
       subject: `Your Zoning Report - ${propertyAddress}`,
       html: emailHtml,
       attachments: [
         {
+          content: pdfBuffer.toString('base64'),
           filename: `Zoning-Report-${Date.now()}.pdf`,
-          content: pdfBuffer,
+          type: 'application/pdf',
+          disposition: 'attachment',
         },
       ],
-    });
+    };
 
-    if (error) {
-      throw new Error(`Resend error: ${error.message}`);
-    }
-
-    console.log('✅ Email sent successfully:', data?.id);
+    const response = await sgMail.send(message);
+    console.log('✅ Email sent successfully via SendGrid:', response[0].statusCode);
   } catch (error: any) {
-    console.error('Failed to send email:', error);
+    console.error('Failed to send email via SendGrid:', error);
+    if (error.response) {
+      console.error('SendGrid error details:', error.response.body);
+    }
     throw new Error(`Email delivery failed: ${error.message}`);
   }
 }
