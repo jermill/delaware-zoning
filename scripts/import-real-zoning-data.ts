@@ -70,14 +70,21 @@ function convertToWKT(geometry: any): string | null {
     return null;
   }
 
-  const rings = geometry.rings;
-  const polygonParts = rings.map((ring: number[][]) => {
-    const coords = ring.map(coord => `${coord[0]} ${coord[1]}`).join(', ');
-    return `(${coords})`;
-  }).join(', ');
+  try {
+    const rings = geometry.rings;
+    
+    // Build polygon string from rings
+    const polygonParts = rings.map((ring: number[][]) => {
+      const coords = ring.map(coord => `${coord[0]} ${coord[1]}`).join(', ');
+      return `((${coords}))`;
+    }).join(', ');
 
-  // Convert to MultiPolygon (database expects MultiPolygon type)
-  return `MULTIPOLYGON(((${polygonParts.replace(/^\(/, '').replace(/\)$/, '')})))`;
+    // Return as MultiPolygon
+    return `MULTIPOLYGON(${polygonParts})`;
+  } catch (error) {
+    console.error('Error converting geometry:', error);
+    return null;
+  }
 }
 
 /**
@@ -99,9 +106,9 @@ async function importNewCastleCounty() {
       const attrs = feature.attributes;
       
       // Map ArcGIS fields to our schema
-      const districtCode = attrs.ZONECODE || attrs.ZONE || attrs.ZONING || 'UNKNOWN';
-      const zoneName = attrs.ZONENAME || attrs.ZONE_DESC || attrs.DESCRIPTION || districtCode;
-      const description = attrs.DESCRIPTION || attrs.ZONE_DESC || `${zoneName} zoning district`;
+      const districtCode = attrs.CODE || attrs.ZONECODE || attrs.ZONE || attrs.ZONING || 'UNKNOWN';
+      const zoneName = attrs.DESCRIPTION || attrs.ZONENAME || attrs.ZONE_DESC || districtCode;
+      const description = attrs.GENERIC_DESCRIPTION || attrs.DESCRIPTION || attrs.ZONE_DESC || `${zoneName} zoning district`;
       
       // Convert geometry
       const wkt = convertToWKT(feature.geometry);
