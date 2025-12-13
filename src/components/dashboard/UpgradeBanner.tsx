@@ -56,13 +56,13 @@ export default function UpgradeBanner({ currentTier }: UpgradeBannerProps) {
           <p className="text-xs text-gray-600 mb-3 leading-relaxed">
             {content.description}
           </p>
-          <Link
-            href={content.ctaLink}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-delaware-blue hover:text-blue-700 transition-colors"
-          >
-            {content.ctaText}
-            <FiArrowRight className="w-4 h-4" />
-          </Link>
+        <Link
+          href={content.ctaLink}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#152F50] hover:text-[#82B8DE] transition-colors"
+        >
+          {content.ctaText}
+          <FiArrowRight className="w-4 h-4" />
+        </Link>
         </div>
       </div>
     </div>
