@@ -46,9 +46,9 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", duration: 0.3 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl z-50 p-4"
+            className="fixed inset-0 flex items-center justify-center z-50 p-4"
           >
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-2xl">
               {/* Header */}
               <div className="bg-[#152F50] px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
