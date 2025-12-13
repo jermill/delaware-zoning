@@ -2,7 +2,6 @@ import { FiHome, FiBookmark, FiClock, FiUser, FiCreditCard, FiHelpCircle, FiLogO
 import Link from 'next/link';
 import { UserTier } from '@/data/mockDashboardData';
 import TierBadge from './TierBadge';
-import UpgradeBanner from './UpgradeBanner';
 
 interface DashboardSidebarProps {
   currentTab: string;
@@ -104,7 +103,27 @@ export default function DashboardSidebar({
       {/* Upgrade Banner */}
       {!isCollapsed && userTier !== 'whale' && (
         <div className="px-3 pb-4">
-          <UpgradeBanner currentTier={userTier} />
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3.5">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-6 h-6 bg-delaware-blue/10 rounded-md flex items-center justify-center flex-shrink-0">
+                <svg className="w-3.5 h-3.5 text-delaware-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 text-xs">
+                Upgrade to{userTier === 'looker' ? ' The Pro' : ' The Whale'}
+              </h3>
+            </div>
+            <p className="text-[11px] text-gray-600 mb-3 leading-relaxed">
+              Get unlimited searches and save unlimited properties
+            </p>
+            <Link
+              href="/dashboard?tab=billing"
+              className="block w-full text-center bg-delaware-blue text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition-colors"
+            >
+              Upgrade Now →
+            </Link>
+          </div>
         </div>
       )}
 

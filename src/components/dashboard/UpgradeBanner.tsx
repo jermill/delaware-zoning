@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiX, FiZap, FiTrendingUp } from 'react-icons/fi';
+import { FiX, FiZap, FiTrendingUp, FiArrowRight } from 'react-icons/fi';
 import { UserTier } from '@/data/mockDashboardData';
 import Link from 'next/link';
 
@@ -38,35 +38,32 @@ export default function UpgradeBanner({ currentTier }: UpgradeBannerProps) {
   const content = getbannerContent();
 
   return (
-    <div className="bg-delaware-gold text-white rounded-2xl p-5 relative shadow-lg overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-600/20 rounded-full -mr-16 -mt-16"></div>
-      <div className="absolute bottom-0 left-0 w-24 h-24 bg-yellow-600/20 rounded-full -ml-12 -mb-12"></div>
-      
+    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 relative">
       <button
         onClick={() => setIsDismissed(true)}
-        className="absolute top-3 right-3 p-1.5 hover:bg-white/20 rounded-lg transition-colors z-10"
+        className="absolute top-3 right-3 p-1 hover:bg-blue-100 rounded-md transition-colors text-gray-500 hover:text-gray-700"
         aria-label="Dismiss banner"
       >
         <FiX className="w-4 h-4" />
       </button>
 
-      <div className="relative z-10">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-            {content.icon}
-          </div>
-          <h3 className="font-bold text-lg">{content.title}</h3>
+      <div className="flex items-start gap-3 pr-8">
+        <div className="flex-shrink-0 w-8 h-8 bg-delaware-blue/10 rounded-lg flex items-center justify-center text-delaware-blue">
+          {content.icon}
         </div>
-        <p className="text-sm text-white/95 mb-4 leading-relaxed">
-          {content.description}
-        </p>
-        <Link
-          href={content.ctaLink}
-          className="inline-flex items-center justify-center w-full bg-white text-delaware-gold px-5 py-3 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all duration-200 shadow-md hover:shadow-lg"
-        >
-          {content.ctaText} →
-        </Link>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-gray-900 text-sm mb-1">{content.title}</h3>
+          <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+            {content.description}
+          </p>
+          <Link
+            href={content.ctaLink}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-delaware-blue hover:text-blue-700 transition-colors"
+          >
+            {content.ctaText}
+            <FiArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </div>
   );
