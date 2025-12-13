@@ -31,10 +31,12 @@ export default defineConfig({
         '**/*.test.tsx',
       ],
       // Thresholds for coverage
-      lines: 60,
-      functions: 60,
-      branches: 50,
-      statements: 60,
+      thresholds: {
+        lines: 60,
+        functions: 60,
+        branches: 50,
+        statements: 60,
+      },
     },
     
     // Test file patterns
@@ -47,10 +49,6 @@ export default defineConfig({
     
     // Reporter
     reporters: ['verbose'],
-    
-    // Parallel execution
-    threads: true,
-    maxThreads: 4,
   },
   
   resolve: {

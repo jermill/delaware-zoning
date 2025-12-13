@@ -27,7 +27,7 @@ if (!stripeKey) {
 }
 
 const stripe = new Stripe(stripeKey as string, {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2025-11-17.clover',
 });
 
 async function setupProducts() {

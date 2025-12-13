@@ -22,7 +22,7 @@ interface ZoningData {
     max_lot_coverage?: number;
     parking_ratio?: number;
     parking_notes?: string;
-  };
+  } | null;
   requiredPermits?: Array<{
     permit_type: string;
     required: boolean;
@@ -33,7 +33,7 @@ interface ZoningData {
     fema_zone: string;
     flood_risk: string;
     zone_description?: string;
-  };
+  } | null;
 }
 
 interface ReportData {
