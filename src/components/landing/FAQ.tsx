@@ -1,26 +1,41 @@
-import { FiHelpCircle } from 'react-icons/fi';
+import { FiDatabase, FiDollarSign, FiDownload, FiMapPin, FiCheckCircle } from 'react-icons/fi';
 
 export default function FAQ() {
   const faqs = [
     {
       question: 'Where does the data come from?',
-      answer: 'All zoning data comes directly from Delaware county and city records.'
+      answer: 'All zoning data comes directly from Delaware county and city records.',
+      icon: FiDatabase,
+      iconColor: 'text-delaware-blue',
+      iconBg: 'bg-delaware-blue/10'
     },
     {
       question: 'How much does it cost?',
-      answer: 'We offer a free plan with 3 searches per month. Paid plans start at $49/month for unlimited searches.'
+      answer: 'We offer a free plan with 3 searches per month. Paid plans start at $49/month for unlimited searches.',
+      icon: FiDollarSign,
+      iconColor: 'text-delaware-gold',
+      iconBg: 'bg-delaware-gold/10'
     },
     {
       question: 'Can I export reports?',
-      answer: 'Yes! Whale plan subscribers ($129/month) can download professional PDF reports for any property.'
+      answer: 'Yes! Whale plan subscribers ($129/month) can download professional PDF reports for any property.',
+      icon: FiDownload,
+      iconColor: 'text-delaware-sage',
+      iconBg: 'bg-delaware-sage/10'
     },
     {
       question: 'Which counties are covered?',
-      answer: 'Currently covering New Castle and Sussex counties with 1,062 zoning districts. Kent County integration coming soon!'
+      answer: 'Currently covering New Castle and Sussex counties with 1,062 zoning districts. Kent County integration coming soon!',
+      icon: FiMapPin,
+      iconColor: 'text-delaware-navy',
+      iconBg: 'bg-delaware-navy/10'
     },
     {
       question: 'How accurate is the information?',
-      answer: 'We source data directly from official county records and update regularly. However, always verify with the local zoning office for final decisions.'
+      answer: 'We source data directly from official county records and update regularly. However, always verify with the local zoning office for final decisions.',
+      icon: FiCheckCircle,
+      iconColor: 'text-green-600',
+      iconBg: 'bg-green-50'
     }
   ];
 
@@ -40,28 +55,31 @@ export default function FAQ() {
         </div>
 
         <div className="max-w-3xl mx-auto space-y-4 px-4">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="card-hover"
-            >
-              <div className="flex gap-4">
-                <div className="flex-shrink-0">
-                  <div className="icon-container bg-delaware-blue/10 group-hover:bg-delaware-blue/20 transition-colors duration-300">
-                    <FiHelpCircle className="w-6 h-6 text-delaware-blue" />
+          {faqs.map((faq, index) => {
+            const Icon = faq.icon;
+            return (
+              <div
+                key={index}
+                className="card-hover"
+              >
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className={`icon-container ${faq.iconBg} group-hover:opacity-80 transition-all duration-300`}>
+                      <Icon className={`w-6 h-6 ${faq.iconColor}`} />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg sm:text-xl font-bold text-delaware-navy mb-3 group-hover:text-delaware-blue transition-colors duration-300">
+                      {faq.question}
+                    </h3>
+                    <p className="text-base text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
                   </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-lg sm:text-xl font-bold text-delaware-navy mb-3 group-hover:text-delaware-blue transition-colors duration-300">
-                    {faq.question}
-                  </h3>
-                  <p className="text-base text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Contact CTA */}

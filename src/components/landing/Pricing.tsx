@@ -11,9 +11,9 @@ export default function Pricing() {
 
   // Stripe Price IDs (these are not sensitive - they're visible in checkout URLs)
   const stripePrices = {
-    looker: process.env.STRIPE_PRICE_LOOKER || '',
-    pro: process.env.STRIPE_PRICE_PRO || '',
-    whale: process.env.STRIPE_PRICE_WHALE || '',
+    looker: process.env.NEXT_PUBLIC_STRIPE_PRICE_LOOKER || '',
+    pro: process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO || '',
+    whale: process.env.NEXT_PUBLIC_STRIPE_PRICE_WHALE || '',
   };
 
   const handleSubscribe = async (planId: string, tier: 'looker' | 'pro' | 'whale') => {
@@ -206,63 +206,134 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Additional Options */}
-        <div className="mt-12 sm:mt-16 max-w-4xl mx-auto px-4">
-          <div className="bg-delaware-sage rounded-2xl p-6 sm:p-8 shadow-md">
-            <div className="text-center mb-6">
-              <h3 className="text-card-heading text-delaware-navy mb-2">
-                Other Options
-              </h3>
-            </div>
-            
+        {/* Additional Options - Redesigned */}
+        <div className="mt-16 sm:mt-20 max-w-5xl mx-auto px-4">
+          {/* Section Header */}
+          <div className="text-center mb-8">
+            <p className="text-overline text-delaware-gold mb-3">
+              Flexible Solutions
+            </p>
+            <h3 className="text-subsection-heading text-delaware-navy mb-3">
+              Other Options
+            </h3>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Need something different? We've got you covered.
+            </p>
+          </div>
+
+          {/* Cards Container with Background */}
+          <div className="bg-gradient-to-br from-delaware-sage/30 via-delaware-sage/20 to-delaware-blue/10 rounded-3xl p-6 sm:p-10 border border-delaware-sage/40 shadow-lg">
             {/* Mobile: 1 col, Tablet/Desktop: 2 col */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Single Report */}
-              <div className="card-elevated">
-                <h4 className="text-lg font-bold text-delaware-navy mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {/* Single Report Card */}
+              <div className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-delaware-sage/20 hover:border-delaware-blue/40 hover:-translate-y-1">
+                {/* Icon Badge */}
+                <div className="absolute -top-4 -right-4 w-16 h-16 bg-delaware-gold rounded-2xl shadow-lg flex items-center justify-center transform rotate-12 group-hover:rotate-0 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+
+                <h4 className="text-xl font-bold text-delaware-navy mb-3">
                   Single Report
                 </h4>
-                <div className="text-3xl font-bold text-delaware-blue mb-3">
-                  $39 <span className="text-base font-normal text-gray-600">one-time</span>
+                
+                {/* Price */}
+                <div className="mb-4">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-bold text-delaware-blue">$39</span>
+                    <span className="text-lg text-gray-500">one-time</span>
+                  </div>
                 </div>
-                <p className="text-base text-gray-600 mb-4">
+
+                <p className="text-base text-gray-600 mb-5 leading-relaxed">
                   Need info for just one property? Buy a professional PDF report without subscribing.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  <li className="flex items-center gap-2">
-                    <FiCheck className="w-4 h-4 text-delaware-gold flex-shrink-0" />
-                    <span>Full zoning report PDF</span>
+
+                {/* Features */}
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    </div>
+                    <span className="text-sm text-gray-700">Full zoning report PDF</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <FiCheck className="w-4 h-4 text-delaware-gold flex-shrink-0" />
-                    <span>No subscription required</span>
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    </div>
+                    <span className="text-sm text-gray-700">No subscription required</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    </div>
+                    <span className="text-sm text-gray-700">Instant download</span>
                   </li>
                 </ul>
+
+                {/* CTA Button */}
+                <button className="w-full bg-delaware-blue text-white py-3 px-6 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg min-h-touch">
+                  Buy Single Report
+                </button>
               </div>
 
-              {/* Brokerage/Team */}
-              <div className="card-elevated">
-                <h4 className="text-lg font-bold text-delaware-navy mb-2">
+              {/* Brokerage/Team Card */}
+              <div className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-delaware-sage/20 hover:border-delaware-gold/40 hover:-translate-y-1">
+                {/* Icon Badge */}
+                <div className="absolute -top-4 -right-4 w-16 h-16 bg-delaware-navy rounded-2xl shadow-lg flex items-center justify-center transform rotate-12 group-hover:rotate-0 transition-transform duration-300">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+
+                <h4 className="text-xl font-bold text-delaware-navy mb-3">
                   Brokerage/Team Plan
                 </h4>
-                <div className="text-3xl font-bold text-delaware-blue mb-3">
-                  Custom
+                
+                {/* Price */}
+                <div className="mb-4">
+                  <div className="text-5xl font-bold bg-gradient-to-r from-delaware-blue to-delaware-gold bg-clip-text text-transparent">
+                    Custom
+                  </div>
+                  <p className="text-sm text-gray-500 mt-1">Pricing based on team size</p>
                 </div>
-                <p className="text-base text-gray-600 mb-4">
+
+                <p className="text-base text-gray-600 mb-5 leading-relaxed">
                   Unlimited access for your entire office. Centralized billing and team management.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-700 mb-4">
-                  <li className="flex items-center gap-2">
-                    <FiCheck className="w-4 h-4 text-delaware-gold flex-shrink-0" />
-                    <span>$15-20 per agent</span>
+
+                {/* Features */}
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    </div>
+                    <span className="text-sm text-gray-700">$15-20 per agent</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <FiCheck className="w-4 h-4 text-delaware-gold flex-shrink-0" />
-                    <span>Recruit & retain talent</span>
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    </div>
+                    <span className="text-sm text-gray-700">Recruit & retain talent</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-5 h-5 bg-delaware-gold/10 rounded-full flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-3 h-3 text-delaware-gold font-bold" />
+                    </div>
+                    <span className="text-sm text-gray-700">Volume discounts available</span>
                   </li>
                 </ul>
-                <a href="/contact" className="text-base text-delaware-blue font-bold hover:text-delaware-gold transition-colors">
-                  Contact Sales →
+
+                {/* CTA Button */}
+                <a 
+                  href="/contact" 
+                  className="w-full inline-flex items-center justify-center gap-2 bg-delaware-gold text-delaware-navy py-3 px-6 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg min-h-touch"
+                >
+                  Contact Sales
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
                 </a>
               </div>
             </div>
