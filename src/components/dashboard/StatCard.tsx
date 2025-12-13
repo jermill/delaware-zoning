@@ -50,15 +50,13 @@ export default function StatCard({ title, value, icon, subtitle, color = 'blue' 
             <p className="text-sm text-gray-600 font-medium">{subtitle}</p>
           )}
         </div>
-        <motion.div 
+        <div 
           className={`${getIconColor()} flex-shrink-0 p-3 rounded-xl shadow-sm`}
-          whileHover={{ rotate: 360, scale: 1.1 }}
-          transition={{ duration: 0.6 }}
         >
           <div className="w-6 h-6">
             {icon}
           </div>
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   );

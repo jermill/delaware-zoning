@@ -202,7 +202,7 @@ export default function BillingTab({ userTier, subscription, invoices }: Billing
               key={plan.id}
                   className={`relative rounded-2xl p-6 transition-all ${
                 plan.id === userTier
-                  ? 'bg-[#FFFCF6] border-2 border-[#152F50]'
+                  ? 'bg-blue-50 border-2 border-[#152F50]'
                   : 'border-2 border-[#A8BDBE] hover:border-[#D8B368]'
               }`}
             >

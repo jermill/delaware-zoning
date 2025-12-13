@@ -158,7 +158,7 @@ export default function OverviewTab({
           {userTier === 'whale' ? (
             // Whale tier: Modern stat display
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="bg-[#FFFCF6] rounded-2xl p-5 border-2 border-[#82B8DE]">
+              <div className="bg-white rounded-2xl p-5 border-2 border-[#82B8DE]">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold text-gray-600 mb-2">Searches Performed</p>
@@ -170,7 +170,7 @@ export default function OverviewTab({
                   </div>
                 </div>
               </div>
-              <div className="bg-[#FFFCF6] rounded-2xl p-5 border-2 border-[#D8B368]">
+              <div className="bg-white rounded-2xl p-5 border-2 border-[#D8B368]">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold text-gray-600 mb-2">PDF Exports</p>
@@ -193,7 +193,7 @@ export default function OverviewTab({
                 showPercentage={true}
               />
               {usage.searchLimit && usage.searchesThisMonth >= usage.searchLimit * 0.8 && (
-                <div className="flex items-center gap-3 p-4 bg-[#FFFCF6] border-2 border-[#D8B368] rounded-xl">
+                <div className="flex items-center gap-3 p-4 bg-amber-50 border-2 border-[#D8B368] rounded-xl">
                   <div className="flex-shrink-0 w-10 h-10 bg-[#D8B368] rounded-lg flex items-center justify-center">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -251,7 +251,7 @@ export default function OverviewTab({
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <button
               onClick={onOpenSearch}
-              className="group flex items-center justify-between p-5 bg-[#FFFCF6] border-2 border-[#82B8DE] rounded-xl hover:border-[#152F50] transition-all text-left hover:shadow-md"
+              className="group flex items-center justify-between p-5 bg-blue-50 border-2 border-[#82B8DE] rounded-xl hover:border-[#152F50] transition-all text-left hover:shadow-md"
             >
               <div>
                 <p className="font-bold text-gray-900 group-hover:text-[#152F50] text-lg mb-1">
@@ -266,7 +266,7 @@ export default function OverviewTab({
 
             <button
               onClick={() => onTabChange && onTabChange('saved')}
-              className="group flex items-center justify-between p-5 bg-[#FFFCF6] border-2 border-[#D8B368] rounded-xl hover:border-[#152F50] transition-all text-left hover:shadow-md"
+              className="group flex items-center justify-between p-5 bg-yellow-50 border-2 border-[#D8B368] rounded-xl hover:border-[#152F50] transition-all text-left hover:shadow-md"
             >
               <div>
                 <p className="font-bold text-gray-900 group-hover:text-[#152F50] text-lg mb-1">
@@ -282,7 +282,7 @@ export default function OverviewTab({
             {userTier !== 'whale' && (
               <Link
                 href="/dashboard?tab=billing"
-                className="group flex items-center justify-between p-5 bg-[#FFFCF6] border-2 border-[#A8BDBE] rounded-xl hover:border-[#152F50] transition-all hover:shadow-md"
+                className="group flex items-center justify-between p-5 bg-gray-50 border-2 border-[#A8BDBE] rounded-xl hover:border-[#152F50] transition-all hover:shadow-md"
               >
                 <div>
                   <p className="font-bold text-gray-900 group-hover:text-[#152F50] text-lg mb-1">
@@ -330,7 +330,7 @@ export default function OverviewTab({
               {recentSearches.slice(0, 5).map((search, index) => (
                 <motion.div
                   key={search.id}
-                  className="p-5 sm:p-6 hover:bg-[#FFFCF6] transition-colors"
+                  className="p-5 sm:p-6 hover:bg-blue-50 transition-colors"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
@@ -361,7 +361,7 @@ export default function OverviewTab({
           )}
         </div>
         {recentSearches.length > 5 && (
-          <div className="p-5 border-t border-[#A8BDBE] text-center bg-[#FFFCF6]">
+          <div className="p-5 border-t border-[#A8BDBE] text-center bg-gray-50">
             <button 
               onClick={() => onTabChange && onTabChange('history')}
               className="text-[#82B8DE] hover:text-[#152F50] font-semibold text-sm inline-flex items-center gap-2 transition-colors"

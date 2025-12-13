@@ -102,7 +102,8 @@ function DashboardContent() {
   // Transform subscription data to match SubscriptionInfo interface
   const tierName: 'The Looker' | 'The Pro' | 'The Whale' = 
     subscription.tier === 'free' ? 'The Looker' : 
-    subscription.tier === 'pro' ? 'The Pro' : 'The Whale';
+    subscription.tier === 'pro' ? 'The Pro' : 
+    subscription.tier === 'business' ? 'The Whale' : 'The Looker'; // Default to Looker
 
   // Mock invoices for billing tab (TODO: fetch from Stripe)
   const mockInvoices = [
@@ -209,7 +210,7 @@ function DashboardContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFCF6]">
+    <div className="min-h-screen bg-gray-50">
       {/* Modern Dashboard Header */}
       <div className="bg-white border-b border-[#A8BDBE] px-4 sm:px-6 py-4 sticky top-0 z-40 shadow-sm">
         <div className="max-w-[1920px] mx-auto flex items-center justify-between">

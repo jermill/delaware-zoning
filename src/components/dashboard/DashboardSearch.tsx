@@ -121,7 +121,7 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
                 </form>
 
                 {/* Quick Tips */}
-                <div className="mt-6 p-4 bg-[#FFFCF6] border border-[#A8BDBE] rounded-xl">
+                <div className="mt-6 p-4 bg-blue-50 border border-[#A8BDBE] rounded-xl">
                   <h3 className="text-sm font-semibold text-gray-900 mb-2">Search Tips:</h3>
                   <ul className="text-sm text-gray-600 space-y-1">
                     <li>• Include street number, street name, city, and state</li>

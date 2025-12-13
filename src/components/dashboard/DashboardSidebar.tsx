@@ -68,7 +68,7 @@ export default function DashboardSidebar({
               className={`w-full flex items-center ${isCollapsed ? 'justify-center px-3' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 group relative ${
                 isActive
                   ? 'bg-[#152F50] text-white shadow-md'
-                  : 'text-gray-600 hover:bg-[#FFFCF6] hover:text-gray-900'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }`}
               aria-label={`${item.label} tab`}
               aria-current={isActive ? 'page' : undefined}
@@ -93,7 +93,7 @@ export default function DashboardSidebar({
       {/* Upgrade Banner */}
       {!isCollapsed && userTier !== 'whale' && (
         <div className="px-3 pb-4">
-          <div className="bg-[#FFFCF6] border border-[#82B8DE] rounded-xl p-3.5">
+          <div className="bg-white border border-[#82B8DE] rounded-xl p-3.5">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-6 h-6 bg-[#82B8DE] rounded-md flex items-center justify-center flex-shrink-0">
                 <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

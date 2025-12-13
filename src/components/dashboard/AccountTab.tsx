@@ -14,6 +14,7 @@ export default function AccountTab({ user }: AccountTabProps) {
   const [weeklyDigest, setWeeklyDigest] = useState(true);
   const [marketingEmails, setMarketingEmails] = useState(false);
   const [defaultCounty, setDefaultCounty] = useState('New Castle');
+  const [avatarUrl, setAvatarUrl] = useState(user.avatar);
 
   const handleSaveChanges = () => {
     alert('Profile updates will be available once backend integration is complete.');
@@ -21,6 +22,32 @@ export default function AccountTab({ user }: AccountTabProps) {
 
   const handleChangePassword = () => {
     alert('Password change will be available once backend integration is complete.');
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be less than 5MB');
+      return;
+    }
+
+    // For now, create a local preview URL
+    // In production, this would upload to Supabase Storage
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setAvatarUrl(reader.result as string);
+      alert('Avatar updated! In production, this would be saved to your profile.');
+    };
+    reader.readAsDataURL(file);
   };
 
   const tabs = [
@@ -61,12 +88,41 @@ export default function AccountTab({ user }: AccountTabProps) {
             <div className="space-y-6">
               {/* Avatar Section */}
               <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
-                <div className="w-20 h-20 rounded-full bg-[#D8B368] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                  {user.name.charAt(0)}
+                <div className="relative group">
+                  {avatarUrl ? (
+                    <img 
+                      src={avatarUrl} 
+                      alt={user.name}
+                      className="w-20 h-20 rounded-xl object-cover shadow-lg"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-xl bg-[#D8B368] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                      {user.name.charAt(0)}
+                    </div>
+                  )}
+                  <label 
+                    htmlFor="avatar-upload"
+                    className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                  >
+                    <FiCamera className="w-6 h-6 text-white" />
+                  </label>
+                  <input
+                    id="avatar-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarUpload}
+                    className="hidden"
+                  />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">{user.name}</h3>
                   <p className="text-sm text-gray-600">{user.email}</p>
+                  <label 
+                    htmlFor="avatar-upload"
+                    className="text-sm text-[#82B8DE] hover:text-[#152F50] cursor-pointer font-medium mt-1 inline-block"
+                  >
+                    Change photo
+                  </label>
                 </div>
               </div>
 
@@ -216,63 +272,69 @@ export default function AccountTab({ user }: AccountTabProps) {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Email Notifications</h3>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                    <div className="flex-1 pr-4">
                       <p className="font-medium text-gray-900">Search Notifications</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 mt-0.5">
                         Get notified when new zoning information is available
                       </p>
                     </div>
                     <button
                       onClick={() => setEmailNotifications(!emailNotifications)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#82B8DE] focus:ring-offset-2 ${
                         emailNotifications ? 'bg-[#82B8DE]' : 'bg-gray-300'
                       }`}
+                      role="switch"
+                      aria-checked={emailNotifications}
                     >
                       <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out ${
                           emailNotifications ? 'translate-x-6' : 'translate-x-1'
                         }`}
                       />
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div>
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                    <div className="flex-1 pr-4">
                       <p className="font-medium text-gray-900">Weekly Digest</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 mt-0.5">
                         Receive a weekly summary of your searches and saved properties
                       </p>
                     </div>
                     <button
                       onClick={() => setWeeklyDigest(!weeklyDigest)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#82B8DE] focus:ring-offset-2 ${
                         weeklyDigest ? 'bg-[#82B8DE]' : 'bg-gray-300'
                       }`}
+                      role="switch"
+                      aria-checked={weeklyDigest}
                     >
                       <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out ${
                           weeklyDigest ? 'translate-x-6' : 'translate-x-1'
                         }`}
                       />
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div>
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                    <div className="flex-1 pr-4">
                       <p className="font-medium text-gray-900">Marketing Emails</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 mt-0.5">
                         Receive updates about new features and promotions
                       </p>
                     </div>
                     <button
                       onClick={() => setMarketingEmails(!marketingEmails)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#82B8DE] focus:ring-offset-2 ${
                         marketingEmails ? 'bg-[#82B8DE]' : 'bg-gray-300'
                       }`}
+                      role="switch"
+                      aria-checked={marketingEmails}
                     >
                       <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out ${
                           marketingEmails ? 'translate-x-6' : 'translate-x-1'
                         }`}
                       />
