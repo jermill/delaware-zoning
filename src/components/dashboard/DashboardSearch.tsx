@@ -34,7 +34,18 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
   };
 
   // Don't auto-navigate on place selection - wait for user to click button
-  const { inputRef, isLoaded, selectedPlace } = useGooglePlaces();
+  const { inputRef, isLoaded, selectedPlace, clearSelection, reinitialize } = useGooglePlaces();
+
+  // Reinitialize autocomplete when modal opens
+  useEffect(() => {
+    if (isOpen && isLoaded) {
+      console.log('[DashboardSearch] Modal opened, reinitializing autocomplete');
+      // Small delay to ensure input is rendered
+      setTimeout(() => {
+        reinitialize();
+      }, 100);
+    }
+  }, [isOpen, isLoaded, reinitialize]);
 
   const handleSearch = async (e: React.FormEvent) => {
     console.log('[DashboardSearch] handleSearch called');
@@ -58,9 +69,8 @@ export default function DashboardSearch({ isOpen, onClose }: DashboardSearchProp
   };
 
   const handleClose = () => {
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
+    console.log('[DashboardSearch] Closing modal, clearing input');
+    clearSelection();
     onClose();
   };
 
