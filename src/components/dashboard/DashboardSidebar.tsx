@@ -10,6 +10,7 @@ interface DashboardSidebarProps {
   userName: string;
   userTier: UserTier;
   isCollapsed?: boolean;
+  onToggleCollapse?: () => void;
 }
 
 export default function DashboardSidebar({
@@ -18,6 +19,7 @@ export default function DashboardSidebar({
   userName,
   userTier,
   isCollapsed = false,
+  onToggleCollapse,
 }: DashboardSidebarProps) {
   const navItems = [
     { id: 'overview', label: 'Overview', icon: FiHome },
@@ -29,7 +31,27 @@ export default function DashboardSidebar({
   ];
 
   return (
-    <div className="h-full bg-white border-r border-gray-200 flex flex-col">
+    <div className="h-full bg-white border-r border-gray-200 flex flex-col relative">
+      {/* Collapse Toggle Button - Positioned on the right edge */}
+      {!isCollapsed && onToggleCollapse && (
+        <button
+          onClick={onToggleCollapse}
+          className="absolute top-4 -right-3 z-10 w-6 h-6 bg-white border border-gray-200 rounded-full shadow-sm hover:shadow-md flex items-center justify-center text-gray-600 hover:text-delaware-blue hover:border-delaware-blue transition-all duration-200"
+          aria-label="Close sidebar"
+          title="Close sidebar"
+        >
+          <svg 
+            className="w-3.5 h-3.5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+            strokeWidth={2.5}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      )}
+
       {/* User Profile Section */}
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-center gap-3">
