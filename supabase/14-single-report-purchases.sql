@@ -60,6 +60,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger to automatically update updated_at
+DROP TRIGGER IF EXISTS update_single_report_purchases_timestamp ON single_report_purchases;
 CREATE TRIGGER update_single_report_purchases_timestamp
 BEFORE UPDATE ON single_report_purchases
 FOR EACH ROW
@@ -69,6 +70,7 @@ EXECUTE FUNCTION update_single_report_purchases_updated_at();
 ALTER TABLE single_report_purchases ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Allow service role full access (for webhooks)
+DROP POLICY IF EXISTS "Service role has full access to single_report_purchases" ON single_report_purchases;
 CREATE POLICY "Service role has full access to single_report_purchases"
   ON single_report_purchases
   FOR ALL
@@ -77,6 +79,7 @@ CREATE POLICY "Service role has full access to single_report_purchases"
   WITH CHECK (true);
 
 -- Policy: Users can view their own purchases by email (if we add this feature later)
+DROP POLICY IF EXISTS "Users can view their own single report purchases" ON single_report_purchases;
 CREATE POLICY "Users can view their own single report purchases"
   ON single_report_purchases
   FOR SELECT
