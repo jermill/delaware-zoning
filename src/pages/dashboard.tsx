@@ -10,6 +10,7 @@ import AccountTab from '@/components/dashboard/AccountTab';
 import BillingTab from '@/components/dashboard/BillingTab';
 import HelpTab from '@/components/dashboard/HelpTab';
 import FloatingActionButton from '@/components/dashboard/FloatingActionButton';
+import DashboardSearch from '@/components/dashboard/DashboardSearch';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDashboard } from '@/hooks/useDashboard';
 import { getDashboardData, getCountyBreakdown } from '@/data/mockDashboardData';
@@ -24,6 +25,9 @@ function DashboardContent() {
   
   // State for sidebar visibility
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  
+  // State for search modal
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
   
   // Handle URL query parameter for tab navigation
   useEffect(() => {
@@ -160,6 +164,7 @@ function DashboardContent() {
             onTabChange={setCurrentTab}
             usageChartData={usageChartData}
             countyBreakdown={countyBreakdown}
+            onOpenSearch={() => setSearchModalOpen(true)}
           />
         );
       case 'saved':
@@ -198,6 +203,7 @@ function DashboardContent() {
           onTabChange={setCurrentTab}
           usageChartData={usageChartData}
           countyBreakdown={countyBreakdown}
+          onOpenSearch={() => setSearchModalOpen(true)}
         />;
     }
   };
@@ -276,7 +282,10 @@ function DashboardContent() {
       <MobileTabBar currentTab={currentTab} onTabChange={setCurrentTab} />
       
       {/* Floating Action Button */}
-      <FloatingActionButton href="/" />
+      <FloatingActionButton onClick={() => setSearchModalOpen(true)} />
+      
+      {/* Search Modal */}
+      <DashboardSearch isOpen={searchModalOpen} onClose={() => setSearchModalOpen(false)} />
     </div>
   );
 }

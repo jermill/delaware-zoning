@@ -18,6 +18,7 @@ interface OverviewTabProps {
   onTabChange?: (tab: string) => void;
   usageChartData?: Array<{ date: string; searches: number }>;
   countyBreakdown?: Array<{ name: string; value: number }>;
+  onOpenSearch?: () => void;
 }
 
 export default function OverviewTab({
@@ -29,6 +30,7 @@ export default function OverviewTab({
   onTabChange,
   usageChartData = [],
   countyBreakdown = [],
+  onOpenSearch,
 }: OverviewTabProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -248,7 +250,7 @@ export default function OverviewTab({
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <button
-              onClick={() => alert('Search feature will be available once backend integration is complete. For now, use the main search on the homepage.')}
+              onClick={onOpenSearch}
               className="group flex items-center justify-between p-5 bg-[#FFFCF6] border-2 border-[#82B8DE] rounded-xl hover:border-[#152F50] transition-all text-left hover:shadow-md"
             >
               <div>
@@ -315,13 +317,13 @@ export default function OverviewTab({
               <p className="text-gray-600 mb-6 max-w-md mx-auto">
                 Start searching for properties to see your activity here
               </p>
-              <Link 
-                href="/" 
+              <button
+                onClick={onOpenSearch}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#152F50] text-white rounded-xl font-semibold hover:bg-[#82B8DE] transition-all shadow-md hover:shadow-lg"
               >
                 <FiSearch className="w-4 h-4" />
                 Start Searching
-              </Link>
+              </button>
             </div>
           ) : (
             <>
