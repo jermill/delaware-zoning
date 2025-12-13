@@ -43,9 +43,9 @@ export default function DashboardSidebar({
   };
 
   return (
-    <div className="h-full bg-[#A8BDBE] border-r border-[#A8BDBE] flex flex-col relative transition-all duration-300">
+    <div className="h-full bg-white border-r border-gray-200 flex flex-col relative transition-all duration-300">
       {/* Logo Section */}
-      <div className={`${isCollapsed ? 'p-4' : 'p-5'} border-b border-white/20 flex ${isCollapsed ? 'justify-center' : 'justify-start'}`}>
+      <div className={`${isCollapsed ? 'p-4' : 'p-5'} border-b border-gray-200 flex ${isCollapsed ? 'justify-center' : 'justify-start'}`}>
         <button
           onClick={() => {
             // Open Delaware Zoning affiliate/share link
@@ -66,7 +66,7 @@ export default function DashboardSidebar({
             />
           </div>
           {!isCollapsed && (
-            <h1 className="text-[#272727] font-bold text-lg">Delaware Zoning</h1>
+            <h1 className="text-gray-900 font-bold text-lg">Delaware Zoning</h1>
           )}
         </button>
       </div>
@@ -83,14 +83,14 @@ export default function DashboardSidebar({
               onClick={() => onTabChange(item.id)}
               className={`w-full flex items-center ${isCollapsed ? 'justify-center px-3' : 'gap-3 px-4'} py-3 rounded-xl transition-all duration-200 group relative ${
                 isActive
-                  ? 'bg-white/20 backdrop-blur-md text-white shadow-lg border border-white/30'
-                  : 'text-[#272727] hover:bg-white/20 hover:text-[#272727]'
+                  ? 'bg-[#152F50] text-white shadow-md'
+                  : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
               }`}
               aria-label={`${item.label} tab`}
               aria-current={isActive ? 'page' : undefined}
               title={isCollapsed ? item.label : undefined}
             >
-              <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-[#272727] group-hover:text-[#272727]'}`} aria-hidden="true" />
+              <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-gray-700 group-hover:text-gray-900'}`} aria-hidden="true" />
               {!isCollapsed && (
                 <span className="text-sm font-semibold">{item.label}</span>
               )}
@@ -108,7 +108,7 @@ export default function DashboardSidebar({
 
       {/* Icon-only avatar when collapsed */}
       {isCollapsed && (
-        <div className="p-4 border-t border-white/20 flex justify-center">
+        <div className="p-4 border-t border-gray-200 flex justify-center">
           {avatarUrl ? (
             <img
               src={avatarUrl}
@@ -116,7 +116,7 @@ export default function DashboardSidebar({
               className="w-10 h-10 rounded-xl object-cover shadow-md"
             />
           ) : (
-            <div className="w-10 h-10 rounded-xl bg-[#272727] flex items-center justify-center font-bold text-white text-base shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-[#152F50] flex items-center justify-center font-bold text-white text-base shadow-md">
               {userName.charAt(0)}
             </div>
           )}
@@ -125,7 +125,7 @@ export default function DashboardSidebar({
 
       {/* User Profile Section - Only show when not collapsed */}
       {!isCollapsed && (
-        <div className="p-5 border-t border-white/20">
+        <div className="p-5 border-t border-gray-200">
           <div className="flex items-center gap-4">
             {avatarUrl ? (
               <img
@@ -134,12 +134,12 @@ export default function DashboardSidebar({
                 className="w-14 h-14 rounded-xl object-cover shadow-md flex-shrink-0"
               />
             ) : (
-              <div className="w-14 h-14 rounded-xl bg-[#272727] flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
+              <div className="w-14 h-14 rounded-xl bg-[#152F50] flex items-center justify-center font-bold text-white text-xl shadow-md flex-shrink-0">
                 {userName.charAt(0)}
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-[#272727] text-base truncate mb-1.5">
+              <p className="font-semibold text-gray-900 text-base truncate mb-1.5">
                 Hi, {userName.split(' ')[0]}
               </p>
               <TierBadge tier={userTier} size="sm" />
@@ -150,10 +150,10 @@ export default function DashboardSidebar({
 
       {/* Toggle Sidebar Button - Collapsed */}
       {isCollapsed && onToggleCollapse && (
-        <div className="p-2 border-t border-white/20">
+        <div className="p-2 border-t border-gray-200">
           <button
             onClick={onToggleCollapse}
-            className="w-full flex items-center justify-center px-3 py-3 text-[#272727] hover:text-white hover:bg-white/20 rounded-xl transition-all duration-200 group relative"
+            className="w-full flex items-center justify-center px-3 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all duration-200 group relative"
             title="Expand Sidebar"
           >
             <svg 
@@ -176,10 +176,10 @@ export default function DashboardSidebar({
 
       {/* Logout Button - Collapsed */}
       {isCollapsed && (
-        <div className="p-2 border-t border-white/20">
+        <div className="p-2 border-t border-gray-200">
           <button
             onClick={() => setShowLogoutModal(true)}
-            className="w-full flex items-center justify-center px-3 py-3 text-red-600 hover:text-red-100 hover:bg-red-600/80 rounded-xl transition-all duration-200 group relative"
+            className="w-full flex items-center justify-center px-3 py-3 text-red-600 hover:text-white hover:bg-red-600 rounded-xl transition-all duration-200 group relative"
             title="Log Out"
           >
             <FiLogOut className="w-5 h-5" />
@@ -223,10 +223,10 @@ export default function DashboardSidebar({
 
       {/* Toggle Sidebar Button - Expanded */}
       {!isCollapsed && onToggleCollapse && (
-        <div className="p-3 border-t border-white/20">
+        <div className="p-3 border-t border-gray-200">
           <button
             onClick={onToggleCollapse}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-[#272727] hover:text-white hover:bg-white/20 rounded-xl transition-all duration-200 group"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
           >
             <svg 
               className="w-4 h-4" 
@@ -244,10 +244,10 @@ export default function DashboardSidebar({
 
       {/* Logout Button */}
       {!isCollapsed && (
-        <div className="p-3 border-t border-white/20">
+        <div className="p-3 border-t border-gray-200">
           <button
             onClick={() => setShowLogoutModal(true)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-600 hover:text-red-100 hover:bg-red-600/80 rounded-xl transition-all duration-200 group"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-600 hover:text-white hover:bg-red-600 rounded-xl transition-all duration-200 group"
           >
             <FiLogOut className="w-4 h-4" />
             <span className="text-sm font-semibold">Log Out</span>
