@@ -8,6 +8,7 @@ import UsageChart from './UsageChart';
 import CountyBreakdownChart from './CountyBreakdownChart';
 import PopularZonesCard from './PopularZonesCard';
 import DashboardSearchBar from './DashboardSearchBar';
+import AnalyticsStatusStrip from './AnalyticsStatusStrip';
 import { exportDashboardSummary } from '@/utils/exportHelpers';
 import Link from 'next/link';
 
@@ -220,27 +221,38 @@ export default function OverviewTab({
         </div>
       </motion.div>
 
-      {/* Charts Row - Modern glassmorphic design */}
-      {(usageChartData.length > 0 || countyBreakdown.length > 0) && (
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
-          variants={container}
-        >
-          {usageChartData.length > 0 && (
-            <motion.div variants={item} className="w-full">
-              <UsageChart data={usageChartData} />
-            </motion.div>
-          )}
-          {countyBreakdown.length > 0 && (
-            <motion.div variants={item} className="w-full">
-              <CountyBreakdownChart data={countyBreakdown} />
-            </motion.div>
-          )}
-          <motion.div variants={item} className="w-full">
-            <PopularZonesCard />
-          </motion.div>
+      {/* Analytics Status Strip */}
+      <motion.div variants={item}>
+        <AnalyticsStatusStrip
+          tier={userTier}
+          tierName={subscription.tierName}
+          searchesUsed={usage.searchesThisMonth}
+          searchLimit={usage.searchLimit}
+          nextBillingDate={subscription.nextBillingDate}
+        />
+      </motion.div>
+
+      {/* Charts Row - Analytics Dashboard */}
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
+        variants={container}
+      >
+        <motion.div variants={item} className="w-full">
+          <UsageChart data={usageChartData} />
         </motion.div>
-      )}
+        
+        <motion.div variants={item} className="w-full">
+          <CountyBreakdownChart data={countyBreakdown} />
+        </motion.div>
+        
+        <motion.div variants={item} className="w-full">
+          <PopularZonesCard onSearchZone={(zone, county) => {
+            // In production, this would trigger a search
+            console.log(`Search for zone ${zone} in ${county}`);
+            if (onOpenSearch) onOpenSearch();
+          }} />
+        </motion.div>
+      </motion.div>
 
       {/* Quick Actions */}
       <motion.div variants={item} className="bg-white rounded-2xl shadow-md p-6 sm:p-8 border border-[#A8BDBE]">

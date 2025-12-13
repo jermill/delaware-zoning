@@ -190,7 +190,7 @@ export default function Pricing() {
                   className={`block text-center w-full py-4 rounded-xl text-base font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 min-h-touch ${
                     plan.popular
                       ? 'bg-delaware-gold text-white hover:opacity-90'
-                      : 'bg-[#A8BDBE] text-white hover:opacity-90'
+                      : 'bg-[#82B8DE] text-white hover:opacity-90'
                   }`}
                 >
                   {loadingPlan === plan.id ? (
@@ -274,7 +274,7 @@ export default function Pricing() {
                 </ul>
 
                 {/* CTA Button */}
-                <button className="w-full bg-delaware-blue text-white py-3 px-6 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg min-h-touch">
+                <button className="w-full bg-[#152F50] text-white py-3 px-6 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg min-h-touch">
                   Buy Single Report
                 </button>
               </div>

@@ -56,9 +56,14 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative bg-delaware-navy overflow-hidden">
-      {/* Background Elements - Subtle only */}
+    <section className="relative bg-[#A8BDBE] overflow-hidden">
+      {/* Background Elements - Subtle pattern and blur effects */}
       <div className="absolute inset-0 opacity-5">
+        {/* Dot pattern texture */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle, #272727 1px, transparent 1px)`,
+          backgroundSize: '24px 24px'
+        }}></div>
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-delaware-blue rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-delaware-sage rounded-full blur-3xl"></div>
       </div>
@@ -70,43 +75,42 @@ export default function Hero() {
           {/* Left Column - Content (Mobile: Order 1) */}
           <div className="text-center lg:text-left w-full">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-delaware-sage/20 backdrop-blur-sm border border-delaware-sage/40 rounded-full px-4 py-2 mb-6">
+            <div className="inline-flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-white/60 rounded-full px-4 py-2 mb-6">
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              <span className="text-sm font-semibold text-white">Now covering New Castle & Sussex counties</span>
+              <span className="text-sm font-semibold text-[#272727]">Now covering New Castle & Sussex counties</span>
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Get Zoning Answers in
-              <span className="text-delaware-gold"> Seconds</span>,
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#272727] mb-6 leading-tight">
+              Get Zoning Answers
               <br />
-              Not Hours
+              in <span className="text-white">Seconds</span>, Not Hours
             </h1>
 
-            <p className="text-lg sm:text-xl text-blue-100 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            <p className="text-lg sm:text-xl text-[#272727]/80 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
               Stop digging through county websites. Enter any Delaware address and instantly see zoning codes, permitted uses, and building requirements.
             </p>
 
             {/* Value Props - Mobile Friendly */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-8">
-              <div className="flex items-center gap-2 text-white/90">
+              <div className="flex items-center gap-2 text-[#272727]/90">
                 <div className="flex-shrink-0 w-8 h-8 bg-delaware-gold rounded-lg flex items-center justify-center">
-                  <FiZap className="w-4 h-4 text-delaware-navy" />
+                  <FiZap className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm sm:text-base font-medium">Instant results</span>
               </div>
-              <div className="flex items-center gap-2 text-white/90">
+              <div className="flex items-center gap-2 text-[#272727]/90">
                 <div className="flex-shrink-0 w-8 h-8 bg-delaware-gold rounded-lg flex items-center justify-center">
-                  <FiShield className="w-4 h-4 text-delaware-navy" />
+                  <FiShield className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm sm:text-base font-medium">No credit card</span>
               </div>
-              <div className="flex items-center gap-2 text-white/90">
+              <div className="flex items-center gap-2 text-[#272727]/90">
                 <div className="flex-shrink-0 w-8 h-8 bg-delaware-gold rounded-lg flex items-center justify-center">
-                  <FiMapPin className="w-4 h-4 text-delaware-navy" />
+                  <FiMapPin className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm sm:text-base font-medium">3 free searches</span>
               </div>
@@ -115,13 +119,13 @@ export default function Hero() {
             {/* Social Proof */}
             <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
               <div className="flex -space-x-2">
-                <div className="w-10 h-10 rounded-full bg-delaware-blue border-2 border-delaware-navy flex items-center justify-center text-white text-sm font-bold shadow-md">J</div>
-                <div className="w-10 h-10 rounded-full bg-delaware-sage border-2 border-delaware-navy flex items-center justify-center text-white text-sm font-bold shadow-md">M</div>
-                <div className="w-10 h-10 rounded-full bg-delaware-gold border-2 border-delaware-navy flex items-center justify-center text-delaware-navy text-sm font-bold shadow-md">S</div>
-                <div className="w-10 h-10 rounded-full bg-green-500 border-2 border-delaware-navy flex items-center justify-center text-white text-sm font-bold shadow-md">R</div>
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
+                <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover" />
               </div>
-              <div className="text-sm text-white/90">
-                <span className="font-semibold text-white">100+</span> Delaware professionals trust us
+              <div className="text-sm text-[#272727]/80">
+                <span className="font-semibold text-[#272727]">100+</span> Delaware professionals trust us
               </div>
             </div>
 
@@ -189,7 +193,7 @@ export default function Hero() {
               <button 
                 onClick={handleSearch}
                 disabled={!isLoaded}
-                className="w-full bg-delaware-blue hover:opacity-90 text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 min-h-touch"
+                className="w-full bg-delaware-gold hover:opacity-90 text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 min-h-touch"
               >
                 <FiSearch className="w-5 h-5" />
                 Search Zoning Info
@@ -217,7 +221,7 @@ export default function Hero() {
               {/* Signup CTA */}
               <a 
                 href="/signup" 
-                className="w-full inline-flex items-center justify-center bg-delaware-gold hover:opacity-90 text-white font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 min-h-touch"
+                className="w-full inline-flex items-center justify-center bg-[#82B8DE] hover:opacity-90 text-white font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 min-h-touch"
               >
                 Create Free Account
               </a>

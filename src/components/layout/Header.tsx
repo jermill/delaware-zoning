@@ -8,7 +8,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white/95 backdrop-blur-md shadow-subtle sticky top-0 z-50 border-b border-delaware-sage/20">
+    <header className="bg-white backdrop-blur-md sticky top-0 z-50 border-b border-[#272727]/10">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}

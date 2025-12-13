@@ -10,7 +10,7 @@ export default function FloatingActionButton({ onClick, href }: FloatingActionBu
   const button = (
     <button
       onClick={onClick}
-      className="fixed bottom-20 md:bottom-8 right-6 z-50 w-16 h-16 bg-gradient-to-br from-delaware-blue to-blue-700 text-white rounded-2xl shadow-[0_8px_30px_rgba(44,95,158,0.4)] hover:shadow-[0_12px_40px_rgba(44,95,158,0.5)] flex items-center justify-center group transition-all duration-300"
+      className="fixed bottom-20 md:bottom-8 right-6 z-50 w-16 h-16 bg-[#A8BDBE] text-white rounded-2xl shadow-[0_8px_30px_rgba(168,189,190,0.4)] hover:shadow-[0_12px_40px_rgba(168,189,190,0.5)] flex items-center justify-center group transition-all duration-300 hover:bg-[#152F50]"
     >
       <FiSearch className="w-7 h-7" />
       

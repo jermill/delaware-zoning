@@ -48,31 +48,33 @@ export default function HowItWorks() {
             <div key={index} className="relative">
               {/* Connector Line - Desktop Only */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-16 left-[60%] w-[80%] h-0.5 bg-delaware-sage/30 z-0">
-                  <div className="absolute right-0 w-2 h-2 bg-delaware-sage rounded-full -translate-y-[3px]"></div>
+                <div className="hidden lg:block absolute top-16 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-delaware-sage/30 to-transparent z-0">
+                  <div className="absolute right-0 w-3 h-3 bg-delaware-gold rounded-full -translate-y-[5px] shadow-md"></div>
                 </div>
               )}
               
-              <div className="card-hover group relative z-10">
-                {/* Icon Container */}
-                <div className="relative mb-6">
-                  <div className={`icon-container-lg ${step.color} mx-auto shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}>
-                    <step.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+              <div className="group relative z-10 bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-[#A8BDBE]/50 hover:-translate-y-2">
+                {/* Step Number - Large and prominent */}
+                <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-[#A8BDBE] to-[#82B8DE] rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                  {step.number}
+                </div>
+
+                {/* Icon Container - Centered and prominent */}
+                <div className="relative mb-6 flex justify-center">
+                  <div className={`w-20 h-20 ${step.color} rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
+                    <step.icon className="w-10 h-10 text-white" />
                   </div>
                 </div>
                 
-                {/* Step Number Badge */}
-                <div className="absolute top-6 right-6 w-10 h-10 bg-delaware-cream border-2 border-delaware-sage/30 rounded-xl flex items-center justify-center text-base font-bold text-delaware-navy shadow-sm">
-                  {step.number}
-                </div>
-                
                 {/* Content */}
-                <h3 className="text-card-heading text-delaware-navy mb-3 text-center">
-                  {step.title}
-                </h3>
-                <p className="text-gray-600 text-base leading-relaxed text-center">
-                  {step.description}
-                </p>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-[#272727] mb-3 group-hover:text-[#152F50] transition-colors duration-300">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 text-base leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
@@ -82,7 +84,7 @@ export default function HowItWorks() {
         <div className="text-center">
           <a 
             href="/signup" 
-            className="btn-primary"
+            className="inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-300 min-h-touch bg-[#82B8DE] text-white px-6 py-3 sm:px-8 sm:py-4 hover:opacity-90 hover:shadow-lg transform hover:-translate-y-0.5"
           >
             Try It Free — 3 Searches Included
           </a>

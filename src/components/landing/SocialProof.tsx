@@ -44,7 +44,7 @@ export default function SocialProof() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trusted By Bar */}
         <div className="text-center mb-12 sm:mb-16">
-          <p className="text-overline text-delaware-gold mb-6">
+          <p className="text-overline text-[#152F50] mb-6">
             Trusted by Delaware professionals
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -83,7 +83,7 @@ export default function SocialProof() {
               
               {/* Author */}
               <div className="flex items-center gap-3 pt-4 border-t border-delaware-sage/20">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-delaware-sage/20">
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 ring-2 ring-delaware-sage/20">
                   <Image
                     src={testimonial.image}
                     alt={testimonial.author}
@@ -131,7 +131,7 @@ export default function SocialProof() {
               },
               { 
                 icon: FiZap,
-                value: '<2s', 
+                value: 'Less than 2s', 
                 label: 'Average Search',
                 description: 'Lightning-fast results',
                 iconBg: 'bg-delaware-gold',
@@ -158,7 +158,7 @@ export default function SocialProof() {
                   </div>
                   
                   {/* Value */}
-                  <div className={`text-3xl sm:text-4xl font-bold ${stat.textColor} mb-1`}>
+                  <div className={`text-3xl sm:text-4xl font-bold ${stat.textColor} mb-1 whitespace-nowrap`}>
                     {stat.value}
                   </div>
                   

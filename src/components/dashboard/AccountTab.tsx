@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FiUser, FiMail, FiPhone, FiBriefcase, FiBell, FiLock, FiMonitor, FiCamera, FiMapPin, FiAward, FiGlobe } from 'react-icons/fi';
 import { UserProfile } from '@/data/mockDashboardData';
+import ModernToggle from '@/components/shared/ModernToggle';
 
 interface AccountTabProps {
   user: UserProfile;
@@ -15,6 +16,8 @@ export default function AccountTab({ user }: AccountTabProps) {
   const [marketingEmails, setMarketingEmails] = useState(false);
   const [defaultCounty, setDefaultCounty] = useState('New Castle');
   const [avatarUrl, setAvatarUrl] = useState(user.avatar);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
   const handleSaveChanges = () => {
     alert('Profile updates will be available once backend integration is complete.');
@@ -22,6 +25,18 @@ export default function AccountTab({ user }: AccountTabProps) {
 
   const handleChangePassword = () => {
     alert('Password change will be available once backend integration is complete.');
+  };
+
+  const handleDeleteAccount = () => {
+    if (deleteConfirmText !== 'DELETE') {
+      alert('Please type DELETE to confirm account deletion');
+      return;
+    }
+
+    // In production, this would call the delete account API
+    alert('Account deletion will be available once backend integration is complete. This would permanently delete your account and all associated data.');
+    setShowDeleteConfirm(false);
+    setDeleteConfirmText('');
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -279,20 +294,11 @@ export default function AccountTab({ user }: AccountTabProps) {
                         Get notified when new zoning information is available
                       </p>
                     </div>
-                    <button
-                      onClick={() => setEmailNotifications(!emailNotifications)}
-                      className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#82B8DE] focus:ring-offset-2 ${
-                        emailNotifications ? 'bg-[#82B8DE]' : 'bg-gray-300'
-                      }`}
-                      role="switch"
-                      aria-checked={emailNotifications}
-                    >
-                      <span
-                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out ${
-                          emailNotifications ? 'translate-x-6' : 'translate-x-1'
-                        }`}
-                      />
-                    </button>
+                    <ModernToggle 
+                      enabled={emailNotifications}
+                      onChange={setEmailNotifications}
+                      label="Search Notifications"
+                    />
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
@@ -302,20 +308,11 @@ export default function AccountTab({ user }: AccountTabProps) {
                         Receive a weekly summary of your searches and saved properties
                       </p>
                     </div>
-                    <button
-                      onClick={() => setWeeklyDigest(!weeklyDigest)}
-                      className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#82B8DE] focus:ring-offset-2 ${
-                        weeklyDigest ? 'bg-[#82B8DE]' : 'bg-gray-300'
-                      }`}
-                      role="switch"
-                      aria-checked={weeklyDigest}
-                    >
-                      <span
-                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out ${
-                          weeklyDigest ? 'translate-x-6' : 'translate-x-1'
-                        }`}
-                      />
-                    </button>
+                    <ModernToggle 
+                      enabled={weeklyDigest}
+                      onChange={setWeeklyDigest}
+                      label="Weekly Digest"
+                    />
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
@@ -325,20 +322,11 @@ export default function AccountTab({ user }: AccountTabProps) {
                         Receive updates about new features and promotions
                       </p>
                     </div>
-                    <button
-                      onClick={() => setMarketingEmails(!marketingEmails)}
-                      className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#82B8DE] focus:ring-offset-2 ${
-                        marketingEmails ? 'bg-[#82B8DE]' : 'bg-gray-300'
-                      }`}
-                      role="switch"
-                      aria-checked={marketingEmails}
-                    >
-                      <span
-                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out ${
-                          marketingEmails ? 'translate-x-6' : 'translate-x-1'
-                        }`}
-                      />
-                    </button>
+                    <ModernToggle 
+                      enabled={marketingEmails}
+                      onChange={setMarketingEmails}
+                      label="Marketing Emails"
+                    />
                   </div>
                 </div>
               </div>
@@ -355,7 +343,7 @@ export default function AccountTab({ user }: AccountTabProps) {
                     className="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#82B8DE] focus:border-[#82B8DE] bg-white"
                   >
                     <option value="New Castle">New Castle County</option>
-                    <option value="Kent">Kent County</option>
+                    <option value="Kent" disabled>Kent County (Coming Soon!)</option>
                     <option value="Sussex">Sussex County</option>
                   </select>
                   <p className="text-sm text-gray-600 mt-2">
@@ -437,10 +425,119 @@ export default function AccountTab({ user }: AccountTabProps) {
                   support@delawarezoning.com
                 </a>
               </div>
+
+              {/* Delete Account Section */}
+              <div className="pt-6 border-t border-red-200">
+                <h3 className="text-lg font-semibold text-red-600 mb-2 flex items-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  Danger Zone
+                </h3>
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                  <p className="text-sm text-gray-700 mb-3">
+                    <strong>Delete Account:</strong> This action cannot be undone. This will permanently delete your account, all saved properties, search history, and cancel any active subscriptions.
+                  </p>
+                  <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  >
+                    Delete My Account
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-fade-in">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Delete Account?
+                </h3>
+                <p className="text-sm text-gray-600">
+                  This action is permanent and cannot be undone.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <h4 className="font-semibold text-gray-900 mb-2">What will be deleted:</h4>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    All saved properties and search history
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    Your profile and account settings
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    Active subscription (if any)
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    All personal data and preferences
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Type <span className="text-red-600 font-mono">DELETE</span> to confirm:
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder="DELETE"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 font-mono"
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setDeleteConfirmText('');
+                }}
+                className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleteConfirmText !== 'DELETE'}
+                className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Delete Forever
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Info Notice */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
